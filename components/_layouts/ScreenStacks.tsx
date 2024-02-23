@@ -8,6 +8,13 @@ import { useActionContext } from "@/context";
 import { ScreenNames } from "@/utils/_variables";
 import { whiteColor } from "@/assets/colors";
 import GettingStarted from "@/screens/GettingStarted";
+import Login from "@/screens/Login";
+import Register from "@/screens/Register";
+import Dashboard from "@/screens/Dashboard";
+import Projects from "@/screens/Projects";
+import Assets from "../../screens/Assets";
+import Wallet from "../../screens/Wallet";
+import Profile from "../../screens/Profile";
 
 const Stack = createNativeStackNavigator<any>();
 
@@ -39,7 +46,7 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
 
   return (
     <NavigationContainer theme={MyTheme}>
-      <Stack.Navigator initialRouteName={ScreenNames.GettingStarted.name}>
+      <Stack.Navigator initialRouteName={ScreenNames.Dashboard.name}>
         {/*screens that shows when user isn't loggedin yet */}
         <Stack.Group
           screenOptions={{
@@ -52,6 +59,25 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
             name={ScreenNames.GettingStarted.name}
             component={GettingStarted}
           />
+          <Stack.Screen name={ScreenNames.Login.name} component={Login} />
+          <Stack.Screen name={ScreenNames.Register.name} component={Register} />
+        </Stack.Group>
+        {/* Screens when users are loggedin */}
+        <Stack.Group
+          screenOptions={{
+            animation: "fade_from_bottom",
+            headerShown: false,
+            gestureEnabled: true
+          }}
+        >
+          <Stack.Screen
+            name={ScreenNames.Dashboard.name}
+            component={Dashboard}
+          />
+          <Stack.Screen name={ScreenNames.Projects.name} component={Projects} />
+          <Stack.Screen name={ScreenNames.Assets.name} component={Assets} />
+          <Stack.Screen name={ScreenNames.Wallet.name} component={Wallet} />
+          <Stack.Screen name={ScreenNames.Profile.name} component={Profile} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

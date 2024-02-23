@@ -1,29 +1,95 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View, useColorScheme } from "react-native";
 import React from "react";
 import Container from "@/components/_layouts/Container";
-import { primaryColor, whiteColor } from "@/assets/colors";
-import { windowWidth } from "@/utils/_variables";
+import { blackColor, primaryColor, whiteColor } from "@/assets/colors";
+import {
+  windowWidth,
+  colorSchemes,
+  padding,
+  ScreenNames
+} from "@/utils/_variables";
+import { LogoTransparentImage } from "@/assets/images";
+import TextComponent from "@/components/_general/TextComponent";
+import { Poppins } from "@/assets/fonts";
+import Button from "@/components/_general/Button";
+import { useNavigation } from "@react-navigation/native";
 
 const GettingStarted = () => {
+  const colorScheme = useColorScheme();
+  const { navigate } = useNavigation();
   return (
-    <Container>
+    <Container
+      safeView
+      style={{
+        paddingVertical: 20,
+        paddingHorizontal: padding
+      }}
+    >
       <View
         style={{
-          flex: 1 / 2,
-          backgroundColor: primaryColor.default,
-          borderBottomLeftRadius: windowWidth * 0.3,
-          padding: 10
+          alignItems: "center",
+          justifyContent: "center"
         }}
       >
-        <View
+        <Image
+          source={LogoTransparentImage}
           style={{
-            width: "100%",
-            height: "100%",
-            backgroundColor: whiteColor.default,
-            borderRadius: windowWidth * 0.1,
-            borderBottomLeftRadius: windowWidth * 0.3
+            width: 70,
+            height: 100,
+            resizeMode: "contain"
           }}
-        ></View>
+        />
+      </View>
+      <View
+        style={{
+          flex: 1
+        }}
+      ></View>
+      <View
+        style={{
+          alignItems: "center",
+          gap: 15
+        }}
+      >
+        <TextComponent
+          textAlign="center"
+          color={primaryColor.default}
+          fontFamily={Poppins.semiBold.default}
+          fontSize={20}
+        >
+          Foodsoldier
+        </TextComponent>
+        <TextComponent
+          textAlign="center"
+          color={
+            colorScheme === colorSchemes.dark
+              ? whiteColor.opacity600
+              : blackColor.opacity600
+          }
+        >
+          Join the future by investing and empowering farmers and communities in
+          sustainable agriculture for a better future
+        </TextComponent>
+        <TextComponent
+          textAlign="center"
+          color={
+            colorScheme === colorSchemes.dark
+              ? whiteColor.opacity600
+              : blackColor.opacity600
+          }
+        >
+          Brought to you by Farmkoin
+        </TextComponent>
+        <Button
+          type="primary"
+          onPress={() => {
+            navigate(ScreenNames.Login.name as never);
+          }}
+        >
+          <TextComponent textAlign="center" color={whiteColor.default}>
+            Get started
+          </TextComponent>
+        </Button>
       </View>
     </Container>
   );

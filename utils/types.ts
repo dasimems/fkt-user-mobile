@@ -1,4 +1,5 @@
 import { PoppinsProps } from "@/assets/fonts";
+import { LucideIcon } from "lucide-react-native";
 import {
   ColorValue,
   ImageSourcePropType,
@@ -147,7 +148,7 @@ export interface ScreenStackType {
 }
 export interface ScreenNamesType {
   name: string;
-  Icon: React.FC<IconType> | undefined;
+  Icon: React.FC<IconType> | undefined | LucideIcon;
   label: string;
   activeNames: string[];
   showIn: string[];
@@ -167,21 +168,20 @@ export interface UserProviderTypes {
   children: React.ReactNode;
 }
 export interface SelectBoxOptionType {
-  value: string,
-  key: string,
-  disable?: boolean
+  value: string;
+  key: string;
+  disable?: boolean;
 }
 
 export interface SelectBoxType extends SelectListProps {
-  onChange: (value: string) => void,
+  onChange: (value: string) => void;
   data: SelectBoxOptionType[];
-  style?: ViewStyle,
-  label?: string,
-  labelStyle?: TextStyle,
-  error?: string | boolean,
-  errorStyle?: TextStyle,
-  inputParentStyle?: ViewStyle,
-  inputStyles?: TextStyle,
-  inputBorderColor?: ColorValue,
-
+  style?: ViewStyle;
+  label?: string;
+  labelStyle?: TextStyle;
+  error?: string | boolean;
+  errorStyle?: TextStyle;
+  inputParentStyle?: ViewStyle;
+  inputStyles?: TextStyle;
+  inputBorderColor?: ColorValue;
 }
