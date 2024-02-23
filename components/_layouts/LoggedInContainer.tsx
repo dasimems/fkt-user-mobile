@@ -20,12 +20,20 @@ import { ArrowLeft2 } from "iconsax-react-native";
 import TextComponent from "../_general/TextComponent";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { ScreenNamesType } from "@/utils/types";
-import { backgroundColor, primaryColor } from "@/assets/colors";
+import {
+  backgroundColor,
+  blackColor,
+  primaryColor,
+  whiteColor
+} from "@/assets/colors";
 import { Poppins } from "@/assets/fonts";
 import { Menu } from "react-native-paper";
 import { MoreVertical, X } from "lucide-react-native";
+import { useColorScheme } from "react-native";
+import { colorSchemes } from "@/utils/_variables";
 
 const defaultBorderRadius = 30;
+const defaultIconSize = 25;
 
 const Header: React.FC<{ headerText: string; hideBackArrow?: boolean }> = ({
   headerText,
@@ -36,6 +44,7 @@ const Header: React.FC<{ headerText: string; hideBackArrow?: boolean }> = ({
   const openMenu = () => setVisible(true);
 
   const closeMenu = () => setVisible(false);
+  const colorScheme = useColorScheme();
   const { goBack } = useNavigation();
   return (
     <View
@@ -50,6 +59,7 @@ const Header: React.FC<{ headerText: string; hideBackArrow?: boolean }> = ({
     >
       <TextComponent
         fontFamily={Poppins.semiBold.default}
+        fontSize={16}
         style={{
           flex: 1
         }}
@@ -59,16 +69,32 @@ const Header: React.FC<{ headerText: string; hideBackArrow?: boolean }> = ({
       <View>
         <Menu
           contentStyle={{
-            top: defaultIconProps.size + 10
+            top: defaultIconSize + 10
           }}
           visible={visible}
           onDismiss={closeMenu}
           anchor={
             <TouchableOpacity onPress={openMenu}>
               {visible ? (
-                <X {...defaultIconProps} />
+                <X
+                  {...defaultIconProps}
+                  size={defaultIconSize}
+                  color={
+                    colorScheme === colorSchemes.dark
+                      ? whiteColor.opacity600
+                      : blackColor.opacity600
+                  }
+                />
               ) : (
-                <MoreVertical {...defaultIconProps} />
+                <MoreVertical
+                  {...defaultIconProps}
+                  size={defaultIconSize}
+                  color={
+                    colorScheme === colorSchemes.dark
+                      ? whiteColor.opacity600
+                      : blackColor.opacity600
+                  }
+                />
               )}
             </TouchableOpacity>
           }

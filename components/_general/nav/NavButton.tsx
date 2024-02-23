@@ -1,4 +1,11 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from "react-native";
 import React from "react";
 import { ScreenNamesType } from "@/utils/types";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -30,7 +37,7 @@ const NavButton: React.FC<ScreenNamesType & { index: number }> = ({
     isActive = activeNames.includes(screenName);
   }
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={() => {
         navigate(name as never);
       }}
@@ -100,7 +107,7 @@ const NavButton: React.FC<ScreenNamesType & { index: number }> = ({
           }}
         />
       )}
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
