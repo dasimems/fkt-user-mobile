@@ -15,6 +15,11 @@ import Projects from "@/screens/Projects";
 import Assets from "../../screens/Assets";
 import Wallet from "../../screens/Wallet";
 import Profile from "../../screens/Profile";
+import TransactionDetails from "@/screens/TransactionDetails";
+import ProfileDetails from "@/screens/ProfileDetails";
+import BankDetails from "@/screens/BankDetails";
+import ChangePassword from "../../screens/ChangePassword";
+import Referrals from "../../screens/Referrals";
 
 const Stack = createNativeStackNavigator<any>();
 
@@ -78,6 +83,34 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
           <Stack.Screen name={ScreenNames.Assets.name} component={Assets} />
           <Stack.Screen name={ScreenNames.Wallet.name} component={Wallet} />
           <Stack.Screen name={ScreenNames.Profile.name} component={Profile} />
+        </Stack.Group>
+        <Stack.Group
+          screenOptions={{
+            animation: "slide_from_right",
+            headerShown: false,
+            gestureEnabled: true
+          }}
+        >
+          <Stack.Screen
+            name={ScreenNames.TransactionDetails.name}
+            component={TransactionDetails}
+          />
+          <Stack.Screen
+            name={ScreenNames.ProfileDetails.name}
+            component={ProfileDetails}
+          />
+          <Stack.Screen
+            name={ScreenNames.BankDetails.name}
+            component={BankDetails}
+          />
+          <Stack.Screen
+            name={ScreenNames.ChangePassword.name}
+            component={ChangePassword}
+          />
+          <Stack.Screen
+            name={ScreenNames.Referrals.name}
+            component={Referrals}
+          />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

@@ -6,7 +6,11 @@ import {
   useColorScheme
 } from "react-native";
 import React from "react";
-import { colorSchemes, defaultIconProps } from "@/utils/_variables";
+import {
+  ScreenNames,
+  colorSchemes,
+  defaultIconProps
+} from "@/utils/_variables";
 import {
   blackColor,
   primaryColor,
@@ -17,6 +21,7 @@ import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import { ArrowDown, ArrowUp, Banknote } from "lucide-react-native";
 import { textColor } from "../../../assets/colors";
+import { useNavigation } from "@react-navigation/native";
 
 const TransactionCard: React.FC<{
   type?: "debit" | "credit";
@@ -26,6 +31,7 @@ const TransactionCard: React.FC<{
 }> = ({ type, description, date, price }) => {
   const colorScheme = useColorScheme();
   let textColor = redColor.opacity600;
+  const { navigate } = useNavigation();
 
   switch (type?.toLowerCase()) {
     case "credit":
@@ -36,6 +42,14 @@ const TransactionCard: React.FC<{
   }
   return (
     <TouchableOpacity
+      onPress={() => {
+        navigate({
+          name: ScreenNames.TransactionDetails.name,
+          params: {
+            type
+          }
+        } as never);
+      }}
       style={{
         flexDirection: "row",
         alignItems: "center",
@@ -66,11 +80,9 @@ const TransactionCard: React.FC<{
           {description}
         </TextComponent>
         <TextComponent
-          color={
-            colorScheme === colorSchemes.dark
-              ? whiteColor.opacity600
-              : blackColor.opacity600
-          }
+          style={{
+            opacity: 0.6
+          }}
         >
           {date}
         </TextComponent>

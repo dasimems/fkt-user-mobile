@@ -1,13 +1,24 @@
 import { Dimensions } from "react-native";
 import { ImageDimensionType, ScreenNamesType } from "./types";
 import { blackColor, whiteColor } from "@/assets/colors";
-import { Component, Folder, Home, User, Wallet } from "lucide-react-native";
+import {
+  Component,
+  Folder,
+  Home,
+  Key,
+  Landmark,
+  User,
+  Users,
+  Wallet
+} from "lucide-react-native";
 import { convertObjectToArray } from "./functions";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("screen");
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 export const padding = 20,
   nav = "nav",
+  profile = "profile",
+  referral = "referral",
   vibrationLengths = {
     short: 1000,
     medium: 3000,
@@ -84,17 +95,96 @@ export const padding = 20,
       activeNames: ["Wallet"],
       showIn: [nav]
     },
+    Referrals: {
+      name: "Referrals",
+      Icon: Users,
+      label: "Referrals",
+      activeNames: ["Referrals"],
+      showIn: [nav, profile]
+    },
+
     Profile: {
       name: "Profile",
       Icon: User,
       label: "Profile",
       activeNames: ["Profile"],
-      showIn: [nav]
+      showIn: []
+    },
+    ProfileDetails: {
+      name: "ProfileDetails",
+      Icon: User,
+      label: "Profile Details",
+      activeNames: ["ProfileDetails"],
+      showIn: [profile]
+    },
+    BankDetails: {
+      name: "BankDetails",
+      Icon: Landmark,
+      label: "Bank Details",
+      activeNames: ["BankDetails"],
+      showIn: [profile]
+    },
+    ChangePassword: {
+      name: "ChangePassword",
+      Icon: Key,
+      label: "Change Password",
+      activeNames: ["ChangePassword"],
+      showIn: [profile]
+    },
+    TransactionDetails: {
+      name: "TransactionDetails",
+      Icon: undefined,
+      label: "Transaction Details",
+      activeNames: ["TransactionDetails"],
+      showIn: []
+    },
+    LinearReferrals: {
+      name: "LinearReferrals",
+      Icon: undefined,
+      label: "Linear",
+      activeNames: ["LinearReferral"],
+      showIn: [referral]
+    },
+    AssistReferrals: {
+      name: "AssistReferrals",
+      Icon: undefined,
+      label: "Assist",
+      activeNames: ["AssistReferral"],
+      showIn: [referral]
     }
   },
+  ReferralGenerations = {
+    First: {
+      value: "first-generation",
+      label: "First generation"
+    },
+    Second: {
+      value: "second-generation",
+      label: "Second generation"
+    },
+    Third: {
+      value: "third-generation",
+      label: "Third generation"
+    },
+    Fourth: {
+      value: "fourth-generation",
+      label: "Fourth generation"
+    },
+    Fifth: {
+      value: "fifth-generation",
+      label: "Fifth generation"
+    }
+  },
+  allGenerations = convertObjectToArray(ReferralGenerations),
   allScreenNames = convertObjectToArray(ScreenNames),
   navRoutes = allScreenNames.filter((screenName) =>
     screenName.showIn.includes(nav)
+  ),
+  profileRoutes = allScreenNames.filter((screenName) =>
+    screenName.showIn.includes(profile)
+  ),
+  referralRoutes = allScreenNames.filter((screenName) =>
+    screenName.showIn.includes(referral)
   );
 
 export { windowHeight, windowWidth, screenWidth, screenHeight };

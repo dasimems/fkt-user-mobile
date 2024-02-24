@@ -70,7 +70,7 @@ export interface TextComponentType extends TextProps {
   children: React.ReactNode;
   textAlign?: "left" | "right" | "center";
   fontSize?: number;
-  color?: string;
+  color?: ColorValue;
   fontFamily?: FontFamiliesType;
   style?: TextStyle;
 }

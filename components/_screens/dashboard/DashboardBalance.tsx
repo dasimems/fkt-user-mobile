@@ -21,11 +21,9 @@ const DashboardBalance: React.FC<{ style?: ViewStyle }> = ({ style }) => {
     >
       <TextComponent
         textAlign="center"
-        color={
-          colorScheme === colorSchemes.dark
-            ? whiteColor.opacity600
-            : blackColor.opacity600
-        }
+        style={{
+          opacity: 0.6
+        }}
       >
         Wallet balance
       </TextComponent>

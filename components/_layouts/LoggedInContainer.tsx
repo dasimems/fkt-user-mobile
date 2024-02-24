@@ -159,7 +159,7 @@ const LoggedInContainer: React.FC<{
               : defaultBorderRadius * 0.5
             : defaultBorderRadius,
           borderBottomRightRadius: !hideNav
-            ? activeScreen?.name === ScreenNames.Profile.name
+            ? activeScreen?.name === ScreenNames.Referrals.name
               ? 0
               : defaultBorderRadius * 0.5
             : defaultBorderRadius,

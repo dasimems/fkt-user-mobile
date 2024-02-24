@@ -19,7 +19,7 @@ const TextComponent: React.FC<TextComponentType> = ({
   return (
     <Text
       style={{
-        color: color as string,
+        color,
         fontSize,
         fontFamily,
         textAlign,

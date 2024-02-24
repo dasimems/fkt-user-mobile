@@ -61,22 +61,18 @@ const GettingStarted = () => {
         </TextComponent>
         <TextComponent
           textAlign="center"
-          color={
-            colorScheme === colorSchemes.dark
-              ? whiteColor.opacity600
-              : blackColor.opacity600
-          }
+          style={{
+            opacity: 0.6
+          }}
         >
           Join the future by investing and empowering farmers and communities in
           sustainable agriculture for a better future
         </TextComponent>
         <TextComponent
           textAlign="center"
-          color={
-            colorScheme === colorSchemes.dark
-              ? whiteColor.opacity600
-              : blackColor.opacity600
-          }
+          style={{
+            opacity: 0.6
+          }}
         >
           Brought to you by Farmkoin
         </TextComponent>

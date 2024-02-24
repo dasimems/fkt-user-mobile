@@ -40,11 +40,9 @@ const WalletStatCard: React.FC<{
         }}
       >
         <TextComponent
-          color={
-            colorScheme === colorSchemes.dark
-              ? whiteColor.opacity600
-              : blackColor.opacity600
-          }
+          style={{
+            opacity: 0.6
+          }}
         >
           {title}
         </TextComponent>

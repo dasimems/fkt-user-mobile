@@ -1,4 +1,5 @@
 import {
+  ColorValue,
   StyleSheet,
   Text,
   View,
@@ -18,22 +19,37 @@ const StatsCard: React.FC<{
   iconProps?: LucideProps;
   title: string;
   stat: number;
-}> = ({ style, Icon, iconProps, title, stat }) => {
+  color?: ColorValue;
+  titleColor?: ColorValue;
+}> = ({ style, Icon, iconProps, title, stat, color, titleColor }) => {
   const colorScheme = useColorScheme();
   return (
-    <View style={{ gap: 1, alignItems: "center" }}>
-      {Icon && <Icon {...defaultIconProps} {...iconProps} />}
+    <View style={{ gap: 1, alignItems: "center", ...style }}>
+      {Icon && (
+        <Icon
+          {...defaultIconProps}
+          {...iconProps}
+          color={
+            color || colorScheme === colorSchemes.dark
+              ? whiteColor.default
+              : blackColor.default
+          }
+        />
+      )}
       <TextComponent
         textAlign="center"
-        color={
-          colorScheme === colorSchemes.dark
-            ? whiteColor.opacity600
-            : blackColor.opacity600
-        }
+        color={titleColor}
+        style={{
+          opacity: 0.6
+        }}
       >
         {title}
       </TextComponent>
-      <TextComponent textAlign="center" fontFamily={Poppins.semiBold.default}>
+      <TextComponent
+        color={color}
+        textAlign="center"
+        fontFamily={Poppins.semiBold.default}
+      >
         {stat}
       </TextComponent>
     </View>

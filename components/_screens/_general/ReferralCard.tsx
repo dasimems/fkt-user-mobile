@@ -48,11 +48,9 @@ const ReferralCard = () => {
         </TextComponent>
         <TextComponent
           fontSize={10}
-          color={
-            colorScheme === colorSchemes.dark
-              ? whiteColor.opacity600
-              : blackColor.opacity600
-          }
+          style={{
+            opacity: 0.6
+          }}
         >
           https://staging.foodsoldier.com/register/207487842
         </TextComponent>

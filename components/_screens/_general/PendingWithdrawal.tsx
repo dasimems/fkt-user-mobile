@@ -7,16 +7,30 @@ import {
 } from "react-native";
 import React from "react";
 import { blackColor, pendingColor, whiteColor } from "@/assets/colors";
-import { colorSchemes, defaultIconProps } from "@/utils/_variables";
+import {
+  ScreenNames,
+  colorSchemes,
+  defaultIconProps
+} from "@/utils/_variables";
 import { Clock, Info } from "lucide-react-native";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const PendingWithdrawal = () => {
   const colorScheme = useColorScheme();
+  const { navigate } = useNavigation();
   return (
     <TouchableOpacity
+      onPress={() => {
+        navigate({
+          name: ScreenNames.TransactionDetails.name,
+          params: {
+            type: "pending"
+          }
+        } as never);
+      }}
       style={{
         gap: 10,
         backgroundColor:
@@ -68,11 +82,9 @@ const PendingWithdrawal = () => {
           Pending withdrawal
         </TextComponent>
         <TextComponent
-          color={
-            colorScheme === colorSchemes.dark
-              ? whiteColor.opacity600
-              : blackColor.opacity600
-          }
+          style={{
+            opacity: 0.6
+          }}
         >
           25 Sunday June 2023
         </TextComponent>
