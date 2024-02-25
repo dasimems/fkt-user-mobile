@@ -151,6 +151,76 @@ export const padding = 20,
       label: "Assist",
       activeNames: ["AssistReferral"],
       showIn: [referral]
+    },
+    Chats: {
+      name: "Chats",
+      Icon: undefined,
+      label: "Chats",
+      activeNames: ["Chats"],
+      showIn: [referral]
+    },
+    ChatDetails: {
+      name: "ChatDetails",
+      Icon: undefined,
+      label: "Chat Details",
+      activeNames: ["ChatDetails"],
+      showIn: []
+    },
+    ProjectDetails: {
+      name: "ProjectDetails",
+      Icon: undefined,
+      label: "Project Details",
+      activeNames: ["ProjectDetails"],
+      showIn: []
+    },
+    AssetDetails: {
+      name: "AssetDetails",
+      Icon: undefined,
+      label: "Asset Details",
+      activeNames: ["AssetDetails"],
+      showIn: []
+    },
+    Deposit: {
+      name: "Deposit",
+      Icon: undefined,
+      label: "Deposit",
+      activeNames: ["Deposit"],
+      showIn: []
+    },
+    Withdraw: {
+      name: "Withdraw",
+      Icon: undefined,
+      label: "Withdraw",
+      activeNames: ["Withdraw"],
+      showIn: []
+    },
+    Transfer: {
+      name: "Transfer",
+      Icon: undefined,
+      label: "Transfer",
+      activeNames: ["Transfer"],
+      showIn: []
+    },
+    TransferConfirmation: {
+      name: "TransferConfirmation",
+      Icon: undefined,
+      label: "TransferConfirmation",
+      activeNames: ["TransferConfirmation"],
+      showIn: []
+    },
+    DepositConfirmation: {
+      name: "DepositConfirmation",
+      Icon: undefined,
+      label: "DepositConfirmation",
+      activeNames: ["DepositConfirmation"],
+      showIn: []
+    },
+    WithdrawConfirmation: {
+      name: "WithdrawConfirmation",
+      Icon: undefined,
+      label: "WithdrawConfirmation",
+      activeNames: ["WithdrawConfirmation"],
+      showIn: []
     }
   },
   ReferralGenerations = {

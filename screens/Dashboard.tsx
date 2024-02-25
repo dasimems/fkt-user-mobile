@@ -27,8 +27,8 @@ const Dashboard = () => {
       </View>
       <DashboardStats />
       <PendingWithdrawal />
-      <ProjectList max={5} />
-      <AssetList max={5} />
+      <ProjectList max={3} />
+      <AssetList max={3} />
       <TransactionList max={5} />
     </LoggedInContainer>
   );

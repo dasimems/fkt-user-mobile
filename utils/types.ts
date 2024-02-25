@@ -2,6 +2,7 @@ import { PoppinsProps } from "@/assets/fonts";
 import { LucideIcon } from "lucide-react-native";
 import {
   ColorValue,
+  DimensionValue,
   ImageSourcePropType,
   ImageStyle,
   ScrollViewProps,
@@ -74,6 +75,25 @@ export interface TextComponentType extends TextProps {
   fontFamily?: FontFamiliesType;
   style?: TextStyle;
 }
+
+export interface ModalLayoutType {
+  children: React.ReactNode;
+  action?: () => void;
+  hideActions?: boolean;
+  hideHeader?: boolean;
+  hideCancelIcon?: boolean;
+  contentContainerStyle?: ViewStyle;
+  headerText?: string;
+  onClose?: () => void;
+  cancelActionText?: string;
+  continueActionText?: string;
+  continueActionButtonStyle?: ViewStyle;
+  continueActionButtonTextColor?: ColorValue;
+  cancelActionButtonStyle?: ViewStyle;
+  cancelActionButtonTextColor?: ColorValue;
+  loading?: boolean;
+  disabled?: boolean;
+}
 export interface ContainerType extends ViewProps {
   children: React.ReactNode;
   safeView?: boolean;
@@ -127,7 +147,7 @@ export interface IconType extends SvgProps {
 }
 
 export interface ImageType {
-  width?: number;
+  width?: DimensionValue;
   type?: ImageDimensionType;
   height?: number;
   borderRadius?: number;

@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
+import AssetCard from "../assets/AssetCard";
 
 const AssetList: React.FC<{
   max?: number;
@@ -11,7 +12,7 @@ const AssetList: React.FC<{
   return (
     <View
       style={{
-        gap: 20
+        gap: 35
       }}
     >
       {!hideTitle && (
@@ -19,6 +20,10 @@ const AssetList: React.FC<{
           {title}
         </TextComponent>
       )}
+
+      {new Array(max || 6).fill(0).map((_, index) => (
+        <AssetCard key={index} />
+      ))}
     </View>
   );
 };

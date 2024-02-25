@@ -8,6 +8,9 @@ import AvatarFemaleImage from "./avatar_female_1.png";
 import LoginImage from "./login_image.svg";
 import ActiveNavWingOneImage from "./active_nav_wing_1.png";
 import ActiveNavWingTwoImage from "./active_nav_wing_2.png";
+import ProjectImage from "./project_image.jpg";
+import CardCurveOne from "./asset_card_curve.png";
+import CoinImage from "./cash-161037.svg";
 
 export {
   LoadingOne,
@@ -19,5 +22,8 @@ export {
   AvatarFemaleImage,
   LoginImage,
   ActiveNavWingOneImage,
-  ActiveNavWingTwoImage
+  ActiveNavWingTwoImage,
+  ProjectImage,
+  CardCurveOne,
+  CoinImage
 };

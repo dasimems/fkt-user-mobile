@@ -20,6 +20,16 @@ import ProfileDetails from "@/screens/ProfileDetails";
 import BankDetails from "@/screens/BankDetails";
 import ChangePassword from "../../screens/ChangePassword";
 import Referrals from "../../screens/Referrals";
+import Deposit from "@/screens/Deposit";
+import Withdraw from "@/screens/Withdraw";
+import Transfer from "@/screens/Transfer";
+import ConfirmTransfer from "@/screens/ConfirmTransfer";
+import ConfirmDeposit from "@/screens/ConfirmDeposit";
+import ConfirmWithdraw from "@/screens/ConfirmWithdraw";
+import Chats from "@/screens/Chats";
+import ChatDetails from "@/screens/ChatDetails";
+import ProjectDetails from "@/screens/ProjectDetails";
+import AssetDetails from "@/screens/AssetDetails";
 
 const Stack = createNativeStackNavigator<any>();
 
@@ -82,7 +92,10 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
           <Stack.Screen name={ScreenNames.Projects.name} component={Projects} />
           <Stack.Screen name={ScreenNames.Assets.name} component={Assets} />
           <Stack.Screen name={ScreenNames.Wallet.name} component={Wallet} />
-          <Stack.Screen name={ScreenNames.Profile.name} component={Profile} />
+          <Stack.Screen
+            name={ScreenNames.Referrals.name}
+            component={Referrals}
+          />
         </Stack.Group>
         <Stack.Group
           screenOptions={{
@@ -91,6 +104,23 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
             gestureEnabled: true
           }}
         >
+          <Stack.Screen name={ScreenNames.Profile.name} component={Profile} />
+          <Stack.Screen name={ScreenNames.Chats.name} component={Chats} />
+          <Stack.Screen
+            name={ScreenNames.ChatDetails.name}
+            component={ChatDetails}
+          />
+          <Stack.Screen name={ScreenNames.Deposit.name} component={Deposit} />
+          <Stack.Screen name={ScreenNames.Withdraw.name} component={Withdraw} />
+          <Stack.Screen name={ScreenNames.Transfer.name} component={Transfer} />
+          <Stack.Screen
+            name={ScreenNames.ProjectDetails.name}
+            component={ProjectDetails}
+          />
+          <Stack.Screen
+            name={ScreenNames.AssetDetails.name}
+            component={AssetDetails}
+          />
           <Stack.Screen
             name={ScreenNames.TransactionDetails.name}
             component={TransactionDetails}
@@ -107,9 +137,26 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
             name={ScreenNames.ChangePassword.name}
             component={ChangePassword}
           />
+        </Stack.Group>
+        <Stack.Group
+          screenOptions={{
+            animation: "fade",
+            headerShown: false,
+            gestureEnabled: true,
+            presentation: "transparentModal"
+          }}
+        >
           <Stack.Screen
-            name={ScreenNames.Referrals.name}
-            component={Referrals}
+            name={ScreenNames.TransferConfirmation.name}
+            component={ConfirmTransfer}
+          />
+          <Stack.Screen
+            name={ScreenNames.DepositConfirmation.name}
+            component={ConfirmDeposit}
+          />
+          <Stack.Screen
+            name={ScreenNames.WithdrawConfirmation.name}
+            component={ConfirmWithdraw}
           />
         </Stack.Group>
       </Stack.Navigator>

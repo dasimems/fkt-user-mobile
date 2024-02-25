@@ -28,9 +28,16 @@ import {
 } from "@/assets/colors";
 import { Poppins } from "@/assets/fonts";
 import { Menu } from "react-native-paper";
-import { MoreVertical, X } from "lucide-react-native";
+import {
+  Bolt,
+  LucideIcon,
+  MessageCircle,
+  MoreVertical,
+  X
+} from "lucide-react-native";
 import { useColorScheme } from "react-native";
 import { colorSchemes } from "@/utils/_variables";
+import HeaderDropdownButton from "../_general/HeaderDropdownButton";
 
 const defaultBorderRadius = 30;
 const defaultIconSize = 25;
@@ -45,7 +52,7 @@ const Header: React.FC<{ headerText: string; hideBackArrow?: boolean }> = ({
 
   const closeMenu = () => setVisible(false);
   const colorScheme = useColorScheme();
-  const { goBack } = useNavigation();
+  const { navigate } = useNavigation();
   return (
     <View
       style={{
@@ -69,7 +76,9 @@ const Header: React.FC<{ headerText: string; hideBackArrow?: boolean }> = ({
       <View>
         <Menu
           contentStyle={{
-            top: defaultIconSize + 10
+            top: defaultIconSize + 10,
+            backgroundColor: whiteColor.default,
+            borderRadius: 15
           }}
           visible={visible}
           onDismiss={closeMenu}
@@ -99,8 +108,20 @@ const Header: React.FC<{ headerText: string; hideBackArrow?: boolean }> = ({
             </TouchableOpacity>
           }
         >
-          <Menu.Item onPress={() => {}} title="Chats" />
-          <Menu.Item onPress={() => {}} title="Settings" />
+          <Menu.Item
+            onPress={() => {
+              closeMenu();
+              navigate(ScreenNames.Chats.name as never);
+            }}
+            title={<HeaderDropdownButton Icon={MessageCircle} label="Chats" />}
+          />
+          <Menu.Item
+            onPress={() => {
+              closeMenu();
+              navigate(ScreenNames.Profile.name as never);
+            }}
+            title={<HeaderDropdownButton Icon={Bolt} label="Settings" />}
+          />
         </Menu>
       </View>
     </View>
