@@ -24,12 +24,13 @@ import {
   windowWidth
 } from "@/utils/_variables";
 import { Download, Share2 } from "lucide-react-native";
+import { useActionContext } from "@/context";
 
 const Details: React.FC<{ title: string; value: string }> = ({
   title,
   value
 }) => {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   return (
     <View
       style={{
@@ -63,7 +64,7 @@ const Details: React.FC<{ title: string; value: string }> = ({
 const TransactionDetails = () => {
   const { params }: { params?: { type?: "debit" | "credit" | "pending" } } =
     useRoute();
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   let textColor = pendingColor.default;
   let bgColor = pendingColor.opacity100;
   switch (params?.type?.toLowerCase()) {

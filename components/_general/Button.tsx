@@ -1,9 +1,15 @@
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { ButtonType } from "@/utils/types";
-import { blackColor, primaryColor, whiteColor } from "@/assets/colors";
-import { buttonTypes } from "@/utils/_variables";
+import {
+  backgroundColor,
+  blackColor,
+  primaryColor,
+  whiteColor
+} from "@/assets/colors";
+import { buttonTypes, colorSchemes } from "@/utils/_variables";
 import { LoadingOne, LoadingThree, LoadingTwo } from "@/assets/images";
+import { useActionContext } from "@/context";
 
 const Button: React.FC<ButtonType> = ({
   action,
@@ -15,8 +21,12 @@ const Button: React.FC<ButtonType> = ({
   loaderType,
   ...props
 }) => {
+  const { colorScheme } = useActionContext();
   let typeStyles: { backgroundColor: string } = {
-    backgroundColor: whiteColor.default
+    backgroundColor:
+      colorScheme === colorSchemes.dark
+        ? whiteColor.opacity100
+        : whiteColor.default
   };
   let loader = LoadingOne;
 
@@ -28,12 +38,15 @@ const Button: React.FC<ButtonType> = ({
       break;
     case buttonTypes.default:
       typeStyles = {
-        backgroundColor: whiteColor.default
+        backgroundColor:
+          colorScheme === colorSchemes.dark
+            ? whiteColor.opacity100
+            : whiteColor.default
       };
       break;
     case buttonTypes.secondary:
       typeStyles = {
-        backgroundColor: blackColor.default
+        backgroundColor: backgroundColor.default
       };
       break;
     case buttonTypes.transparent:

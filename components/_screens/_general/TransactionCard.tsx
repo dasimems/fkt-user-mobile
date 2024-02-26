@@ -22,6 +22,7 @@ import { Poppins } from "@/assets/fonts";
 import { ArrowDown, ArrowUp, Banknote } from "lucide-react-native";
 import { textColor } from "../../../assets/colors";
 import { useNavigation } from "@react-navigation/native";
+import { useActionContext } from "@/context";
 
 const TransactionCard: React.FC<{
   type?: "debit" | "credit";
@@ -29,13 +30,17 @@ const TransactionCard: React.FC<{
   date: string;
   price: string;
 }> = ({ type, description, date, price }) => {
-  const colorScheme = useColorScheme();
-  let textColor = redColor.opacity600;
+  const { colorScheme } = useActionContext();
+  let textColor =
+    colorScheme === colorSchemes.dark ? redColor.default : redColor.opacity600;
   const { navigate } = useNavigation();
 
   switch (type?.toLowerCase()) {
     case "credit":
-      textColor = primaryColor.opacity600;
+      textColor =
+        colorScheme === colorSchemes.dark
+          ? whiteColor.default
+          : primaryColor.opacity600;
       break;
     default:
       break;
@@ -62,7 +67,7 @@ const TransactionCard: React.FC<{
           height: 50,
           backgroundColor:
             colorScheme === colorSchemes.dark
-              ? blackColor.default
+              ? whiteColor.opacity100
               : whiteColor.default,
           borderRadius: 9000,
           alignItems: "center",

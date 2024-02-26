@@ -1,7 +1,12 @@
 import { Image, StyleSheet, Text, View, useColorScheme } from "react-native";
 import React from "react";
 import Container from "@/components/_layouts/Container";
-import { blackColor, primaryColor, whiteColor } from "@/assets/colors";
+import {
+  backgroundColorDark,
+  blackColor,
+  primaryColor,
+  whiteColor
+} from "@/assets/colors";
 import {
   windowWidth,
   colorSchemes,
@@ -13,16 +18,21 @@ import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import Button from "@/components/_general/Button";
 import { useNavigation } from "@react-navigation/native";
+import { useActionContext } from "@/context";
 
 const GettingStarted = () => {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   const { navigate } = useNavigation();
   return (
     <Container
       safeView
       style={{
         paddingVertical: 20,
-        paddingHorizontal: padding
+        paddingHorizontal: padding,
+        backgroundColor:
+          colorScheme === colorSchemes.dark
+            ? backgroundColorDark.default
+            : whiteColor.default
       }}
     >
       <View

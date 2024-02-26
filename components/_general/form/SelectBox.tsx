@@ -5,6 +5,7 @@ import { SelectBoxType } from "@/utils/types";
 import TextComponent from "../TextComponent";
 import { blackColor, redColor, whiteColor } from "@/assets/colors";
 import { colorSchemes } from "@/utils/_variables";
+import { useActionContext } from "@/context";
 
 const SelectBox: React.FC<SelectBoxType> = ({
   data,
@@ -21,7 +22,7 @@ const SelectBox: React.FC<SelectBoxType> = ({
   ...props
 }) => {
   const [selected, setSelected] = useState("");
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   const inputPadding = 15;
 
   useEffect(() => {

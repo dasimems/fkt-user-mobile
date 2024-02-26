@@ -17,9 +17,10 @@ import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useActionContext } from "@/context";
 
 const PendingWithdrawal = () => {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   const { navigate } = useNavigation();
   return (
     <TouchableOpacity
@@ -35,7 +36,7 @@ const PendingWithdrawal = () => {
         gap: 10,
         backgroundColor:
           colorScheme === colorSchemes.dark
-            ? blackColor.default
+            ? whiteColor.opacity100
             : whiteColor.default,
         padding: 10,
         borderRadius: 9000,
@@ -45,7 +46,10 @@ const PendingWithdrawal = () => {
     >
       <View
         style={{
-          backgroundColor: pendingColor.opacity100,
+          backgroundColor:
+            colorScheme === colorSchemes.dark
+              ? whiteColor.opacity100
+              : pendingColor.opacity100,
           height: 50,
           width: 50,
           borderRadius: 9000,
@@ -58,7 +62,7 @@ const PendingWithdrawal = () => {
             height: "100%",
             backgroundColor:
               colorScheme === colorSchemes.dark
-                ? blackColor.default
+                ? whiteColor.opacity100
                 : whiteColor.default,
             borderRadius: 90000,
             alignItems: "center",
@@ -68,7 +72,11 @@ const PendingWithdrawal = () => {
           <FontAwesome5
             name="exclamation"
             {...defaultIconProps}
-            color={pendingColor.opacity600}
+            color={
+              colorScheme === colorSchemes.dark
+                ? pendingColor.default
+                : pendingColor.opacity600
+            }
           />
         </View>
       </View>

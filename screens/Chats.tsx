@@ -8,9 +8,10 @@ import { defaultIconProps, colorSchemes } from "@/utils/_variables";
 import { blackColor, whiteColor } from "@/assets/colors";
 import ChatCard from "@/components/_screens/chats/ChatCard";
 import { AvatarImage } from "@/assets/images";
+import { useActionContext } from "@/context";
 
 const Chats = () => {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   return (
     <LoggedInContainer
       hideNav
@@ -33,7 +34,10 @@ const Chats = () => {
           />
         }
         inputStyle={{
-          backgroundColor: whiteColor.default,
+          backgroundColor:
+            colorScheme === colorSchemes.dark
+              ? whiteColor.opacity100
+              : whiteColor.default,
           paddingVertical: 10
         }}
       />

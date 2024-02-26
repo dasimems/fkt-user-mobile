@@ -12,13 +12,14 @@ import TextComponent from "@/components/_general/TextComponent";
 import { blackColor, redColor, whiteColor } from "@/assets/colors";
 import { Poppins } from "@/assets/fonts";
 import { primaryColor } from "../../../assets/colors";
+import { useActionContext } from "@/context";
 
 const WalletStatCard: React.FC<{
   color: ColorValue;
   title: string;
   value: string;
 }> = ({ color, title, value }) => {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   return (
     <View
       style={{
@@ -55,6 +56,7 @@ const WalletStatCard: React.FC<{
 };
 
 const WalletStat = () => {
+  const { colorScheme } = useActionContext();
   return (
     <View
       style={{
@@ -64,7 +66,11 @@ const WalletStat = () => {
       }}
     >
       <WalletStatCard
-        color={primaryColor.default}
+        color={
+          colorScheme === colorSchemes.dark
+            ? whiteColor.default
+            : primaryColor.default
+        }
         title="Credit dismount"
         value="$30,000"
       />

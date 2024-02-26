@@ -4,16 +4,23 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ViewStyle
+  ViewStyle,
+  useColorScheme
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import { ArrowLeft2 } from "iconsax-react-native";
-import { allScreenNames, defaultIconProps, padding } from "@/utils/_variables";
+import {
+  allScreenNames,
+  colorSchemes,
+  defaultIconProps,
+  padding
+} from "@/utils/_variables";
 import { ScreenNamesType } from "@/utils/types";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { blackColor } from "@/assets/colors";
+import { blackColor, whiteColor } from "@/assets/colors";
+import { useActionContext } from "@/context";
 
 const InnerScreenHeader: React.FC<{
   headerText?: string;
@@ -26,7 +33,7 @@ const InnerScreenHeader: React.FC<{
   headerText,
   hideHeaderText,
   hideBackFunction,
-  color = blackColor.default,
+  color,
   style,
   rightContent
 }) => {
@@ -34,7 +41,15 @@ const InnerScreenHeader: React.FC<{
       null
     ),
     { name } = useRoute(),
-    { goBack } = useNavigation();
+    { goBack } = useNavigation(),
+    { colorScheme } = useActionContext();
+
+  if (!color) {
+    color =
+      colorScheme === colorSchemes.dark
+        ? whiteColor.default
+        : blackColor.default;
+  }
 
   useEffect(() => {
     if (name) {

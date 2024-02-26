@@ -10,9 +10,10 @@ import { colorSchemes, windowWidth } from "@/utils/_variables";
 import TextComponent from "@/components/_general/TextComponent";
 import { blackColor, whiteColor } from "@/assets/colors";
 import { Poppins } from "@/assets/fonts";
+import { useActionContext } from "@/context";
 
 const DashboardBalance: React.FC<{ style?: ViewStyle }> = ({ style }) => {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   return (
     <View
       style={{

@@ -23,6 +23,7 @@ import InputField from "@/components/_general/form/InputField";
 import ScrollComponent from "@/components/_general/ScrollComponent";
 import ChatDetailsCard from "@/components/_screens/chats/ChatDetailsCard";
 import { ArrowLeft2 } from "iconsax-react-native";
+import { useActionContext } from "@/context";
 
 const ChatHeader: React.FC<{
   image: ImageSourcePropType;
@@ -39,7 +40,7 @@ const ChatHeader: React.FC<{
   const openMenu = () => setVisible(true);
 
   const closeMenu = () => setVisible(false);
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   const { goBack } = useNavigation();
   return (
     <View
@@ -61,7 +62,15 @@ const ChatHeader: React.FC<{
         }}
       >
         <TouchableOpacity onPress={goBack}>
-          <ArrowLeft2 {...defaultIconProps} size={30} />
+          <ArrowLeft2
+            {...defaultIconProps}
+            size={30}
+            color={
+              colorScheme === colorSchemes.dark
+                ? whiteColor.default
+                : blackColor.default
+            }
+          />
         </TouchableOpacity>
         <View>
           <Image

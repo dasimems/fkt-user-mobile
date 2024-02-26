@@ -5,9 +5,10 @@ import { blackColor, whiteColor } from "@/assets/colors";
 import { Share2, Users } from "lucide-react-native";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
+import { useActionContext } from "@/context";
 
 const ReferralCard = () => {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   return (
     <View
       style={{
@@ -15,7 +16,7 @@ const ReferralCard = () => {
         alignItems: "center",
         backgroundColor:
           colorScheme === colorSchemes.dark
-            ? blackColor.default
+            ? whiteColor.opacity100
             : whiteColor.default,
         borderRadius: 90000,
         padding: 10,
@@ -36,7 +37,14 @@ const ReferralCard = () => {
           borderRadius: 90000
         }}
       >
-        <Users {...defaultIconProps} />
+        <Users
+          {...defaultIconProps}
+          color={
+            colorScheme === colorSchemes.dark
+              ? whiteColor.default
+              : blackColor.default
+          }
+        />
       </View>
       <View
         style={{
@@ -55,7 +63,14 @@ const ReferralCard = () => {
           https://staging.foodsoldier.com/register/207487842
         </TextComponent>
       </View>
-      <Share2 {...defaultIconProps} />
+      <Share2
+        {...defaultIconProps}
+        color={
+          colorScheme === colorSchemes.dark
+            ? whiteColor.default
+            : blackColor.default
+        }
+      />
     </View>
   );
 };

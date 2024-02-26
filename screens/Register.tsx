@@ -14,7 +14,7 @@ import {
   padding
 } from "@/utils/_variables";
 import TextComponent from "@/components/_general/TextComponent";
-import { primaryColor, whiteColor } from "@/assets/colors";
+import { backgroundColorDark, primaryColor, whiteColor } from "@/assets/colors";
 import { Poppins } from "@/assets/fonts";
 import InputField from "@/components/_general/form/InputField";
 import styles from "../utils/styles";
@@ -22,12 +22,21 @@ import ScrollComponent from "@/components/_general/ScrollComponent";
 import Button from "@/components/_general/Button";
 import { UserPlus } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useActionContext } from "@/context";
 
 const Register = () => {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   const { navigate } = useNavigation();
   return (
-    <Container safeView>
+    <Container
+      safeView
+      style={{
+        backgroundColor:
+          colorScheme === colorSchemes.dark
+            ? backgroundColorDark.default
+            : whiteColor.default
+      }}
+    >
       <ScrollComponent
         style={{
           paddingVertical: 20,

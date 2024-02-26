@@ -22,6 +22,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { ScreenNamesType } from "@/utils/types";
 import {
   backgroundColor,
+  backgroundColorDark,
   blackColor,
   primaryColor,
   whiteColor
@@ -38,6 +39,7 @@ import {
 import { useColorScheme } from "react-native";
 import { colorSchemes } from "@/utils/_variables";
 import HeaderDropdownButton from "../_general/HeaderDropdownButton";
+import { useActionContext } from "@/context";
 
 const defaultBorderRadius = 30;
 const defaultIconSize = 25;
@@ -51,7 +53,7 @@ const Header: React.FC<{ headerText: string; hideBackArrow?: boolean }> = ({
   const openMenu = () => setVisible(true);
 
   const closeMenu = () => setVisible(false);
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   const { navigate } = useNavigation();
   return (
     <View
@@ -155,6 +157,7 @@ const LoggedInContainer: React.FC<{
       null
     ),
     { name } = useRoute();
+  const { colorScheme } = useActionContext();
 
   useEffect(() => {
     if (name) {
@@ -172,7 +175,10 @@ const LoggedInContainer: React.FC<{
     >
       <View
         style={{
-          backgroundColor: backgroundColor.default,
+          backgroundColor:
+            colorScheme === colorSchemes.dark
+              ? backgroundColorDark.default
+              : backgroundColor.default,
           borderRadius: defaultBorderRadius,
           borderBottomLeftRadius: !hideNav
             ? activeScreen?.name === ScreenNames.Dashboard.name
@@ -185,6 +191,7 @@ const LoggedInContainer: React.FC<{
               : defaultBorderRadius * 0.5
             : defaultBorderRadius,
           flex: 1,
+          paddingBottom: !hideNav ? padding : 0,
           ...style
         }}
       >

@@ -15,6 +15,7 @@ import {
 } from "@/utils/_variables";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
+import { useActionContext } from "@/context";
 
 const GenerationCard: React.FC<{
   label: string;
@@ -23,7 +24,7 @@ const GenerationCard: React.FC<{
   isActive?: boolean;
   onChange?: (value: string) => void;
 }> = ({ label, value, stat, isActive, onChange }) => {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   const isDarkMode = colorScheme === colorSchemes.dark;
   return (
     <TouchableOpacity
@@ -37,7 +38,7 @@ const GenerationCard: React.FC<{
         backgroundColor: isActive
           ? primaryColor.opacity800
           : isDarkMode
-          ? blackColor.default
+          ? whiteColor.opacity100
           : whiteColor.default,
         gap: 20,
         borderRadius: 15,

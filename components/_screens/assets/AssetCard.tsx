@@ -9,12 +9,13 @@ import {
 import React from "react";
 import {
   backgroundColor,
+  backgroundColorDark,
   primaryColor,
   redColor,
   whiteColor
 } from "@/assets/colors";
 import Image from "@/components/_general/Image";
-import { CardCurveOne, ProjectImage } from "@/assets/images";
+import { CardCurveDarkOne, CardCurveOne, ProjectImage } from "@/assets/images";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import {
@@ -31,12 +32,15 @@ import {
 } from "@/utils/_variables";
 import { blackColor } from "../../../assets/colors";
 import { useNavigation } from "@react-navigation/native";
-
-const generalBackgroundColor = primaryColor.opacity200;
+import { useActionContext } from "@/context";
 
 const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
   const { navigate } = useNavigation();
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
+  const generalBackgroundColor =
+    colorScheme === colorSchemes.dark
+      ? primaryColor.default
+      : primaryColor.opacity200;
   return (
     <View
       style={{
@@ -52,7 +56,9 @@ const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
         }}
       >
         <RNImage
-          source={CardCurveOne}
+          source={
+            colorScheme === colorSchemes.dark ? CardCurveDarkOne : CardCurveOne
+          }
           style={{
             top: "-9%",
             height: 30,
@@ -63,7 +69,9 @@ const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
           }}
         />
         <RNImage
-          source={CardCurveOne}
+          source={
+            colorScheme === colorSchemes.dark ? CardCurveDarkOne : CardCurveOne
+          }
           style={{
             bottom: "-38%",
             height: 30,
@@ -75,7 +83,10 @@ const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
         />
         <View
           style={{
-            backgroundColor: backgroundColor.default,
+            backgroundColor:
+              colorScheme === colorSchemes.dark
+                ? backgroundColorDark.default
+                : backgroundColor.default,
             borderBottomLeftRadius: 30
             // borderWidth: 1
           }}
@@ -113,10 +124,15 @@ const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
                   alignItems: "center"
                 }}
               >
-                <TextComponent color={blackColor.default}>
-                  View more
-                </TextComponent>
-                <ArrowUpRight {...defaultIconProps} />
+                <TextComponent>View more</TextComponent>
+                <ArrowUpRight
+                  {...defaultIconProps}
+                  color={
+                    colorScheme === colorSchemes.dark
+                      ? whiteColor.default
+                      : whiteColor.default
+                  }
+                />
               </View>
             )}
           </TouchableOpacity>
@@ -145,7 +161,6 @@ const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
             }}
           />
           <TextComponent
-            color={blackColor.default}
             fontFamily={Poppins.semiBold.default}
             style={{
               maxWidth: isDetails ? "68%" : "45%"
@@ -164,10 +179,7 @@ const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
           }}
         >
           <View>
-            <TextComponent
-              color={blackColor.default}
-              fontFamily={Poppins.semiBold.default}
-            >
+            <TextComponent fontFamily={Poppins.semiBold.default}>
               10
             </TextComponent>
 
@@ -178,8 +190,23 @@ const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
                 gap: 3
               }}
             >
-              <CheckSquare {...defaultIconProps} color={primaryColor.default} />
-              <TextComponent color={primaryColor.default}>Active</TextComponent>
+              <CheckSquare
+                {...defaultIconProps}
+                color={
+                  colorScheme === colorSchemes.dark
+                    ? whiteColor.default
+                    : primaryColor.default
+                }
+              />
+              <TextComponent
+                color={
+                  colorScheme === colorSchemes.dark
+                    ? whiteColor.default
+                    : primaryColor.default
+                }
+              >
+                Active
+              </TextComponent>
             </View>
           </View>
           <View>
@@ -193,10 +220,7 @@ const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
               <TextComponent color={primaryColor.default}>200%</TextComponent>
               <MoveUp {...defaultIconProps} color={primaryColor.default} />
             </View>
-            <TextComponent
-              color={blackColor.default}
-              fontFamily={Poppins.semiBold.default}
-            >
+            <TextComponent fontFamily={Poppins.semiBold.default}>
               $20.00
             </TextComponent>
           </View>

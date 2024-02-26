@@ -6,12 +6,21 @@ import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import InnerScreenHeader from "@/components/_screens/_general/InnerScreenHeader";
 import { getComponentLayoutProperties } from "@/utils/functions";
-import { backgroundColor, blackColor, primaryColor } from "@/assets/colors";
+import {
+  backgroundColor,
+  backgroundColorDark,
+  blackColor,
+  primaryColor,
+  whiteColor
+} from "@/assets/colors";
 import { LineChart } from "react-native-chart-kit";
 import DetailsCard from "@/components/_screens/_general/DetailsCard";
+import { useActionContext } from "@/context";
+import { colorSchemes } from "@/utils/_variables";
 
 const AssetDetails = () => {
   const [chartWidth, setChartWidth] = useState(0);
+  const { colorScheme } = useActionContext();
   return (
     <LoggedInContainer
       hideNav
@@ -58,12 +67,27 @@ const AssetDetails = () => {
               fontFamily: Poppins.regular.default
             },
 
-            backgroundColor: backgroundColor.default,
-            backgroundGradientFrom: backgroundColor.default,
-            backgroundGradientTo: backgroundColor.default,
+            backgroundColor:
+              colorScheme === colorSchemes.dark
+                ? backgroundColorDark.default
+                : backgroundColor.default,
+            backgroundGradientFrom:
+              colorScheme === colorSchemes.dark
+                ? backgroundColorDark.default
+                : backgroundColor.default,
+            backgroundGradientTo:
+              colorScheme === colorSchemes.dark
+                ? backgroundColorDark.default
+                : backgroundColor.default,
             decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 1) => primaryColor.opacity100,
-            labelColor: (opacity = 1) => blackColor.default,
+            color: (opacity = 1) =>
+              colorScheme === colorSchemes.dark
+                ? whiteColor.default
+                : primaryColor.opacity100,
+            labelColor: (opacity = 1) =>
+              colorScheme === colorSchemes.dark
+                ? whiteColor.opacity700
+                : blackColor.default,
             style: {
               borderRadius: 16
             },

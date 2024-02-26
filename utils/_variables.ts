@@ -157,7 +157,7 @@ export const padding = 20,
       Icon: undefined,
       label: "Chats",
       activeNames: ["Chats"],
-      showIn: [referral]
+      showIn: []
     },
     ChatDetails: {
       name: "ChatDetails",

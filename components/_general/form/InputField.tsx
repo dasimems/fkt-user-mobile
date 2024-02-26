@@ -7,8 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  ViewStyle,
-  useColorScheme
+  ViewStyle
 } from "react-native";
 import React, { forwardRef, useEffect, useState } from "react";
 import TextComponent from "../TextComponent";
@@ -17,6 +16,7 @@ import { blackColor, redColor, whiteColor } from "@/assets/colors";
 import { InputFieldType } from "@/utils/types";
 import { EyeIcon } from "@/assets/icons";
 import { getComponentLayoutProperties } from "@/utils/functions";
+import { useActionContext } from "@/context";
 
 const IconButton: React.FC<{
   action?: () => void;
@@ -73,7 +73,7 @@ const InputField = forwardRef<TextInput, InputFieldType>(
     },
     ref
   ) => {
-    const colorScheme = useColorScheme(),
+    const { colorScheme } = useActionContext(),
       [hidePassword, setHidePassword] = useState<boolean>(false),
       [leftIconWidth, setLeftIconWidth] = useState<number>(0),
       [rightIconWidth, setRightIconWidth] = useState<number>(0),
@@ -152,6 +152,10 @@ const InputField = forwardRef<TextInput, InputFieldType>(
               paddingLeft: leftIcon ? 5 + leftIconWidth : inputPadding,
               paddingRight: rightIcon ? rightIconWidth : inputPadding,
               flex: 1,
+              color:
+                colorScheme === colorSchemes.dark
+                  ? whiteColor.default
+                  : blackColor.default,
               ...inputStyle
             }}
             secureTextEntry={hidePassword}

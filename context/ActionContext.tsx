@@ -11,22 +11,25 @@ import { SET_COLOR_SCHEME } from "@/utils/_enums";
 
 const ActionContext = createContext({
   ...actionInitialValue,
-  getColorScheme: (): void => {}
+  setColorScheme: (payload?: string): void => {}
 });
 
 export const ActionProvider: React.FC<ActionProviderTypes> = ({ children }) => {
   const [state, dispatch] = useReducer(actionReducer, actionInitialValue);
   const colorScheme = useColorScheme();
 
-  const getColorScheme = useCallback((): void => {
-    dispatch({
-      type: SET_COLOR_SCHEME,
-      payload: colorScheme
-    });
-  }, [colorScheme]);
+  const setColorScheme = useCallback(
+    (payload?: string): void => {
+      dispatch({
+        type: SET_COLOR_SCHEME,
+        payload: payload || colorScheme
+      });
+    },
+    [colorScheme]
+  );
 
   return (
-    <ActionContext.Provider value={{ ...state, getColorScheme }}>
+    <ActionContext.Provider value={{ ...state, setColorScheme }}>
       {children}
     </ActionContext.Provider>
   );

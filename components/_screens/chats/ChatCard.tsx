@@ -14,6 +14,7 @@ import { blackColor, primaryColor } from "@/assets/colors";
 import { whiteColor } from "../../../assets/colors";
 import { ScreenNames, colorSchemes } from "@/utils/_variables";
 import { useNavigation } from "@react-navigation/native";
+import { useActionContext } from "@/context";
 
 const ChatCard: React.FC<{
   sender: {
@@ -28,7 +29,7 @@ const ChatCard: React.FC<{
   unReadMessages?: number;
   isOnline?: boolean;
 }> = ({ sender, lastSentMessage, unReadMessages = 0, isOnline }) => {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   const { navigate } = useNavigation();
   return (
     <TouchableOpacity

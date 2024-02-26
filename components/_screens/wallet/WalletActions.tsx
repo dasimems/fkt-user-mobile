@@ -7,12 +7,18 @@ import {
   whiteColor
 } from "@/assets/colors";
 import { ArrowLeftRight, Landmark } from "lucide-react-native";
-import { ScreenNames, defaultIconProps } from "@/utils/_variables";
+import {
+  ScreenNames,
+  defaultIconProps,
+  colorSchemes
+} from "@/utils/_variables";
 import TextComponent from "@/components/_general/TextComponent";
 import { useNavigation } from "@react-navigation/native";
+import { useActionContext } from "@/context";
 
 const WalletActions = () => {
   const { navigate } = useNavigation();
+  const { colorScheme } = useActionContext();
   return (
     <View
       style={{
@@ -29,10 +35,20 @@ const WalletActions = () => {
         }}
         style={{
           ...styles.buttonStyle,
-          backgroundColor: blackColor.opacity200
+          backgroundColor:
+            colorScheme === colorSchemes.dark
+              ? whiteColor.opacity100
+              : blackColor.opacity200
         }}
       >
-        <ArrowLeftRight {...defaultIconProps} />
+        <ArrowLeftRight
+          {...defaultIconProps}
+          color={
+            colorScheme === colorSchemes.dark
+              ? whiteColor.default
+              : blackColor.default
+          }
+        />
         <TextComponent>Transfer</TextComponent>
       </TouchableOpacity>
       <TouchableOpacity

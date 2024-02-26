@@ -11,13 +11,14 @@ import { colorSchemes } from "@/utils/_variables";
 import { blackColor, whiteColor } from "@/assets/colors";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
+import { useActionContext } from "@/context";
 
 const ReferralCard: React.FC<{
   image: ImageSourcePropType;
   name: string;
   email: string;
 }> = ({ image, name, email }) => {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   return (
     <View
       style={{

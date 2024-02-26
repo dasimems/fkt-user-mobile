@@ -109,6 +109,27 @@ export const backgroundColor: ColorType = {
   opacity800: "rgba(226,232,240, .8)",
   opacity900: "rgba(226,232,240, .9)"
 };
+export const backgroundColorDark: ColorType = {
+  default: "rgba(30, 30, 30, 1)",
+  opacity10: "rgba(30, 30, 30, .01)",
+  opacity20: "rgba(30, 30, 30, .02)",
+  opacity30: "rgba(30, 30, 30, .03)",
+  opacity40: "rgba(30, 30, 30, .04)",
+  opacity50: "rgba(30, 30, 30, .05)",
+  opacity60: "rgba(30, 30, 30, .06)",
+  opacity70: "rgba(30, 30, 30, .07)",
+  opacity80: "rgba(30, 30, 30, .08)",
+  opacity90: "rgba(30, 30, 30, .09)",
+  opacity100: "rgba(30, 30, 30, .1)",
+  opacity200: "rgba(30, 30, 30, .2)",
+  opacity300: "rgba(30, 30, 30, .3)",
+  opacity400: "rgba(30, 30, 30, .4)",
+  opacity500: "rgba(30, 30, 30, .5)",
+  opacity600: "rgba(30, 30, 30, .6)",
+  opacity700: "rgba(30, 30, 30, .7)",
+  opacity800: "rgba(30, 30, 30, .8)",
+  opacity900: "rgba(30, 30, 30, .9)"
+};
 export const pendingColor: ColorType = {
   default: "rgba(249, 115, 22, 1)",
   opacity10: "rgba(249, 115, 22, .01)",

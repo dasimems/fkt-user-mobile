@@ -1,17 +1,23 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import ReferralContainer from "@/components/_layouts/ReferralContainer";
-import { backgroundColor } from "@/assets/colors";
+import { backgroundColor, backgroundColorDark } from "@/assets/colors";
 import ReferralCard from "@/components/_screens/referrals/ReferralCard";
 import { AvatarImage } from "@/assets/images";
 import ScrollComponent from "@/components/_general/ScrollComponent";
+import { useActionContext } from "@/context";
+import { colorSchemes } from "@/utils/_variables";
 
 const LinearReferrals = () => {
+  const { colorScheme } = useActionContext();
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: backgroundColor.default
+        backgroundColor:
+          colorScheme === colorSchemes.dark
+            ? backgroundColorDark.default
+            : backgroundColor.default
       }}
     >
       <ScrollComponent

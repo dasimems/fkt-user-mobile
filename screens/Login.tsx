@@ -7,7 +7,7 @@ import {
   defaultIconProps,
   padding
 } from "@/utils/_variables";
-import { primaryColor, whiteColor } from "@/assets/colors";
+import { backgroundColorDark, primaryColor, whiteColor } from "@/assets/colors";
 import { Poppins } from "@/assets/fonts";
 import TextComponent from "@/components/_general/TextComponent";
 import InputField from "@/components/_general/form/InputField";
@@ -16,14 +16,23 @@ import { LogInIcon } from "lucide-react-native";
 import { LoginImage } from "@/assets/images";
 import styles from "../utils/styles";
 import { useNavigation } from "@react-navigation/native";
+import { useActionContext } from "@/context";
 
 const Login = () => {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   const { navigate } = useNavigation();
   return (
     <Container
       safeView
-      style={{ gap: 20, paddingVertical: 20, paddingHorizontal: padding }}
+      style={{
+        gap: 20,
+        paddingVertical: 20,
+        paddingHorizontal: padding,
+        backgroundColor:
+          colorScheme === colorSchemes.dark
+            ? backgroundColorDark.default
+            : whiteColor.default
+      }}
     >
       <View
         style={{

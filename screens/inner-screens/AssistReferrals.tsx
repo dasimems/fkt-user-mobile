@@ -1,22 +1,31 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import ReferralContainer from "@/components/_layouts/ReferralContainer";
-import { backgroundColor } from "@/assets/colors";
+import { backgroundColor, backgroundColorDark } from "@/assets/colors";
 import ScrollComponent from "@/components/_general/ScrollComponent";
-import { ReferralGenerations, allGenerations } from "@/utils/_variables";
+import {
+  ReferralGenerations,
+  allGenerations,
+  colorSchemes
+} from "@/utils/_variables";
 import GenerationCard from "@/components/_screens/referrals/GenerationCard";
 import ReferralCard from "@/components/_screens/referrals/ReferralCard";
 import { AvatarImage } from "@/assets/images";
+import { useActionContext } from "@/context";
 
 const AssistReferrals = () => {
   const [activeReferralList, setActiveReferralList] = useState(
     ReferralGenerations.First.value
   );
+  const { colorScheme } = useActionContext();
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: backgroundColor.default
+        backgroundColor:
+          colorScheme === colorSchemes.dark
+            ? backgroundColorDark.default
+            : backgroundColor.default
       }}
     >
       <View>

@@ -4,13 +4,16 @@ import LoggedInContainer from "@/components/_layouts/LoggedInContainer";
 import InnerScreenHeader from "@/components/_screens/_general/InnerScreenHeader";
 import {
   backgroundColor,
+  backgroundColorDark,
+  blackColor,
   primaryColor,
   redColor,
   whiteColor
 } from "../assets/colors";
 import ProfileImage from "@/components/_screens/_general/ProfileImage";
-import { Pen } from "lucide-react-native";
+import { Moon, Pen, SunMoon } from "lucide-react-native";
 import {
+  colorSchemes,
   defaultIconProps,
   padding,
   profileRoutes,
@@ -21,8 +24,11 @@ import TextComponent from "@/components/_general/TextComponent";
 import { Logout } from "iconsax-react-native";
 import ProfileStats from "@/components/_screens/profile/ProfileStats";
 import ProfileRoute from "@/components/_screens/profile/ProfileRoute";
+import { useActionContext } from "@/context";
+import Toggle from "@/components/_general/form/Toggle";
 
 const Profile = () => {
+  const { colorScheme, setColorScheme } = useActionContext();
   return (
     <LoggedInContainer
       hideNav
@@ -45,7 +51,10 @@ const Profile = () => {
       <View
         style={{
           flex: 1,
-          backgroundColor: backgroundColor.default,
+          backgroundColor:
+            colorScheme === colorSchemes.dark
+              ? backgroundColorDark.default
+              : backgroundColor.default,
           borderRadius: 30,
           paddingBottom: 20,
           gap: 20
@@ -91,6 +100,58 @@ const Profile = () => {
             }}
           >
             <ProfileStats />
+            <TouchableOpacity
+              onPress={() => {
+                setColorScheme(
+                  colorScheme === colorSchemes.dark
+                    ? colorSchemes.light
+                    : colorSchemes.dark
+                );
+              }}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 10,
+                paddingVertical: 10
+              }}
+            >
+              {colorScheme === colorSchemes.dark ? (
+                <SunMoon
+                  {...defaultIconProps}
+                  color={
+                    colorScheme === colorSchemes.dark
+                      ? whiteColor.default
+                      : blackColor.default
+                  }
+                />
+              ) : (
+                <Moon
+                  {...defaultIconProps}
+                  color={
+                    colorScheme === colorSchemes.dark
+                      ? whiteColor.default
+                      : blackColor.default
+                  }
+                />
+              )}
+              <TextComponent
+                style={{
+                  flex: 1
+                }}
+              >
+                {colorScheme === colorSchemes.dark ? "Light" : "Dark"} mode
+              </TextComponent>
+              <Toggle
+                onChange={() => {
+                  setColorScheme(
+                    colorScheme === colorSchemes.dark
+                      ? colorSchemes.light
+                      : colorSchemes.dark
+                  );
+                }}
+                active={colorScheme === colorSchemes.dark}
+              />
+            </TouchableOpacity>
             {profileRoutes.map((data, index) => (
               <ProfileRoute {...data} key={index} />
             ))}

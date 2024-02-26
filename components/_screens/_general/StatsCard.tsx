@@ -12,6 +12,7 @@ import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import { colorSchemes, defaultIconProps } from "@/utils/_variables";
 import { blackColor, whiteColor } from "@/assets/colors";
+import { useActionContext } from "@/context";
 
 const StatsCard: React.FC<{
   style?: ViewStyle;
@@ -22,7 +23,7 @@ const StatsCard: React.FC<{
   color?: ColorValue;
   titleColor?: ColorValue;
 }> = ({ style, Icon, iconProps, title, stat, color, titleColor }) => {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   return (
     <View style={{ gap: 1, alignItems: "center", ...style }}>
       {Icon && (

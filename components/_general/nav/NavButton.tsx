@@ -11,13 +11,25 @@ import { ScreenNamesType } from "@/utils/types";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import TextComponent from "../TextComponent";
 import {
+  colorSchemes,
   defaultIconProps,
   navRoutes,
   padding,
   windowWidth
 } from "@/utils/_variables";
-import { backgroundColor, primaryColor, whiteColor } from "@/assets/colors";
-import { ActiveNavWingOneImage, ActiveNavWingTwoImage } from "@/assets/images";
+import {
+  backgroundColor,
+  backgroundColorDark,
+  primaryColor,
+  whiteColor
+} from "@/assets/colors";
+import {
+  ActiveNavWingOneDarkImage,
+  ActiveNavWingOneImage,
+  ActiveNavWingTwoDarkImage,
+  ActiveNavWingTwoImage
+} from "@/assets/images";
+import { useActionContext } from "@/context";
 
 const NavButton: React.FC<ScreenNamesType & { index: number }> = ({
   Icon,
@@ -28,6 +40,7 @@ const NavButton: React.FC<ScreenNamesType & { index: number }> = ({
 }) => {
   const { name: screenName } = useRoute();
   const { navigate } = useNavigation();
+  const { colorScheme } = useActionContext();
 
   let isActive = screenName === name;
   const iconSize = 25;
@@ -43,7 +56,11 @@ const NavButton: React.FC<ScreenNamesType & { index: number }> = ({
       }}
       style={{
         width: defaultWidth,
-        backgroundColor: isActive ? backgroundColor.default : undefined,
+        backgroundColor: isActive
+          ? colorScheme === colorSchemes.dark
+            ? backgroundColorDark.default
+            : backgroundColor.default
+          : undefined,
         borderBottomLeftRadius: 300,
         borderBottomRightRadius: 300
       }}
@@ -61,13 +78,17 @@ const NavButton: React.FC<ScreenNamesType & { index: number }> = ({
               <Icon
                 {...defaultIconProps}
                 size={iconSize}
-                color={primaryColor.default}
+                color={
+                  colorScheme === colorSchemes.dark
+                    ? whiteColor.default
+                    : primaryColor.default
+                }
               />
             ) : (
               <Icon
                 {...defaultIconProps}
                 size={iconSize}
-                color={whiteColor.default}
+                color={whiteColor.opacity800}
               />
             )}
           </>
@@ -75,7 +96,11 @@ const NavButton: React.FC<ScreenNamesType & { index: number }> = ({
       </View>
       {isActive && index !== 0 && (
         <Image
-          source={ActiveNavWingOneImage}
+          source={
+            colorScheme === colorSchemes.dark
+              ? ActiveNavWingOneDarkImage
+              : ActiveNavWingOneImage
+          }
           style={{
             height: "50%",
             width: "100%",
@@ -92,7 +117,11 @@ const NavButton: React.FC<ScreenNamesType & { index: number }> = ({
       )}
       {isActive && index !== navRoutes.length - 1 && (
         <Image
-          source={ActiveNavWingTwoImage}
+          source={
+            colorScheme === colorSchemes.dark
+              ? ActiveNavWingTwoDarkImage
+              : ActiveNavWingTwoImage
+          }
           style={{
             height: "50%",
             width: "100%",

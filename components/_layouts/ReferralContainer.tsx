@@ -9,8 +9,14 @@ import React, { useState } from "react";
 import TextComponent from "../_general/TextComponent";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { ScreenNames, colorSchemes, referralRoutes } from "@/utils/_variables";
-import { backgroundColor, blackColor, whiteColor } from "@/assets/colors";
+import {
+  backgroundColor,
+  backgroundColorDark,
+  blackColor,
+  whiteColor
+} from "@/assets/colors";
 import { Poppins } from "@/assets/fonts";
+import { useActionContext } from "@/context";
 
 const ReferralContainer: React.FC<{ children: React.ReactNode }> = ({
   children
@@ -19,13 +25,16 @@ const ReferralContainer: React.FC<{ children: React.ReactNode }> = ({
     ScreenNames.LinearReferrals.name
   );
   const { navigate } = useNavigation();
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   return (
     <View
       style={{
         flex: 1,
         gap: 20,
-        backgroundColor: backgroundColor.default
+        backgroundColor:
+          colorScheme === colorSchemes.dark
+            ? backgroundColorDark.default
+            : backgroundColor.default
       }}
     >
       <View
@@ -48,7 +57,7 @@ const ReferralContainer: React.FC<{ children: React.ReactNode }> = ({
               backgroundColor:
                 name === activeName
                   ? colorScheme === colorSchemes.dark
-                    ? blackColor.default
+                    ? whiteColor.opacity100
                     : whiteColor.default
                   : "transparent"
             }}

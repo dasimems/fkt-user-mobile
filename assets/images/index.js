@@ -7,9 +7,12 @@ import AvatarMaleImage from "./avatar_male_1.png";
 import AvatarFemaleImage from "./avatar_female_1.png";
 import LoginImage from "./login_image.svg";
 import ActiveNavWingOneImage from "./active_nav_wing_1.png";
+import ActiveNavWingOneDarkImage from "./active_nav_wing_1_dark.png";
+import ActiveNavWingTwoDarkImage from "./active_nav_wing_2_dark.png";
 import ActiveNavWingTwoImage from "./active_nav_wing_2.png";
 import ProjectImage from "./project_image.jpg";
 import CardCurveOne from "./asset_card_curve.png";
+import CardCurveDarkOne from "./asset_card_curve_dark.png";
 import CoinImage from "./cash-161037.svg";
 
 export {
@@ -25,5 +28,8 @@ export {
   ActiveNavWingTwoImage,
   ProjectImage,
   CardCurveOne,
-  CoinImage
+  CoinImage,
+  ActiveNavWingOneDarkImage,
+  ActiveNavWingTwoDarkImage,
+  CardCurveDarkOne
 };

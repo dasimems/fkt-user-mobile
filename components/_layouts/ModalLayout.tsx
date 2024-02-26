@@ -6,7 +6,7 @@ import {
   useColorScheme
 } from "react-native";
 import React from "react";
-import { blackColor, whiteColor } from "@/assets/colors";
+import { backgroundColorDark, blackColor, whiteColor } from "@/assets/colors";
 import { colorSchemes, defaultIconProps, padding } from "@/utils/_variables";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -16,6 +16,7 @@ import { Poppins } from "@/assets/fonts";
 import { ModalLayoutType } from "@/utils/types";
 import Button from "../_general/Button";
 import { X } from "lucide-react-native";
+import { useActionContext } from "@/context";
 
 const ModalLayout: React.FC<ModalLayoutType> = ({
   children,
@@ -35,7 +36,7 @@ const ModalLayout: React.FC<ModalLayoutType> = ({
   loading,
   disabled
 }) => {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   const { goBack } = useNavigation();
   const processCancel = () => {
     if (!loading) {
@@ -50,7 +51,10 @@ const ModalLayout: React.FC<ModalLayoutType> = ({
     <View
       style={{
         flex: 1,
-        backgroundColor: blackColor.opacity300
+        backgroundColor:
+          colorScheme === colorSchemes.dark
+            ? blackColor.opacity600
+            : blackColor.opacity300
       }}
     >
       <TouchableOpacity
@@ -63,7 +67,7 @@ const ModalLayout: React.FC<ModalLayoutType> = ({
         style={{
           backgroundColor:
             colorScheme === colorSchemes.dark
-              ? blackColor.default
+              ? backgroundColorDark.default
               : whiteColor.default,
           borderTopLeftRadius: 30,
           borderTopRightRadius: 30
@@ -91,7 +95,14 @@ const ModalLayout: React.FC<ModalLayoutType> = ({
 
               {!hideCancelIcon && (
                 <TouchableOpacity onPress={processCancel}>
-                  <X {...defaultIconProps} />
+                  <X
+                    {...defaultIconProps}
+                    color={
+                      colorScheme === colorSchemes.dark
+                        ? whiteColor.default
+                        : blackColor.default
+                    }
+                  />
                 </TouchableOpacity>
               )}
             </View>

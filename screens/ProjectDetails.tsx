@@ -3,7 +3,13 @@ import React, { useState } from "react";
 import LoggedInContainer from "@/components/_layouts/LoggedInContainer";
 import InnerScreenHeader from "@/components/_screens/_general/InnerScreenHeader";
 import ProjectCard from "@/components/_screens/projects/ProjectCard";
-import { backgroundColor, blackColor, primaryColor } from "@/assets/colors";
+import {
+  backgroundColor,
+  backgroundColorDark,
+  blackColor,
+  primaryColor,
+  whiteColor
+} from "@/assets/colors";
 import { Poppins } from "@/assets/fonts";
 import { LineChart } from "react-native-chart-kit";
 import { getComponentLayoutProperties } from "@/utils/functions";
@@ -11,9 +17,12 @@ import TextComponent from "@/components/_general/TextComponent";
 import Image from "@/components/_general/Image";
 import { ProjectImage } from "@/assets/images";
 import DetailsCard from "@/components/_screens/_general/DetailsCard";
+import { useActionContext } from "@/context";
+import { colorSchemes } from "@/utils/_variables";
 
 const ProjectDetails = () => {
   const [chartWidth, setChartWidth] = useState(0);
+  const { colorScheme } = useActionContext();
   return (
     <LoggedInContainer
       hideNav
@@ -60,12 +69,25 @@ const ProjectDetails = () => {
               fontFamily: Poppins.regular.default
             },
 
-            backgroundColor: backgroundColor.default,
-            backgroundGradientFrom: backgroundColor.default,
-            backgroundGradientTo: backgroundColor.default,
+            backgroundColor:
+              colorScheme === colorSchemes.dark
+                ? backgroundColorDark.default
+                : backgroundColor.default,
+            backgroundGradientFrom:
+              colorScheme === colorSchemes.dark
+                ? backgroundColorDark.default
+                : backgroundColor.default,
+            backgroundGradientTo:
+              colorScheme === colorSchemes.dark
+                ? backgroundColorDark.default
+                : backgroundColor.default,
             decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 1) => primaryColor.opacity100,
-            labelColor: (opacity = 1) => blackColor.default,
+            color: (opacity = 1) =>
+              colorSchemes.dark ? whiteColor.default : primaryColor.opacity100,
+            labelColor: (opacity = 1) =>
+              colorScheme === colorSchemes.dark
+                ? whiteColor.opacity700
+                : blackColor.default,
             style: {
               borderRadius: 16
             },
@@ -114,12 +136,27 @@ const ProjectDetails = () => {
               fontFamily: Poppins.regular.default
             },
 
-            backgroundColor: backgroundColor.default,
-            backgroundGradientFrom: backgroundColor.default,
-            backgroundGradientTo: backgroundColor.default,
+            backgroundColor:
+              colorScheme === colorSchemes.dark
+                ? backgroundColorDark.default
+                : backgroundColor.default,
+            backgroundGradientFrom:
+              colorScheme === colorSchemes.dark
+                ? backgroundColorDark.default
+                : backgroundColor.default,
+            backgroundGradientTo:
+              colorScheme === colorSchemes.dark
+                ? backgroundColorDark.default
+                : backgroundColor.default,
             decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 1) => primaryColor.opacity100,
-            labelColor: (opacity = 1) => blackColor.default,
+            color: (opacity = 1) =>
+              colorScheme === colorSchemes.dark
+                ? whiteColor.default
+                : primaryColor.opacity100,
+            labelColor: (opacity = 1) =>
+              colorScheme === colorSchemes.dark
+                ? whiteColor.opacity700
+                : blackColor.default,
             style: {
               borderRadius: 16
             },

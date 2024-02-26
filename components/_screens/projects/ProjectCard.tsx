@@ -9,6 +9,7 @@ import {
 import React from "react";
 import {
   backgroundColor,
+  backgroundColorDark,
   primaryColor,
   redColor,
   whiteColor
@@ -16,6 +17,7 @@ import {
 import Image from "@/components/_general/Image";
 import {
   AvatarImage,
+  CardCurveDarkOne,
   CardCurveOne,
   CoinImage,
   ProjectImage
@@ -37,12 +39,15 @@ import {
 } from "@/utils/_variables";
 import { blackColor } from "../../../assets/colors";
 import { useNavigation } from "@react-navigation/native";
-
-const generalBackgroundColor = primaryColor.opacity200;
+import { useActionContext } from "@/context";
 
 const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
   const { navigate } = useNavigation();
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
+  const generalBackgroundColor =
+    colorScheme === colorSchemes.dark
+      ? primaryColor.default
+      : primaryColor.opacity200;
   return (
     <View
       style={{
@@ -58,7 +63,9 @@ const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
         }}
       >
         <RNImage
-          source={CardCurveOne}
+          source={
+            colorScheme === colorSchemes.dark ? CardCurveDarkOne : CardCurveOne
+          }
           style={{
             top: "-9%",
             height: 30,
@@ -69,7 +76,9 @@ const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
           }}
         />
         <RNImage
-          source={CardCurveOne}
+          source={
+            colorScheme === colorSchemes.dark ? CardCurveDarkOne : CardCurveOne
+          }
           style={{
             bottom: "-38%",
             height: 30,
@@ -81,7 +90,10 @@ const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
         />
         <View
           style={{
-            backgroundColor: backgroundColor.default,
+            backgroundColor:
+              colorScheme === colorSchemes.dark
+                ? backgroundColorDark.default
+                : backgroundColor.default,
             borderBottomLeftRadius: 30
             // borderWidth: 1
           }}
@@ -121,7 +133,14 @@ const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
                 }}
               >
                 <TextComponent>View more</TextComponent>
-                <ArrowUpRight {...defaultIconProps} />
+                <ArrowUpRight
+                  {...defaultIconProps}
+                  color={
+                    colorScheme === colorSchemes.dark
+                      ? whiteColor.default
+                      : blackColor.default
+                  }
+                />
               </View>
             )}
           </TouchableOpacity>
@@ -157,9 +176,7 @@ const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
             <TextComponent fontFamily={Poppins.semiBold.default}>
               {isDetails ? "The first dummy project" : "The first dummy..."}
             </TextComponent>
-            <TextComponent color={blackColor.opacity600}>
-              2023-04-13
-            </TextComponent>
+            <TextComponent>2023-04-13</TextComponent>
           </View>
         </View>
 
@@ -171,7 +188,10 @@ const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
             gap: 20,
             paddingBottom: 10,
             borderBottomWidth: 1,
-            borderColor: blackColor.opacity100
+            borderColor:
+              colorScheme === colorSchemes.dark
+                ? whiteColor.opacity100
+                : blackColor.opacity100
           }}
         >
           <View
@@ -233,8 +253,23 @@ const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
                 gap: 3
               }}
             >
-              <CheckSquare {...defaultIconProps} color={primaryColor.default} />
-              <TextComponent color={primaryColor.default}>Active</TextComponent>
+              <CheckSquare
+                {...defaultIconProps}
+                color={
+                  colorScheme === colorSchemes.dark
+                    ? whiteColor.default
+                    : primaryColor.default
+                }
+              />
+              <TextComponent
+                color={
+                  colorScheme === colorSchemes.dark
+                    ? whiteColor.default
+                    : primaryColor.default
+                }
+              >
+                Active
+              </TextComponent>
             </View>
           </View>
           <View
@@ -252,7 +287,14 @@ const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
                 marginLeft: -20
               }}
             >
-              <Component {...defaultIconProps} />
+              <Component
+                {...defaultIconProps}
+                color={
+                  colorScheme === colorSchemes.dark
+                    ? whiteColor.default
+                    : blackColor.default
+                }
+              />
             </View>
           </View>
           <View

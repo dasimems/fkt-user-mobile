@@ -42,7 +42,7 @@ const MyTheme = {
 };
 
 const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
-  const { getColorScheme } = useActionContext();
+  const { setColorScheme } = useActionContext();
   const showAppScreens = useCallback(async () => {
     if (fontLoaded) {
       await SplashScreen.hideAsync();
@@ -50,7 +50,7 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
   }, [fontLoaded]);
 
   useEffect(() => {
-    getColorScheme();
+    setColorScheme();
   }, []);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
 
   return (
     <NavigationContainer theme={MyTheme}>
-      <Stack.Navigator initialRouteName={ScreenNames.Dashboard.name}>
+      <Stack.Navigator initialRouteName={ScreenNames.GettingStarted.name}>
         {/*screens that shows when user isn't loggedin yet */}
         <Stack.Group
           screenOptions={{

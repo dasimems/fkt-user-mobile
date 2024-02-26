@@ -36,15 +36,10 @@ export default function App() {
     [Poppins.extraBold
       .italics]: require("@/assets/fonts/Poppins/Poppins-ExtraBoldItalic.ttf")
   });
-  const colorScheme = useColorScheme();
   return (
     <View
       style={{
-        flex: 1,
-        backgroundColor:
-          colorScheme === colorSchemes.dark
-            ? blackColor.default
-            : whiteColor.default
+        flex: 1
       }}
     >
       {fontsLoaded && (

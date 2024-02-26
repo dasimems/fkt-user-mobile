@@ -3,6 +3,7 @@ import React from "react";
 import { blackColor, primaryColor, whiteColor } from "@/assets/colors";
 import { colorSchemes, windowWidth } from "@/utils/_variables";
 import TextComponent from "@/components/_general/TextComponent";
+import { useActionContext } from "@/context";
 
 const borderRadius = 15;
 
@@ -11,7 +12,7 @@ const ChatDetailsCard: React.FC<{
   message: string;
   time: string;
 }> = ({ isSender, message, time }) => {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useActionContext();
   return (
     <View
       style={{
@@ -25,7 +26,7 @@ const ChatDetailsCard: React.FC<{
           backgroundColor: isSender
             ? primaryColor.opacity600
             : colorScheme === colorSchemes.dark
-            ? blackColor.default
+            ? whiteColor.opacity100
             : whiteColor.default,
           paddingVertical: 15,
           paddingHorizontal: 20,
