@@ -7,6 +7,7 @@ import { colorSchemes } from "./utils/_variables";
 import { blackColor, whiteColor } from "./assets/colors";
 import Providers from "./components/_layouts/Providers";
 import ScreenStacks from "./components/_layouts/ScreenStacks";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,18 +38,20 @@ export default function App() {
       .italics]: require("@/assets/fonts/Poppins/Poppins-ExtraBoldItalic.ttf")
   });
   return (
-    <View
-      style={{
-        flex: 1
-      }}
-    >
-      {fontsLoaded && (
-        <Providers>
-          <StatusBar style={"light"} backgroundColor="transparent" />
-          <ScreenStacks fontLoaded={fontsLoaded} />
-        </Providers>
-      )}
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View
+        style={{
+          flex: 1
+        }}
+      >
+        {fontsLoaded && (
+          <Providers>
+            <StatusBar style={"light"} backgroundColor="transparent" />
+            <ScreenStacks fontLoaded={fontsLoaded} />
+          </Providers>
+        )}
+      </View>
+    </GestureHandlerRootView>
   );
 }
 

@@ -19,6 +19,7 @@ import { Poppins } from "@/assets/fonts";
 import Button from "@/components/_general/Button";
 import { useNavigation } from "@react-navigation/native";
 import { useActionContext } from "@/context";
+import Animation from "@/components/_screens/getting-started/Animation";
 
 const GettingStarted = () => {
   const { colorScheme } = useActionContext();
@@ -54,7 +55,9 @@ const GettingStarted = () => {
         style={{
           flex: 1
         }}
-      ></View>
+      >
+        <Animation />
+      </View>
       <View
         style={{
           alignItems: "center",
@@ -78,12 +81,7 @@ const GettingStarted = () => {
           Join the future by investing and empowering farmers and communities in
           sustainable agriculture for a better future
         </TextComponent>
-        <TextComponent
-          textAlign="center"
-          style={{
-            opacity: 0.6
-          }}
-        >
+        <TextComponent textAlign="center" color={"#C0A95E"}>
           Brought to you by Farmkoin
         </TextComponent>
         <Button

@@ -14,7 +14,9 @@
     "experiments": {
       "tsconfigPaths": true
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.foodsoldier.user",
@@ -24,7 +26,6 @@
       }
     },
     "android": {
-      
       "package": "com.foodsoldier.user",
       "versionCode": 1,
       "adaptiveIcon": {
@@ -34,6 +35,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bb3d5f2b-d088-4d31-b0c9-b98063cba3a0"
+      }
     }
   }
 }

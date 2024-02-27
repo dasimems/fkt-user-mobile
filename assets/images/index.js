@@ -14,6 +14,12 @@ import ProjectImage from "./project_image.jpg";
 import CardCurveOne from "./asset_card_curve.png";
 import CardCurveDarkOne from "./asset_card_curve_dark.png";
 import CoinImage from "./cash-161037.svg";
+import AnimationGroupOneTopImage from "./group_one_1.svg";
+import AnimationGroupOneBottomImage from "./group_one_2.svg";
+import AnimationGroupTwoTopImage from "./group_two_1.svg";
+import AnimationGroupTwoBottomImage from "./group_two_2.svg";
+import AnimationGroupThreeTopImage from "./group_three_1.svg";
+import AnimationGroupThreeBottomImage from "./group_three_2.svg";
 
 export {
   LoadingOne,
@@ -31,5 +37,11 @@ export {
   CoinImage,
   ActiveNavWingOneDarkImage,
   ActiveNavWingTwoDarkImage,
-  CardCurveDarkOne
+  CardCurveDarkOne,
+  AnimationGroupOneTopImage,
+  AnimationGroupOneBottomImage,
+  AnimationGroupTwoTopImage,
+  AnimationGroupTwoBottomImage,
+  AnimationGroupThreeTopImage,
+  AnimationGroupThreeBottomImage
 };
