@@ -6,7 +6,14 @@ import AssetList from "@/components/_screens/_general/AssetList";
 const Assets = () => {
   return (
     <LoggedInContainer>
-      <AssetList hideTitle />
+      <AssetList
+        hideTitle
+        emptyContainerStyle={{
+          flex: 1,
+          width: "100%",
+          height: "100%"
+        }}
+      />
     </LoggedInContainer>
   );
 };

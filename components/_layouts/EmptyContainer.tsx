@@ -1,8 +1,10 @@
 import { View, ViewStyle } from "react-native";
 import TextComponent from "../_general/TextComponent";
+import LottieView, { AnimationObject } from "lottie-react-native";
+import { EmptyAssetsLottieAnimation } from "@/assets/lottie";
 
 const EmptyContainer: React.FC<{
-  animation?: JSON;
+  animation?: AnimationObject;
   containerStyle?: ViewStyle;
   text?: string;
   animationStyle?: ViewStyle;
@@ -17,6 +19,12 @@ const EmptyContainer: React.FC<{
         ...containerStyle
       }}
     >
+      <LottieView
+        source={animation || EmptyAssetsLottieAnimation}
+        style={{ width: 50, height: 50, ...animationStyle }}
+        autoPlay
+        loop
+      />
       <TextComponent
         style={{
           opacity: 0.6

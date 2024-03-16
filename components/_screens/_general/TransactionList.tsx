@@ -7,6 +7,7 @@ import { useUserContext } from "@/context";
 import SkeletonLoader from "@/components/_general/SkeletonLoader";
 import { windowWidth } from "@/utils/_variables";
 import EmptyContainer from "@/components/_layouts/EmptyContainer";
+import { EmptyTransactionsLottieAnimation } from "@/assets/lottie";
 
 const TransactionList: React.FC<{
   max?: number;
@@ -34,7 +35,11 @@ const TransactionList: React.FC<{
 
       {transactions.data ? (
         transactions.data.length < 1 ? (
-          <EmptyContainer text="You have no transactions at the present moment" />
+          <EmptyContainer
+            animation={EmptyTransactionsLottieAnimation}
+            containerStyle={emptyContainerStyle}
+            text="You have no transactions at the present moment"
+          />
         ) : (
           transactions.data
             .slice(0, max)

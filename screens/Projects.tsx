@@ -6,7 +6,14 @@ import ProjectList from "@/components/_screens/_general/ProjectList";
 const Projects = () => {
   return (
     <LoggedInContainer>
-      <ProjectList hideTitle />
+      <ProjectList
+        hideTitle
+        emptyContainerStyle={{
+          flex: 1,
+          width: "100%",
+          height: "100%"
+        }}
+      />
     </LoggedInContainer>
   );
 };

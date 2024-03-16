@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ViewStyle } from "react-native";
 import React from "react";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
@@ -7,12 +7,14 @@ import { useUserContext } from "@/context";
 import EmptyContainer from "@/components/_layouts/EmptyContainer";
 import SkeletonLoader from "@/components/_general/SkeletonLoader";
 import { innerPadding, padding, windowWidth } from "@/utils/_variables";
+import { EmptyProjectsLottieAnimation } from "@/assets/lottie";
 
 const ProjectList: React.FC<{
   max?: number;
   hideTitle?: boolean;
   title?: string;
-}> = ({ max, hideTitle, title = "Latest projects" }) => {
+  emptyContainerStyle?: ViewStyle;
+}> = ({ max, hideTitle, title = "Latest projects", emptyContainerStyle }) => {
   const { projects } = useUserContext();
   return (
     <View
@@ -29,7 +31,8 @@ const ProjectList: React.FC<{
       {projects.data ? (
         projects.data.length < 1 ? (
           <EmptyContainer
-            // animation={EmptyAssetsLottieAnimation}
+            animation={EmptyProjectsLottieAnimation}
+            containerStyle={emptyContainerStyle}
             text="You have no projects at the present moment"
           />
         ) : (

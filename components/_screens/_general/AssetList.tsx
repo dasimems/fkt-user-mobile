@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ViewStyle } from "react-native";
 import React from "react";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
@@ -13,7 +13,8 @@ const AssetList: React.FC<{
   max?: number;
   hideTitle?: boolean;
   title?: string;
-}> = ({ max, hideTitle, title = "Latest assets" }) => {
+  emptyContainerStyle?: ViewStyle;
+}> = ({ max, hideTitle, title = "Latest assets", emptyContainerStyle }) => {
   const { assets } = useUserContext();
   return (
     <View
@@ -30,7 +31,8 @@ const AssetList: React.FC<{
       {assets.data ? (
         assets.data.length < 1 ? (
           <EmptyContainer
-            // animation={EmptyAssetsLottieAnimation}
+            animation={EmptyAssetsLottieAnimation}
+            containerStyle={emptyContainerStyle}
             text="You have no assets at the present moment"
           />
         ) : (
