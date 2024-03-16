@@ -10,10 +10,12 @@ import { colorSchemes, windowWidth } from "@/utils/_variables";
 import TextComponent from "@/components/_general/TextComponent";
 import { blackColor, whiteColor } from "@/assets/colors";
 import { Poppins } from "@/assets/fonts";
-import { useActionContext } from "@/context";
+import { useActionContext, useUserContext } from "@/context";
+import SkeletonLoader from "@/components/_general/SkeletonLoader";
 
 const DashboardBalance: React.FC<{ style?: ViewStyle }> = ({ style }) => {
   const { colorScheme } = useActionContext();
+  const { balance } = useUserContext();
   return (
     <View
       style={{
@@ -28,13 +30,23 @@ const DashboardBalance: React.FC<{ style?: ViewStyle }> = ({ style }) => {
       >
         Wallet balance
       </TextComponent>
-      <TextComponent
-        textAlign="center"
-        fontSize={windowWidth * 0.08}
-        fontFamily={Poppins.bold.default}
-      >
-        $10,227,000
-      </TextComponent>
+      {balance ? (
+        <TextComponent
+          textAlign="center"
+          fontSize={windowWidth * 0.08}
+          fontFamily={Poppins.bold.default}
+        >
+          {balance?.wallet?.balance?.display || ""}
+        </TextComponent>
+      ) : (
+        <View
+          style={{
+            alignItems: "center"
+          }}
+        >
+          <SkeletonLoader />
+        </View>
+      )}
     </View>
   );
 };

@@ -20,6 +20,7 @@ import AnimationGroupTwoTopImage from "./group_two_1.svg";
 import AnimationGroupTwoBottomImage from "./group_two_2.svg";
 import AnimationGroupThreeTopImage from "./group_three_1.svg";
 import AnimationGroupThreeBottomImage from "./group_three_2.svg";
+import CautionImage from "./caution.svg";
 
 export {
   LoadingOne,
@@ -43,5 +44,6 @@ export {
   AnimationGroupTwoTopImage,
   AnimationGroupTwoBottomImage,
   AnimationGroupThreeTopImage,
-  AnimationGroupThreeBottomImage
+  AnimationGroupThreeBottomImage,
+  CautionImage
 };

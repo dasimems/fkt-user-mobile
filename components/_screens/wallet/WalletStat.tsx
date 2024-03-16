@@ -12,13 +12,15 @@ import TextComponent from "@/components/_general/TextComponent";
 import { blackColor, redColor, whiteColor } from "@/assets/colors";
 import { Poppins } from "@/assets/fonts";
 import { primaryColor } from "../../../assets/colors";
-import { useActionContext } from "@/context";
+import { useActionContext, useUserContext } from "@/context";
+import SkeletonLoader from "@/components/_general/SkeletonLoader";
 
 const WalletStatCard: React.FC<{
   color: ColorValue;
   title: string;
-  value: string;
-}> = ({ color, title, value }) => {
+  value?: string;
+  loading?: boolean;
+}> = ({ color, title, value, loading }) => {
   const { colorScheme } = useActionContext();
   return (
     <View
@@ -47,9 +49,13 @@ const WalletStatCard: React.FC<{
         >
           {title}
         </TextComponent>
-        <TextComponent fontFamily={Poppins.semiBold.default}>
-          {value}
-        </TextComponent>
+        {loading ? (
+          <SkeletonLoader />
+        ) : (
+          <TextComponent fontFamily={Poppins.semiBold.default}>
+            {value || ""}
+          </TextComponent>
+        )}
       </View>
     </View>
   );
@@ -57,6 +63,7 @@ const WalletStatCard: React.FC<{
 
 const WalletStat = () => {
   const { colorScheme } = useActionContext();
+  const { balance } = useUserContext();
   return (
     <View
       style={{
@@ -66,15 +73,17 @@ const WalletStat = () => {
       }}
     >
       <WalletStatCard
+        loading={!balance}
         color={
           colorScheme === colorSchemes.dark
             ? whiteColor.default
             : primaryColor.default
         }
         title="Credit dismount"
-        value="$30,000"
+        value={balance?.credits?.display}
       />
       <WalletStatCard
+        loading={!balance}
         color={redColor.default}
         title="Debit dismount"
         value="$30,000"
