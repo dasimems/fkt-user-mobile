@@ -141,6 +141,19 @@ export interface LoginBodyType {
   password: string;
 }
 
+export interface RegisterBodyType {
+  name: string;
+  username: string;
+  email: string;
+  phone: string;
+  referrer_code: string;
+  community: string;
+  assist_id: string;
+  date_of_birth: string;
+  password: string;
+  password_confirmation: string;
+}
+
 export interface LoginResponseType {
   message: string;
   authentication: AuthenticationType & {
