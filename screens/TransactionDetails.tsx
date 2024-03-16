@@ -166,7 +166,7 @@ const TransactionDetails = () => {
       {details ? (
         <View>
           <Details title="Date" value={"30 Sunday April 2023"} />
-          <Details title="Title" value={params?.type?.toLowerCase() === "pending"? "Pending withdrawal" :details?.title,} />
+          <Details title="Title" value={params?.type?.toLowerCase() === "pending"? "Pending withdrawal" :details?.title} />
           <Details title="Status" value={formatText(params?.type || "")} />
         </View>
       ) : (
