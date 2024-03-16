@@ -3,7 +3,7 @@ import {
   Text,
   View,
   ViewStyle,
-  useColorScheme
+  useColorScheme,
 } from "react-native";
 import React from "react";
 import { colorSchemes, windowWidth } from "@/utils/_variables";
@@ -12,6 +12,8 @@ import { blackColor, whiteColor } from "@/assets/colors";
 import { Poppins } from "@/assets/fonts";
 import { useActionContext, useUserContext } from "@/context";
 import SkeletonLoader from "@/components/_general/SkeletonLoader";
+import { CautionImage } from "@/assets/images";
+import Caution from "../_general/Caution";
 
 const DashboardBalance: React.FC<{ style?: ViewStyle }> = ({ style }) => {
   const { colorScheme } = useActionContext();
@@ -19,13 +21,13 @@ const DashboardBalance: React.FC<{ style?: ViewStyle }> = ({ style }) => {
   return (
     <View
       style={{
-        ...style
+        ...style,
       }}
     >
       <TextComponent
         textAlign="center"
         style={{
-          opacity: 0.6
+          opacity: 0.6,
         }}
       >
         Wallet balance
@@ -36,12 +38,12 @@ const DashboardBalance: React.FC<{ style?: ViewStyle }> = ({ style }) => {
           fontSize={windowWidth * 0.08}
           fontFamily={Poppins.bold.default}
         >
-          {balance?.wallet?.balance?.display || ""}
+          {balance?.wallet?.balance?.display || <Caution />}
         </TextComponent>
       ) : (
         <View
           style={{
-            alignItems: "center"
+            alignItems: "center",
           }}
         >
           <SkeletonLoader />

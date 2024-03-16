@@ -24,7 +24,7 @@ export interface ReferralType {
 
 export interface TransactionType {
   id: string;
-  type: string;
+  type: "credit" | "debit";
   title: string;
   amount: CurrencyFormattingType;
   action: string;

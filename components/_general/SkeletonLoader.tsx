@@ -1,6 +1,6 @@
 import { windowWidth } from "@/utils/_variables";
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ViewStyle } from "react-native";
 import Animated, {
   useSharedValue,
   withRepeat,
@@ -9,10 +9,11 @@ import Animated, {
   withTiming
 } from "react-native-reanimated";
 
-const SkeletonLoader: React.FC<{ width?: number; height?: number }> = ({
-  width = windowWidth * 0.3,
-  height = 10
-}) => {
+const SkeletonLoader: React.FC<{
+  width?: number;
+  height?: number;
+  style?: ViewStyle;
+}> = ({ width = windowWidth * 0.3, height = 10, style }) => {
   const skeletonWidth = useSharedValue(100); // Default width
   const skeletonHeight = useSharedValue(20); // Default height
   const opacity = useSharedValue(0); // Default opacity
@@ -35,7 +36,9 @@ const SkeletonLoader: React.FC<{ width?: number; height?: number }> = ({
   });
 
   return (
-    <Animated.View style={[styles.skeleton, animatedStyle]}></Animated.View>
+    <Animated.View
+      style={[{ ...styles.skeleton, ...style }, animatedStyle]}
+    ></Animated.View>
   );
 };
 

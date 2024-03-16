@@ -6,22 +6,24 @@ import PendingWithdrawal from "@/components/_screens/_general/PendingWithdrawal"
 import DashboardBalance from "@/components/_screens/dashboard/DashboardBalance";
 import WalletActions from "@/components/_screens/wallet/WalletActions";
 import WalletStat from "@/components/_screens/wallet/WalletStat";
+import { useUserContext } from "@/context";
 
 const Wallet = () => {
+  const { balance } = useUserContext();
   return (
     <LoggedInContainer
       contentContainerStyle={{
-        gap: 30
+        gap: 30,
       }}
     >
       <DashboardBalance
         style={{
-          flexDirection: "column-reverse"
+          flexDirection: "column-reverse",
         }}
       />
       <WalletActions />
       <WalletStat />
-      <PendingWithdrawal />
+      {balance && balance?.withdrawal && <PendingWithdrawal />}
       <TransactionList title="Transactions" />
     </LoggedInContainer>
   );
