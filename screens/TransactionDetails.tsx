@@ -5,10 +5,10 @@ import {
   View,
   useColorScheme
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LoggedInContainer from "@/components/_layouts/LoggedInContainer";
 import InnerScreenHeader from "@/components/_screens/_general/InnerScreenHeader";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useIsFocused, useNavigation } from "@react-navigation/native";
 import {
   blackColor,
   pendingColor,
@@ -21,10 +21,15 @@ import { Poppins } from "@/assets/fonts";
 import {
   colorSchemes,
   defaultIconProps,
+  innerPadding,
+  padding,
   windowWidth
 } from "@/utils/_variables";
 import { Download, Share2 } from "lucide-react-native";
-import { useActionContext } from "@/context";
+import { useActionContext, useUserContext } from "@/context";
+import { TransactionType, WithdrawalType } from "@/api/index.d";
+import SkeletonLoader from "@/components/_general/SkeletonLoader";
+import { formatText } from "@/utils/functions";
 
 const Details: React.FC<{ title: string; value: string }> = ({
   title,
@@ -62,9 +67,17 @@ const Details: React.FC<{ title: string; value: string }> = ({
 };
 
 const TransactionDetails = () => {
-  const { params }: { params?: { type?: "debit" | "credit" | "pending" } } =
+  const {
+    params
+  }: { params?: { type?: "debit" | "credit" | "pending"; id?: string } } =
     useRoute();
+    const {goBack} = useNavigation();
   const { colorScheme } = useActionContext();
+  const {transactions, balance} = useUserContext();
+  const isFocused = useIsFocused();
+  const [details, setDetails] = useState<
+    (WithdrawalType & TransactionType) | null
+  >(null);
   let textColor = pendingColor.default;
   let bgColor = pendingColor.opacity100;
   switch (params?.type?.toLowerCase()) {
@@ -79,6 +92,26 @@ const TransactionDetails = () => {
     default:
       break;
   }
+
+  useEffect(()=>{
+
+    if(isFocused){
+      if(params?.type && params?.id && transactions){
+
+        if(params?.type?.toLowerCase() === "pending"){
+          setDetails(balance?.withdrawal as (WithdrawalType & TransactionType))
+
+        }else{
+
+          const tDetails =  transactions.data?.find(transaction => transaction.id === params?.id)  as (WithdrawalType & TransactionType)
+          setDetails(tDetails)
+        }
+      }else{
+        goBack();
+      }
+    }
+
+  }, [isFocused, params, transactions, balance])
   return (
     <LoggedInContainer
       hideNav
@@ -114,13 +147,13 @@ const TransactionDetails = () => {
           alignItems: "center"
         }}
       >
-        <TextComponent
+        {details? <TextComponent
           textAlign="center"
           fontFamily={Poppins.bold.default}
           fontSize={windowWidth * 0.08}
         >
-          +$1.00
-        </TextComponent>
+          {details?.amount?.display}
+        </TextComponent>: <SkeletonLoader width={60} />}
         <TextComponent
           textAlign="center"
           style={{
@@ -130,11 +163,27 @@ const TransactionDetails = () => {
           Amount
         </TextComponent>
       </View>
-      <View>
-        <Details title="Date" value="30 Sunday April 2023" />
-        <Details title="Title" value="[3]Referred Hank Moore" />
-        <Details title="Status" value="completed" />
-      </View>
+      {details ? (
+        <View>
+          <Details title="Date" value={"30 Sunday April 2023"} />
+          <Details title="Title" value={params?.type?.toLowerCase() === "pending"? "Pending withdrawal" :details?.title,} />
+          <Details title="Status" value={formatText(params?.type || "")} />
+        </View>
+      ) : (
+        <View
+          style={{
+            gap: 10
+          }}
+        >
+          {new Array(3).fill(0).map((_, index) => (
+            <SkeletonLoader
+              key={index}
+              height={40}
+              width={windowWidth - padding * 2 - innerPadding * 2}
+            />
+          ))}
+        </View>
+      )}
       <View
         style={{
           flexDirection: "row",

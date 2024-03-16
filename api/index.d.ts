@@ -155,7 +155,7 @@ export interface WalletResponseType {
   };
   credits: CurrencyFormattingType;
   debits: CurrencyFormattingType;
-  withdrawal: withdrawalType;
+  withdrawal: WithdrawalType;
 }
 
 export interface AssetsResponseType {

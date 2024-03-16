@@ -6,17 +6,22 @@ import ScrollComponent from "@/components/_general/ScrollComponent";
 import {
   ReferralGenerations,
   allGenerations,
-  colorSchemes
+  colorSchemes,
+  windowWidth
 } from "@/utils/_variables";
 import GenerationCard from "@/components/_screens/referrals/GenerationCard";
 import ReferralCard from "@/components/_screens/referrals/ReferralCard";
 import { AvatarImage } from "@/assets/images";
 import { useActionContext } from "@/context";
+import { ReferralType } from "@/api/index.d";
+import SkeletonLoader from "@/components/_general/SkeletonLoader";
+import EmptyContainer from "@/components/_layouts/EmptyContainer";
 
 const AssistReferrals = () => {
   const [activeReferralList, setActiveReferralList] = useState(
-    ReferralGenerations.First.value
+    ReferralGenerations.First
   );
+  const [referrers, setReferrers] = useState<ReferralType[] | null>(null);
   const { colorScheme } = useActionContext();
   return (
     <View
@@ -36,16 +41,16 @@ const AssistReferrals = () => {
             gap: 20
           }}
         >
-          {allGenerations.map(({ label, value }) => (
+          {allGenerations.map((data) => (
             <GenerationCard
-              value={value}
-              label={label}
+              value={data.value}
+              label={data.label}
               stat={0}
               onChange={() => {
-                setActiveReferralList(value);
+                setActiveReferralList(data);
               }}
-              isActive={value === activeReferralList}
-              key={value}
+              isActive={data.value === activeReferralList.value}
+              key={data.value}
             />
           ))}
         </ScrollComponent>
@@ -57,20 +62,57 @@ const AssistReferrals = () => {
           paddingTop: 20
         }}
       >
-        <ScrollComponent
-          style={{
-            minHeight: 0
-          }}
-        >
-          {new Array(10).fill(0).map((_, index) => (
-            <ReferralCard
-              key={index}
-              image={AvatarImage}
-              name="Paul Lekin"
-              email="Isaacseun63@gmail.com"
+        {referrers ? (
+          referrers.length < 1 ? (
+            <EmptyContainer
+              text={`Sorry! You have no ${activeReferralList.label} referrals`}
             />
-          ))}
-        </ScrollComponent>
+          ) : (
+            <ScrollComponent
+              style={{
+                minHeight: 0
+              }}
+            >
+              {referrers.map(({ email, name }, index) => (
+                <ReferralCard
+                  key={index}
+                  image={AvatarImage}
+                  name={name}
+                  email={email}
+                />
+              ))}
+            </ScrollComponent>
+          )
+        ) : (
+          new Array(6).fill(0).map((_, index) => (
+            <View
+              key={index}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 10
+              }}
+            >
+              <SkeletonLoader
+                width={50}
+                height={50}
+                style={{
+                  borderRadius: 9000
+                }}
+              />
+
+              <View
+                style={{
+                  flex: 1
+                }}
+              >
+                <SkeletonLoader width={windowWidth * 0.4} />
+                <SkeletonLoader />
+              </View>
+              <SkeletonLoader width={40} />
+            </View>
+          ))
+        )}
       </View>
     </View>
   );

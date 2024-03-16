@@ -79,3 +79,19 @@ export const formatSeconds = (sec: number) => {
   }
   return `${formatedSec}${secType}`;
 };
+
+export const formatText = (text: string) => {
+  const formatedText = text
+    ? `${text.slice(0, 1).toUpperCase()} ${text.slice(1)}`
+    : "";
+
+  return formatedText;
+};
+
+export const stripText = (text: string, max: number = 15) => {
+  const stripedText = text
+    ? `${text.slice(0, max)}${text.length > max ? "..." : ""}`
+    : "";
+
+  return stripedText;
+};

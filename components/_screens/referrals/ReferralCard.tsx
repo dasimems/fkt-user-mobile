@@ -12,9 +12,10 @@ import { blackColor, whiteColor } from "@/assets/colors";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import { useActionContext } from "@/context";
+import { AvatarImage } from "@/assets/images";
 
 const ReferralCard: React.FC<{
-  image: ImageSourcePropType;
+  image: string;
   name: string;
   email: string;
 }> = ({ image, name, email }) => {
@@ -35,7 +36,8 @@ const ReferralCard: React.FC<{
     >
       <Image
         innerPadding={3}
-        image={image}
+        url={image}
+        image={AvatarImage}
         type="round"
         width={50}
         height={50}

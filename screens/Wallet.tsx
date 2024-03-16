@@ -13,17 +13,23 @@ const Wallet = () => {
   return (
     <LoggedInContainer
       contentContainerStyle={{
-        gap: 30,
+        gap: 30
       }}
     >
       <DashboardBalance
         style={{
-          flexDirection: "column-reverse",
+          flexDirection: "column-reverse"
         }}
       />
       <WalletActions />
       <WalletStat />
-      {balance && balance?.withdrawal && <PendingWithdrawal />}
+      {balance && balance?.withdrawal && (
+        <PendingWithdrawal
+          date={balance?.withdrawal?.created_at}
+          amount={balance?.withdrawal?.amount?.display}
+          id={balance?.withdrawal?.id}
+        />
+      )}
       <TransactionList title="Transactions" />
     </LoggedInContainer>
   );

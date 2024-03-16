@@ -13,6 +13,7 @@ import {
   ScreenNames,
   allScreenNames,
   defaultIconProps,
+  innerPadding,
   nav,
   padding
 } from "@/utils/_variables";
@@ -170,7 +171,7 @@ const LoggedInContainer: React.FC<{
       safeView={!unSafeView}
       style={{
         backgroundColor: primaryColor.default,
-        padding: 10
+        padding: innerPadding
       }}
     >
       <View

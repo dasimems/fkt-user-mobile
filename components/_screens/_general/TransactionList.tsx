@@ -6,6 +6,7 @@ import TransactionCard from "./TransactionCard";
 import { useUserContext } from "@/context";
 import SkeletonLoader from "@/components/_general/SkeletonLoader";
 import { windowWidth } from "@/utils/_variables";
+import EmptyContainer from "@/components/_layouts/EmptyContainer";
 
 const TransactionList: React.FC<{
   max?: number;
@@ -33,23 +34,7 @@ const TransactionList: React.FC<{
 
       {transactions.data ? (
         transactions.data.length < 1 ? (
-          <View
-            style={{
-              height: 150,
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-              ...emptyContainerStyle
-            }}
-          >
-            <TextComponent
-              style={{
-                opacity: 0.6
-              }}
-            >
-              You have no transactions at the present moment
-            </TextComponent>
-          </View>
+          <EmptyContainer text="You have no transactions at the present moment" />
         ) : (
           transactions.data
             .slice(0, max)

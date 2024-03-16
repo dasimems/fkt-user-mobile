@@ -1,15 +1,21 @@
 import { StyleSheet, Text, View, useColorScheme } from "react-native";
 import React from "react";
-import { colorSchemes, defaultIconProps } from "@/utils/_variables";
+import {
+  colorSchemes,
+  defaultIconProps,
+  windowWidth
+} from "@/utils/_variables";
 import { blackColor, whiteColor } from "@/assets/colors";
 import { Share2, Users } from "lucide-react-native";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
-import { useActionContext } from "@/context";
+import { useActionContext, useUserContext } from "@/context";
+import SkeletonLoader from "@/components/_general/SkeletonLoader";
 
 const ReferralCard = () => {
   const { colorScheme } = useActionContext();
-  return (
+  const { userDetails } = useUserContext();
+  return userDetails ? (
     <View
       style={{
         flexDirection: "row",
@@ -60,7 +66,7 @@ const ReferralCard = () => {
             opacity: 0.6
           }}
         >
-          https://staging.foodsoldier.com/register/207487842
+          {userDetails.link}
         </TextComponent>
       </View>
       <Share2
@@ -71,6 +77,31 @@ const ReferralCard = () => {
             : blackColor.default
         }
       />
+    </View>
+  ) : (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 10
+      }}
+    >
+      <SkeletonLoader
+        width={50}
+        height={50}
+        style={{
+          borderRadius: 9000
+        }}
+      />
+
+      <View
+        style={{
+          flex: 1
+        }}
+      >
+        <SkeletonLoader />
+        <SkeletonLoader width={windowWidth * 0.6} />
+      </View>
     </View>
   );
 };

@@ -6,8 +6,10 @@ import InputField from "@/components/_general/form/InputField";
 import Button from "@/components/_general/Button";
 import TextComponent from "@/components/_general/TextComponent";
 import { whiteColor } from "../assets/colors";
+import { useUserContext } from "@/context";
 
 const BankDetails = () => {
+  const { userDetails } = useUserContext();
   return (
     <LoggedInContainer
       hideNav

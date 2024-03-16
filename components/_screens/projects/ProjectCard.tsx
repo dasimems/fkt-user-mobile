@@ -40,14 +40,37 @@ import {
 import { blackColor } from "../../../assets/colors";
 import { useNavigation } from "@react-navigation/native";
 import { useActionContext } from "@/context";
+import { formatText, stripText } from "@/utils/functions";
 
-const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
+const ProjectCard: React.FC<{
+  isDetails?: boolean;
+  name: string;
+  date: Date;
+  image: string;
+  images: string[];
+  amount: string;
+  status: string;
+  id: string;
+  total: number;
+}> = ({ isDetails, name, date, image, images, amount, status, total,, id }) => {
   const { navigate } = useNavigation();
   const { colorScheme } = useActionContext();
   const generalBackgroundColor =
     colorScheme === colorSchemes.dark
       ? primaryColor.default
       : primaryColor.opacity200;
+
+  let statusColor = redColor.default;
+
+  switch (status.toLowerCase()) {
+    case "active":
+      statusColor =
+        colorScheme === colorSchemes.dark
+          ? whiteColor.default
+          : primaryColor.default;
+    default:
+      break;
+  }
   return (
     <View
       style={{
@@ -102,7 +125,9 @@ const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
             onPress={() => {
               if (isDetails) {
               } else {
-                navigate(ScreenNames.ProjectDetails.name as never);
+                navigate({name: ScreenNames.ProjectDetails.name, params: {
+                  id
+                }} as never);
               }
             }}
             style={{
@@ -161,6 +186,7 @@ const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
           }}
         >
           <Image
+            url={image}
             image={ProjectImage}
             type="round"
             innerPadding={3}
@@ -174,7 +200,7 @@ const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
             }}
           >
             <TextComponent fontFamily={Poppins.semiBold.default}>
-              {isDetails ? "The first dummy project" : "The first dummy..."}
+              {isDetails ? name : stripText(name)}
             </TextComponent>
             <TextComponent>2023-04-13</TextComponent>
           </View>
@@ -208,7 +234,7 @@ const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
                 marginTop: 4
               }}
             >
-              100
+              {total}
             </TextComponent>
           </View>
           <View
@@ -223,7 +249,7 @@ const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
               }}
               fontFamily={Poppins.medium.default}
             >
-              $200/
+              {amount}/
             </TextComponent>
 
             <CoinImage width={15} height={15} />
@@ -253,22 +279,9 @@ const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
                 gap: 3
               }}
             >
-              <CheckSquare
-                {...defaultIconProps}
-                color={
-                  colorScheme === colorSchemes.dark
-                    ? whiteColor.default
-                    : primaryColor.default
-                }
-              />
-              <TextComponent
-                color={
-                  colorScheme === colorSchemes.dark
-                    ? whiteColor.default
-                    : primaryColor.default
-                }
-              >
-                Active
+              <CheckSquare {...defaultIconProps} color={statusColor} />
+              <TextComponent color={statusColor}>
+                {formatText(status)}
               </TextComponent>
             </View>
           </View>
@@ -304,29 +317,20 @@ const ProjectCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
               flexDirection: "row"
             }}
           >
-            <Image
-              image={AvatarImage}
-              type="round"
-              innerPadding={3}
-              height={30}
-              width={30}
-              imageStyle={{
-                borderRadius: 9000
-              }}
-            />
-            <Image
-              style={{
-                ...styles.userImagesStyle
-              }}
-              image={AvatarImage}
-              type="round"
-              innerPadding={3}
-              height={30}
-              width={30}
-              imageStyle={{
-                borderRadius: 9000
-              }}
-            />
+            {images.map((image) => (
+              <Image
+                key={image}
+                url={image}
+                image={ProjectImage}
+                type="round"
+                innerPadding={3}
+                height={30}
+                width={30}
+                imageStyle={{
+                  borderRadius: 9000
+                }}
+              />
+            ))}
           </View>
         </View>
       </View>

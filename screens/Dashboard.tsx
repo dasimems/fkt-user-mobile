@@ -8,8 +8,10 @@ import PendingWithdrawal from "@/components/_screens/_general/PendingWithdrawal"
 import ProjectList from "@/components/_screens/_general/ProjectList";
 import AssetList from "@/components/_screens/_general/AssetList";
 import TransactionList from "@/components/_screens/_general/TransactionList";
+import { useUserContext } from "@/context";
 
 const Dashboard = () => {
+  const { balance } = useUserContext();
   return (
     <LoggedInContainer
       headerText="Welcome user"
@@ -26,7 +28,14 @@ const Dashboard = () => {
         <ReferralCard />
       </View>
       <DashboardStats />
-      <PendingWithdrawal />
+
+      {balance && balance?.withdrawal && (
+        <PendingWithdrawal
+          date={balance?.withdrawal?.created_at}
+          amount={balance?.withdrawal?.amount?.display}
+          id={balance?.withdrawal?.id}
+        />
+      )}
       <ProjectList max={3} />
       <AssetList max={3} />
       <TransactionList max={5} />

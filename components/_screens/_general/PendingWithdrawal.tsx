@@ -19,7 +19,11 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useActionContext } from "@/context";
 
-const PendingWithdrawal = () => {
+const PendingWithdrawal: React.FC<{
+  date: Date;
+  amount: string;
+  id: string;
+}> = ({ date, amount, id }) => {
   const { colorScheme } = useActionContext();
   const { navigate } = useNavigation();
   return (
@@ -28,7 +32,8 @@ const PendingWithdrawal = () => {
         navigate({
           name: ScreenNames.TransactionDetails.name,
           params: {
-            type: "pending"
+            type: "pending",
+            id
           }
         } as never);
       }}
@@ -106,7 +111,7 @@ const PendingWithdrawal = () => {
         }}
       >
         <TextComponent color={pendingColor.default} fontSize={13}>
-          $50,000
+          {amount}
         </TextComponent>
         <Clock {...defaultIconProps} size={11} color={pendingColor.default} />
       </View>

@@ -33,14 +33,35 @@ import {
 import { blackColor } from "../../../assets/colors";
 import { useNavigation } from "@react-navigation/native";
 import { useActionContext } from "@/context";
+import { formatText, stripText } from "@/utils/functions";
 
-const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
+const AssetCard: React.FC<{
+  isDetails?: boolean;
+  id: string;
+  status: "active" | "seized";
+  value: number;
+  rate: string;
+  amount: string;
+  title: string;
+  image: string;
+}> = ({ isDetails, id, status, value, rate, amount, title, image }) => {
   const { navigate } = useNavigation();
   const { colorScheme } = useActionContext();
   const generalBackgroundColor =
     colorScheme === colorSchemes.dark
       ? primaryColor.default
       : primaryColor.opacity200;
+  let statusColor = redColor.default;
+
+  switch (status.toLowerCase()) {
+    case "active":
+      statusColor =
+        colorScheme === colorSchemes.dark
+          ? whiteColor.default
+          : primaryColor.default;
+    default:
+      break;
+  }
   return (
     <View
       style={{
@@ -95,7 +116,12 @@ const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
             onPress={() => {
               if (isDetails) {
               } else {
-                navigate(ScreenNames.AssetDetails.name as never);
+                navigate({
+                  name: ScreenNames.AssetDetails.name,
+                  params: {
+                    id
+                  }
+                } as never);
               }
             }}
             style={{
@@ -130,7 +156,7 @@ const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
                   color={
                     colorScheme === colorSchemes.dark
                       ? whiteColor.default
-                      : whiteColor.default
+                      : blackColor.default
                   }
                 />
               </View>
@@ -153,6 +179,7 @@ const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
           }}
         >
           <Image
+            url={image}
             image={ProjectImage}
             type="round"
             innerPadding={3}
@@ -166,7 +193,7 @@ const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
               maxWidth: isDetails ? "68%" : "45%"
             }}
           >
-            {isDetails ? "The first dummy project" : "The first dummy...."}
+            {isDetails ? title : stripText(title)}
           </TextComponent>
         </View>
 
@@ -180,7 +207,7 @@ const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
         >
           <View>
             <TextComponent fontFamily={Poppins.semiBold.default}>
-              10
+              {value}
             </TextComponent>
 
             <View
@@ -190,22 +217,9 @@ const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
                 gap: 3
               }}
             >
-              <CheckSquare
-                {...defaultIconProps}
-                color={
-                  colorScheme === colorSchemes.dark
-                    ? whiteColor.default
-                    : primaryColor.default
-                }
-              />
-              <TextComponent
-                color={
-                  colorScheme === colorSchemes.dark
-                    ? whiteColor.default
-                    : primaryColor.default
-                }
-              >
-                Active
+              <CheckSquare {...defaultIconProps} color={statusColor} />
+              <TextComponent color={statusColor}>
+                {formatText(status)}
               </TextComponent>
             </View>
           </View>
@@ -217,11 +231,26 @@ const AssetCard: React.FC<{ isDetails?: boolean }> = ({ isDetails }) => {
                 gap: 3
               }}
             >
-              <TextComponent color={primaryColor.default}>200%</TextComponent>
-              <MoveUp {...defaultIconProps} color={primaryColor.default} />
+              <TextComponent
+                color={
+                  colorScheme === colorSchemes.dark
+                    ? whiteColor.default
+                    : primaryColor.default
+                }
+              >
+                {rate}
+              </TextComponent>
+              <MoveUp
+                {...defaultIconProps}
+                color={
+                  colorScheme === colorSchemes.dark
+                    ? whiteColor.default
+                    : primaryColor.default
+                }
+              />
             </View>
             <TextComponent fontFamily={Poppins.semiBold.default}>
-              $20.00
+              {amount}
             </TextComponent>
           </View>
         </View>
