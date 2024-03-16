@@ -1,15 +1,10 @@
 import { deleteData, getData, postData, putData } from ".";
 import { requestType } from "./_variables";
-import {
-  AllBodyType,
-  ApiRequestResponseType,
-  ApiURLType,
-  ResponseType,
-} from "./index.d";
+import { ApiRequestResponseType, ApiURLType, ResponseType } from "./index.d";
 
 export const processRequest: (
   api: ApiURLType,
-  data: AllBodyType | undefined
+  data?: any | undefined
 ) => ApiRequestResponseType = (api, data) => {
   return new Promise<ResponseType>((resolve, reject) => {
     if (api.method === requestType.post) {

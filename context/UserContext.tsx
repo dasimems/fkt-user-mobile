@@ -8,21 +8,48 @@ import React, {
 } from "react";
 import { FormProviderTypes } from "@/utils/types";
 import { userInitialValue, userReducer } from "@/reducers";
-import { SET_USER_DETAILS, SET_USER_TOKEN } from "@/utils/_enums";
-import { InitialValueType } from "@/reducers/userReducer";
-import { UserDetailsType } from "@/api/index.d";
+import {
+  RESET_USER_CONTEXT,
+  SET_USER_ASSETS,
+  SET_USER_BALANCE,
+  SET_USER_DETAILS,
+  SET_USER_LINEAR_REFERRALS,
+  SET_USER_PROJECTS,
+  SET_USER_TOKEN,
+  SET_USER_TRANSACTIONS
+} from "@/utils/_enums";
+import {
+  AssetExpectedDataType,
+  InitialValueType,
+  LinearReferralsExpectedDataType,
+  ProjectExpectedDataType,
+  TransactionExpectedDataType
+} from "@/reducers/userReducer";
+import { UserDetailsType, WalletResponseType } from "@/api/index.d";
 import { setHeaderAuthorization } from "@/api";
 import { saveUserToken } from "@/localServices/function";
 
 interface UserContextFunctionTypes {
   setToken: (payload?: string) => void;
+  resetUserContext: () => void;
   setUserDetails: (payload?: UserDetailsType) => void;
+  setUserAssets: (payload?: AssetExpectedDataType) => void;
+  setUserProjects: (payload?: ProjectExpectedDataType) => void;
+  setUserTransactions: (payload?: TransactionExpectedDataType) => void;
+  setUserBalance: (payload?: WalletResponseType) => void;
+  setUserLinearReferrals: (payload?: LinearReferralsExpectedDataType) => void;
 }
 
 const UserContext = createContext<InitialValueType & UserContextFunctionTypes>({
   ...userInitialValue,
   setToken: () => {},
-  setUserDetails: () => {}
+  resetUserContext: () => {},
+  setUserDetails: () => {},
+  setUserAssets: () => {},
+  setUserProjects: () => {},
+  setUserTransactions: () => {},
+  setUserBalance: () => {},
+  setUserLinearReferrals: () => {}
 });
 
 export const UserProvider: React.FC<FormProviderTypes> = ({ children }) => {
@@ -41,6 +68,49 @@ export const UserProvider: React.FC<FormProviderTypes> = ({ children }) => {
     });
   }, []);
 
+  const setUserAssets = useCallback((payload?: AssetExpectedDataType) => {
+    dispatch({
+      type: SET_USER_ASSETS,
+      payload: payload || null
+    });
+  }, []);
+  const setUserProjects = useCallback((payload?: ProjectExpectedDataType) => {
+    dispatch({
+      type: SET_USER_PROJECTS,
+      payload: payload || null
+    });
+  }, []);
+  const setUserTransactions = useCallback(
+    (payload?: TransactionExpectedDataType) => {
+      dispatch({
+        type: SET_USER_TRANSACTIONS,
+        payload: payload || null
+      });
+    },
+    []
+  );
+  const setUserBalance = useCallback((payload?: WalletResponseType) => {
+    dispatch({
+      type: SET_USER_BALANCE,
+      payload: payload || null
+    });
+  }, []);
+  const setUserLinearReferrals = useCallback(
+    (payload?: LinearReferralsExpectedDataType) => {
+      dispatch({
+        type: SET_USER_LINEAR_REFERRALS,
+        payload: payload || null
+      });
+    },
+    []
+  );
+
+  const resetUserContext = useCallback(() => {
+    dispatch({
+      type: RESET_USER_CONTEXT
+    });
+  }, []);
+
   useEffect(() => {
     console.log(state);
     if (state.token) {
@@ -50,7 +120,19 @@ export const UserProvider: React.FC<FormProviderTypes> = ({ children }) => {
   }, [state.token]);
 
   return (
-    <UserContext.Provider value={{ ...state, setToken, setUserDetails }}>
+    <UserContext.Provider
+      value={{
+        ...state,
+        setToken,
+        setUserDetails,
+        resetUserContext,
+        setUserAssets,
+        setUserProjects,
+        setUserTransactions,
+        setUserBalance,
+        setUserLinearReferrals
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

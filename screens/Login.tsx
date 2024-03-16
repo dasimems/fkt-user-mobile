@@ -1,5 +1,5 @@
 import { TouchableOpacity, View, useColorScheme } from "react-native";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import Container from "@/components/_layouts/Container";
 import {
   ScreenNames,
@@ -16,11 +16,62 @@ import { LogInIcon } from "lucide-react-native";
 import { LoginImage } from "@/assets/images";
 import styles from "../utils/styles";
 import { useNavigation } from "@react-navigation/native";
-import { useActionContext } from "@/context";
+import { useActionContext, useUserContext } from "@/context";
+import { LoginBodyType } from "@/api/index.d";
+import { processRequest } from "@/api/functions";
+import { loginApi } from "@/api/url";
+import { saveUserToken, showToast } from "@/localServices/function";
+import { setHeaderAuthorization } from "@/api";
+import useUser from "@/hooks/useUser";
 
 const Login = () => {
   const { colorScheme } = useActionContext();
+  const { setToken } = useUserContext();
+  const { fetchUserDetails } = useUser();
   const { navigate } = useNavigation();
+  const initialValue: LoginBodyType = {
+    email: "",
+    password: ""
+  };
+  const [loginForm, setLoginForm] = useState(initialValue);
+  const [loginFormErr, setLoginFormErr] = useState(initialValue);
+  const [loading, setLoading] = useState(false);
+  const loginUser = useCallback(() => {
+    const { email, password } = loginForm;
+    if (email.length > 0 && password.length > 0) {
+      // navigate(ScreenNames.Dashboard.name as never);
+      setLoading(true);
+      processRequest(loginApi, loginForm)
+        .then((res) => {
+          const token = res?.response?.authentication?.token;
+
+          if (token) {
+            setToken(token);
+            saveUserToken(token);
+            setHeaderAuthorization(token);
+            fetchUserDetails();
+          } else {
+            showToast("Invalid Request - Token error");
+          }
+        })
+        .catch((err) => {
+          showToast(err?.statusText || "Error encountered when logging in");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      let error = initialValue;
+
+      if (email.length < 1) {
+        error.email = "Please provide your email";
+      }
+
+      if (password.length < 1) {
+        error.password = "Please provide your password";
+      }
+    }
+  }, [loginForm]);
   return (
     <Container
       safeView
@@ -76,6 +127,7 @@ const Login = () => {
         }}
       >
         <InputField
+          value={loginForm.email}
           inputStyle={{
             ...styles.inputStyle,
             backgroundColor:
@@ -87,8 +139,21 @@ const Login = () => {
           placeholder="Your email"
           inputMode="email"
           keyboardType="email-address"
+          error={loginFormErr.email}
+          onChangeText={(email) => {
+            setLoginForm((prevState) => ({
+              ...prevState,
+              email
+            }));
+            setLoginFormErr((prevState) => ({
+              ...prevState,
+              email: ""
+            }));
+          }}
         />
         <InputField
+          value={loginForm.password}
+          error={loginFormErr.password}
           inputStyle={{
             ...styles.inputStyle,
             backgroundColor:
@@ -96,14 +161,23 @@ const Login = () => {
                 ? whiteColor.opacity50
                 : styles.inputStyle.backgroundColor
           }}
-          label="Email"
+          label="Password"
           placeholder="Your password"
           secureTextEntry
+          onChangeText={(password) => {
+            setLoginForm((prevState) => ({
+              ...prevState,
+              password
+            }));
+            setLoginFormErr((prevState) => ({
+              ...prevState,
+              password: ""
+            }));
+          }}
         />
         <Button
-          action={() => {
-            navigate(ScreenNames.Dashboard.name as never);
-          }}
+          loading={loading}
+          action={loginUser}
           type="primary"
           style={{
             flexDirection: "row",

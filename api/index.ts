@@ -1,7 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { baseURL } from "./url";
 import {
-  AllBodyType,
   ApiRequestResponseType,
   ErrorResponseType,
   ResponseType
@@ -21,10 +20,10 @@ export const setHeaderAuthorization: (token: string) => void = (token) => {
       api.defaults.headers.common["Authorization"] = `${token}`;
     }
   },
-  postData: (
-    url: string,
-    data: AllBodyType | undefined
-  ) => ApiRequestResponseType = (url, data) => {
+  postData: (url: string, data: any | undefined) => ApiRequestResponseType = (
+    url,
+    data
+  ) => {
     return new Promise<ResponseType>((resolve, reject) => {
       if (data) {
         api
@@ -78,10 +77,10 @@ export const setHeaderAuthorization: (token: string) => void = (token) => {
         });
     });
   },
-  putData: (
-    url: string,
-    data: AllBodyType | undefined
-  ) => ApiRequestResponseType = (url, data) => {
+  putData: (url: string, data: any | undefined) => ApiRequestResponseType = (
+    url,
+    data
+  ) => {
     return new Promise<ResponseType>((resolve, reject) => {
       if (data) {
         api
