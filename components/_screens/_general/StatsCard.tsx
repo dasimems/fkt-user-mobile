@@ -19,7 +19,7 @@ const StatsCard: React.FC<{
   Icon: LucideIcon;
   iconProps?: LucideProps;
   title: string;
-  stat: number;
+  stat: number | string;
   color?: ColorValue;
   titleColor?: ColorValue;
 }> = ({ style, Icon, iconProps, title, stat, color, titleColor }) => {

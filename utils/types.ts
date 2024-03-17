@@ -138,6 +138,8 @@ export interface InputFieldType extends TextInputProps {
   iconSize?: number;
   preventKeyBoardAutoHide?: boolean;
   inputBorderColor?: string;
+  leftContent?: React.ReactNode;
+  rightContent?: React.ReactNode;
   placeholderTextColor?: string;
 }
 

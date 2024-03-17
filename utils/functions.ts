@@ -82,7 +82,7 @@ export const formatSeconds = (sec: number) => {
 
 export const formatText = (text: string) => {
   const formatedText = text
-    ? `${text.slice(0, 1).toUpperCase()} ${text.slice(1)}`
+    ? `${text.slice(0, 1).toUpperCase()}${text.slice(1)}`
     : "";
 
   return formatedText;

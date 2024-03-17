@@ -20,7 +20,11 @@ import { useActionContext, useUserContext } from "@/context";
 import { LoginBodyType } from "@/api/index.d";
 import { processRequest } from "@/api/functions";
 import { loginApi } from "@/api/url";
-import { saveUserToken, showToast } from "@/localServices/function";
+import {
+  openLinkInBrowser,
+  saveUserToken,
+  showToast
+} from "@/localServices/function";
 import { setHeaderAuthorization } from "@/api";
 import useUser from "@/hooks/useUser";
 
@@ -61,7 +65,7 @@ const Login = () => {
           setLoading(false);
         });
     } else {
-      let error = initialValue;
+      let error = { ...initialValue };
 
       if (email.length < 1) {
         error.email = "Please provide your email";
@@ -70,6 +74,10 @@ const Login = () => {
       if (password.length < 1) {
         error.password = "Please provide your password";
       }
+
+      setLoginFormErr((prevState) => ({
+        ...error
+      }));
     }
   }, [loginForm]);
   return (
@@ -175,6 +183,25 @@ const Login = () => {
             }));
           }}
         />
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-end"
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              openLinkInBrowser(
+                "https://staging.foodsoldier.io/forgot-password"
+              );
+            }}
+          >
+            <TextComponent color={primaryColor.default}>
+              Forgot password?
+            </TextComponent>
+          </TouchableOpacity>
+        </View>
         <Button
           loading={loading}
           action={loginUser}

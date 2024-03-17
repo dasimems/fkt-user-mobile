@@ -1,10 +1,11 @@
-import { numberRegExp } from "@/utils/regex";
+import { emailRegExp, numberRegExp } from "@/utils/regex";
 import { deleteSecureData, getSecureData, storeSecureData } from ".";
 import { serviceKeys } from "./variables";
-import { LayoutChangeEvent, Vibration } from "react-native";
+import { LayoutChangeEvent, Share, Vibration } from "react-native";
 import { VibrationTypes } from "@/utils/types";
 import { vibrationLengths } from "@/utils/_variables";
 import Toast, { ToastOptions } from "react-native-root-toast";
+import * as WebBrowser from "expo-web-browser";
 
 export const saveUserToken = (token: string): Promise<void> => {
   return storeSecureData(serviceKeys.token, token);
@@ -118,11 +119,7 @@ export const showToast = (message: string, options?: ToastOptions): void => {
 };
 
 export const validateEmail = (email: string) => {
-  return String(email)
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
+  return String(email).toLowerCase().match(emailRegExp);
 };
 
 export const generateFileBlob = (
@@ -137,10 +134,151 @@ export const generateFileBlob = (
   const name = uri.split("/").pop();
   const match = /\.(\w+)$/.exec(name as string);
   const type = match ? `${expectedMiMeType}/${match[1]}` : `image`;
-  console.log(uri);
+  // console.log(uri);
   return {
     uri,
     name,
     type
   } as unknown as Blob;
+};
+
+export const validateValues: <T>(
+  data: T | any,
+  validation?: {
+    [name: string]:
+      | {
+          required?: boolean;
+          regex?: RegExp;
+          minLength?: number;
+          maxLength?: number;
+          min?: number;
+          max?: number;
+        } & boolean;
+  }
+) => {
+  errors: {
+    [name: string]: string;
+  };
+} | null = (data, validation) => {
+  let error: { [name: string]: string } | null = null;
+
+  if (
+    data &&
+    typeof data === "object" &&
+    validation &&
+    typeof validation === "object"
+  ) {
+    const validationKeys = Object.keys(validation);
+
+    validationKeys.forEach((key: string) => {
+      const value = data[key];
+      const validationValue = validation[key];
+
+      if (validationValue) {
+        if (typeof validationValue !== "object" && !value) {
+          error = {
+            ...error,
+            [key]: `Please provide your ${key}`
+          };
+        } else {
+          if (validationValue.required && !value) {
+            error = {
+              ...error,
+              [key]: `Please provide your ${key}`
+            };
+          } else if (
+            !isNaN(parseInt(value)) &&
+            validationValue.min &&
+            parseInt(value) < validationValue.min
+          ) {
+            error = {
+              ...error,
+              [key]: `Your ${key} must not be less than ${validation.min}`
+            };
+          } else if (
+            !isNaN(parseInt(value)) &&
+            validationValue.max &&
+            parseInt(value) > validationValue.max
+          ) {
+            error = {
+              ...error,
+              [key]: `Your ${key} must not be greater than ${validation.max}`
+            };
+          } else if (
+            validationValue.minLength &&
+            value.length < validationValue.minLength
+          ) {
+            error = {
+              ...error,
+              [key]: `Your ${key} must not be less than ${validation.minLength} characters`
+            };
+          } else if (
+            validationValue.maxLength &&
+            value.length > validationValue.maxLength
+          ) {
+            error = {
+              ...error,
+              [key]: `Your ${key} must not be greater than ${validation.maxLength} characters`
+            };
+          } else if (
+            validationValue.regex &&
+            !validationValue.regex.test(value)
+          ) {
+            error = {
+              ...error,
+              [key]: `Please input a valid ${key}`
+            };
+          }
+        }
+      }
+    });
+  }
+
+  return error;
+};
+
+export const shareContent = async (
+  message: string,
+  url?: string,
+  title?: string
+) => {
+  if (message) {
+    try {
+      const result = await Share.share({
+        message,
+        url,
+        title
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+        } else {
+          // showToast("Error encountered while sharing");
+        }
+      } else if (result.action === Share.dismissedAction) {
+        showToast("Operation canceled by user");
+      }
+    } catch (error) {
+      showToast("Error encountered while sharing");
+    }
+  } else {
+    showToast("No Message passed");
+  }
+};
+export const openLinkInBrowser = (link: string) => {
+  WebBrowser.openBrowserAsync(link).catch((err) => {
+    showToast("Error opening link");
+  });
+};
+
+export const stripPhoneNumber = (number: string) => {
+  let phoneNumber = "";
+
+  if (
+    number.toString().slice(0, 1) === "0" ||
+    number.toString().slice(0, 1) === "+"
+  ) {
+    phoneNumber = number.slice(1);
+  }
+
+  return phoneNumber;
 };

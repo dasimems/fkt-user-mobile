@@ -32,6 +32,7 @@ import ProjectDetails from "@/screens/ProjectDetails";
 import AssetDetails from "@/screens/AssetDetails";
 import { getUserToken } from "@/localServices/function";
 import { setHeaderAuthorization } from "@/api";
+import Moment from "moment";
 import useUser from "@/hooks/useUser";
 
 const Stack = createNativeStackNavigator<any>();
@@ -45,6 +46,7 @@ const MyTheme = {
 };
 
 const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
+  Moment.locale("en");
   const { setColorScheme, appLoaded, setAppLoaded } = useActionContext();
   const { token, setToken } = useUserContext();
   const { fetchUserDetails } = useUser();

@@ -68,6 +68,8 @@ const InputField = forwardRef<TextInput, InputFieldType>(
       inputBorderColor,
       placeholderTextColor,
       onBlur,
+      leftContent,
+      rightContent,
       preventKeyBoardAutoHide,
       ...props
     },
@@ -103,84 +105,74 @@ const InputField = forwardRef<TextInput, InputFieldType>(
             width: "100%",
             position: "relative",
             flexDirection: "row",
-            alignItems: "stretch",
+            gap: rightContent || leftContent ? 10 : 0,
             ...inputParentStyle
           }}
         >
-          {leftIcon && (
-            <IconButton
-              onLayout={(event) => {
-                let { width } = getComponentLayoutProperties(event);
-                setLeftIconWidth(width);
-              }}
-              style={{
-                left: 0,
-                ...styles.generalIconsStyle,
-                ...iconStyle,
-                ...leftIconStyle
-              }}
-              action={leftIconAction}
-            >
-              {leftIcon}
-            </IconButton>
-          )}
-          <TextInput
-            onBlur={(e) => {
-              if (!preventKeyBoardAutoHide) {
-                Keyboard.dismiss();
-              }
-              if (onBlur) {
-                onBlur(e);
-              }
-            }}
-            ref={ref}
-            placeholderTextColor={
-              placeholderTextColor || colorScheme === colorSchemes.dark
-                ? whiteColor.opacity400
-                : blackColor.opacity400
-            }
+          {leftContent}
+          <View
             style={{
-              borderWidth: 1,
-              fontSize: 15,
-              borderColor: error
-                ? redColor.opacity400
-                : inputBorderColor || colorScheme === colorSchemes.dark
-                ? whiteColor.opacity200
-                : blackColor.opacity200,
-              borderRadius: 10,
-              paddingVertical: 20,
-              paddingLeft: leftIcon ? 5 + leftIconWidth : inputPadding,
-              paddingRight: rightIcon ? rightIconWidth : inputPadding,
+              flexDirection: "row",
               flex: 1,
-              color:
-                colorScheme === colorSchemes.dark
-                  ? whiteColor.default
-                  : blackColor.default,
-              ...inputStyle
+              position: "relative",
+              alignItems: "stretch"
             }}
-            secureTextEntry={hidePassword}
-            {...props}
-          />
-          {secureTextEntry && !rightIcon ? (
-            <IconButton
-              onLayout={(event) => {
-                let { width } = getComponentLayoutProperties(event);
-                setRightIconWidth(width);
+          >
+            {leftIcon && (
+              <IconButton
+                onLayout={(event) => {
+                  let { width } = getComponentLayoutProperties(event);
+                  setLeftIconWidth(width);
+                }}
+                style={{
+                  left: 0,
+                  ...styles.generalIconsStyle,
+                  ...iconStyle,
+                  ...leftIconStyle
+                }}
+                action={leftIconAction}
+              >
+                {leftIcon}
+              </IconButton>
+            )}
+            <TextInput
+              onBlur={(e) => {
+                if (!preventKeyBoardAutoHide) {
+                  Keyboard.dismiss();
+                }
+                if (onBlur) {
+                  onBlur(e);
+                }
               }}
+              ref={ref}
+              placeholderTextColor={
+                placeholderTextColor || colorScheme === colorSchemes.dark
+                  ? whiteColor.opacity400
+                  : blackColor.opacity400
+              }
               style={{
-                right: 0,
-                ...styles.generalIconsStyle,
-                ...iconStyle,
-                ...rightIconStyle
+                borderWidth: 1,
+                fontSize: 15,
+                borderColor: error
+                  ? redColor.opacity400
+                  : inputBorderColor || colorScheme === colorSchemes.dark
+                  ? whiteColor.opacity200
+                  : blackColor.opacity200,
+                borderRadius: 10,
+                paddingVertical: 20,
+                paddingLeft: leftIcon ? 5 + leftIconWidth : inputPadding,
+                paddingRight: rightIcon ? rightIconWidth : inputPadding,
+                flex: 1,
+                color:
+                  colorScheme === colorSchemes.dark
+                    ? whiteColor.default
+                    : blackColor.default,
+                ...inputStyle
               }}
-              action={() => {
-                setHidePassword((prevState) => !prevState);
-              }}
-            >
-              <EyeIcon size={iconSize || 30} />
-            </IconButton>
-          ) : (
-            rightIcon && (
+              secureTextEntry={hidePassword}
+              {...props}
+            />
+            {secureTextEntry && !rightIcon ? (
               <IconButton
                 onLayout={(event) => {
                   let { width } = getComponentLayoutProperties(event);
@@ -192,12 +184,33 @@ const InputField = forwardRef<TextInput, InputFieldType>(
                   ...iconStyle,
                   ...rightIconStyle
                 }}
-                action={rightIconAction}
+                action={() => {
+                  setHidePassword((prevState) => !prevState);
+                }}
               >
-                {rightIcon}
+                <EyeIcon size={iconSize || 30} />
               </IconButton>
-            )
-          )}
+            ) : (
+              rightIcon && (
+                <IconButton
+                  onLayout={(event) => {
+                    let { width } = getComponentLayoutProperties(event);
+                    setRightIconWidth(width);
+                  }}
+                  style={{
+                    right: 0,
+                    ...styles.generalIconsStyle,
+                    ...iconStyle,
+                    ...rightIconStyle
+                  }}
+                  action={rightIconAction}
+                >
+                  {rightIcon}
+                </IconButton>
+              )
+            )}
+          </View>
+          {rightContent}
         </View>
         {error && typeof error !== "boolean" && (
           <TextComponent

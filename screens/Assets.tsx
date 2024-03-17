@@ -5,7 +5,11 @@ import AssetList from "@/components/_screens/_general/AssetList";
 
 const Assets = () => {
   return (
-    <LoggedInContainer>
+    <LoggedInContainer
+      contentContainerStyle={{
+        minHeight: "100%"
+      }}
+    >
       <AssetList
         hideTitle
         emptyContainerStyle={{

@@ -13,6 +13,7 @@ import {
   SET_USER_ASSETS,
   SET_USER_BALANCE,
   SET_USER_DETAILS,
+  SET_USER_GENERATION_REFERRALS,
   SET_USER_LINEAR_REFERRALS,
   SET_USER_PROJECTS,
   SET_USER_TOKEN,
@@ -38,6 +39,9 @@ interface UserContextFunctionTypes {
   setUserTransactions: (payload?: TransactionExpectedDataType) => void;
   setUserBalance: (payload?: WalletResponseType) => void;
   setUserLinearReferrals: (payload?: LinearReferralsExpectedDataType) => void;
+  setUserAssistReferral: (payload?: {
+    [name: string]: LinearReferralsExpectedDataType;
+  }) => void;
 }
 
 const UserContext = createContext<InitialValueType & UserContextFunctionTypes>({
@@ -49,7 +53,8 @@ const UserContext = createContext<InitialValueType & UserContextFunctionTypes>({
   setUserProjects: () => {},
   setUserTransactions: () => {},
   setUserBalance: () => {},
-  setUserLinearReferrals: () => {}
+  setUserLinearReferrals: () => {},
+  setUserAssistReferral: () => {}
 });
 
 export const UserProvider: React.FC<FormProviderTypes> = ({ children }) => {
@@ -104,6 +109,15 @@ export const UserProvider: React.FC<FormProviderTypes> = ({ children }) => {
     },
     []
   );
+  const setUserAssistReferral = useCallback(
+    (payload?: { [name: string]: LinearReferralsExpectedDataType }) => {
+      dispatch({
+        type: SET_USER_GENERATION_REFERRALS,
+        payload: payload || null
+      });
+    },
+    []
+  );
 
   const resetUserContext = useCallback(() => {
     dispatch({
@@ -112,7 +126,7 @@ export const UserProvider: React.FC<FormProviderTypes> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log(state);
+    // console.log(state);
     if (state.token) {
       setHeaderAuthorization(state.token);
       saveUserToken(state.token);
@@ -130,7 +144,8 @@ export const UserProvider: React.FC<FormProviderTypes> = ({ children }) => {
         setUserProjects,
         setUserTransactions,
         setUserBalance,
-        setUserLinearReferrals
+        setUserLinearReferrals,
+        setUserAssistReferral
       }}
     >
       {children}

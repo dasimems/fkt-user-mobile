@@ -140,8 +140,15 @@ export interface LoginBodyType {
   email: string;
   password: string;
 }
+export interface LoginResponseType {
+  message: string;
+  authentication: AuthenticationType & {
+    user: UserDetailsType;
+  };
+}
+export interface SignUpResponseType extends LoginResponseType {}
 
-export interface RegisterBodyType {
+export interface SignupBodyType {
   name: string;
   username: string;
   email: string;
@@ -153,14 +160,39 @@ export interface RegisterBodyType {
   password: string;
   password_confirmation: string;
 }
-
-export interface LoginResponseType {
-  message: string;
-  authentication: AuthenticationType & {
-    user: UserDetailsType;
-  };
+export interface UpdateProfileBodyType {
+  name: string;
+  email: string;
+  phone: string;
 }
-export interface SignUpResponseType extends LoginResponseType {}
+export interface UpdateBankDetailsBodyType {
+  account_name: string;
+  account_number: string;
+  account_bank: string;
+}
+export interface UpdatePasswordBodyType {
+  current_password: string;
+  password: string;
+  password_confirmation: string;
+}
+
+export interface DepositBodyType {
+  amount: string;
+}
+export interface WithdrawalBodyType {
+  amount: string;
+  note: string;
+}
+export interface TransferBodyType {
+  amount: string;
+  remarks: string;
+  email: string;
+  password: string;
+}
+
+export interface FetchUserDetailsResponseType {
+  data: UserDetailsType;
+}
 
 export interface WalletResponseType {
   wallet: {
@@ -177,7 +209,7 @@ export interface AssetsResponseType {
   meta: ResponseMetaType;
 }
 export interface ProjectsResponseType {
-  assets: ProjectType[];
+  projects: ProjectType[];
   links: ResponseLinkType;
   meta: ResponseMetaType;
 }
@@ -229,10 +261,11 @@ export interface ApiErrorType {
 
 export type AllResponseType = LoginResponseType &
   SignUpResponseType &
-  UserDetailsType &
+  FetchUserDetailsResponseType &
   WalletResponseType &
   AssetsResponseType &
   ProjectResponseType &
+  ProjectsResponseType &
   TransactionResponseType &
   TransactionsResponseType &
   AssetResponseType &

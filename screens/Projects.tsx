@@ -5,7 +5,11 @@ import ProjectList from "@/components/_screens/_general/ProjectList";
 
 const Projects = () => {
   return (
-    <LoggedInContainer>
+    <LoggedInContainer
+      contentContainerStyle={{
+        minHeight: "100%"
+      }}
+    >
       <ProjectList
         hideTitle
         emptyContainerStyle={{

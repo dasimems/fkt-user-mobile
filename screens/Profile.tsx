@@ -176,8 +176,8 @@ const Profile = () => {
                 onPress={() => {
                   setLogoutLoading(true);
                   logoutUser()
-                    .then((res) => {
-                      deleteUserRecord();
+                    ?.then((res) => {
+                      return deleteUserRecord();
                     })
                     .catch((err) => {
                       showToast(err?.statusText || "Unable to logout user");
@@ -209,7 +209,7 @@ const Profile = () => {
             height: windowHeight,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: blackColor.opacity300,
+            backgroundColor: blackColor.opacity700,
             position: "absolute",
             left: 0,
             top: 0,

@@ -3,8 +3,10 @@ import React from "react";
 import { primaryColor, whiteColor } from "@/assets/colors";
 import StatsCard from "../_general/StatsCard";
 import { Component, Folder, Wallet } from "lucide-react-native";
+import { useUserContext } from "@/context";
 
 const ProfileStats = () => {
+  const { projects, assets, balance } = useUserContext();
   return (
     <View
       style={{
@@ -20,7 +22,7 @@ const ProfileStats = () => {
         titleColor={whiteColor.default}
         Icon={Folder}
         title="Projects"
-        stat={0}
+        stat={projects.total || 0}
         style={{
           ...styles.statStyle,
           borderRightWidth: 1,
@@ -32,7 +34,7 @@ const ProfileStats = () => {
         titleColor={whiteColor.default}
         Icon={Component}
         title="Assets"
-        stat={0}
+        stat={assets.total || 0}
         style={{
           ...styles.statStyle,
           borderRightWidth: 1,
@@ -44,7 +46,7 @@ const ProfileStats = () => {
         titleColor={whiteColor.default}
         Icon={Wallet}
         title="Balance"
-        stat={0}
+        stat={balance?.wallet.balance?.display || 0}
         style={{
           ...styles.statStyle
         }}

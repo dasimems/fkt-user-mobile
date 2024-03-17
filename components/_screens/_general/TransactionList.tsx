@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ViewStyle } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import TransactionCard from "./TransactionCard";
@@ -8,6 +8,7 @@ import SkeletonLoader from "@/components/_general/SkeletonLoader";
 import { windowWidth } from "@/utils/_variables";
 import EmptyContainer from "@/components/_layouts/EmptyContainer";
 import { EmptyTransactionsLottieAnimation } from "@/assets/lottie";
+import useUser from "@/hooks/useUser";
 
 const TransactionList: React.FC<{
   max?: number;
@@ -20,7 +21,12 @@ const TransactionList: React.FC<{
   title = "Recent Transactions",
   emptyContainerStyle
 }) => {
-  const { transactions } = useUserContext();
+  const { transactions, userDetails } = useUserContext();
+  const { fetchUserTransactions } = useUser();
+
+  useEffect(() => {
+    fetchUserTransactions();
+  }, []);
   return (
     <View
       style={{
@@ -43,10 +49,11 @@ const TransactionList: React.FC<{
         ) : (
           transactions.data
             .slice(0, max)
-            .map(({ type, created_at, title, amount }, index) => (
+            .map(({ type, created_at, id, title, amount }, index) => (
               <TransactionCard
+                id={id}
                 type={type}
-                date={"30 sunday April 2023"}
+                date={((created_at as any) * 1000) as unknown as Date}
                 description={title}
                 price={amount?.display}
                 key={index}
@@ -73,7 +80,8 @@ const TransactionList: React.FC<{
 
             <View
               style={{
-                flex: 1
+                flex: 1,
+                gap: 7
               }}
             >
               <SkeletonLoader width={windowWidth * 0.4} />

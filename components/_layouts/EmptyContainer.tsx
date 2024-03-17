@@ -21,7 +21,7 @@ const EmptyContainer: React.FC<{
     >
       <LottieView
         source={animation || EmptyAssetsLottieAnimation}
-        style={{ width: 50, height: 50, ...animationStyle }}
+        style={{ width: 120, height: 120, ...animationStyle }}
         autoPlay
         loop
       />

@@ -10,6 +10,7 @@ import { blackColor, pendingColor, whiteColor } from "@/assets/colors";
 import {
   ScreenNames,
   colorSchemes,
+  dateFormat,
   defaultIconProps
 } from "@/utils/_variables";
 import { Clock, Info } from "lucide-react-native";
@@ -18,6 +19,7 @@ import { Poppins } from "@/assets/fonts";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useActionContext } from "@/context";
+import moment from "moment";
 
 const PendingWithdrawal: React.FC<{
   date: Date;
@@ -99,7 +101,7 @@ const PendingWithdrawal: React.FC<{
             opacity: 0.6
           }}
         >
-          25 Sunday June 2023
+          {moment(date).format(dateFormat)}
         </TextComponent>
       </View>
 

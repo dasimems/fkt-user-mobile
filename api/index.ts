@@ -17,7 +17,8 @@ const api = axios.create({
 
 export const setHeaderAuthorization: (token: string) => void = (token) => {
     if (token) {
-      api.defaults.headers.common["Authorization"] = `${token}`;
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
   },
   postData: (url: string, data: any | undefined) => ApiRequestResponseType = (

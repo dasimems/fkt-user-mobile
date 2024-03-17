@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReferralContainer from "@/components/_layouts/ReferralContainer";
 import { backgroundColor, backgroundColorDark } from "@/assets/colors";
 import ScrollComponent from "@/components/_general/ScrollComponent";
@@ -12,17 +12,35 @@ import {
 import GenerationCard from "@/components/_screens/referrals/GenerationCard";
 import ReferralCard from "@/components/_screens/referrals/ReferralCard";
 import { AvatarImage } from "@/assets/images";
-import { useActionContext } from "@/context";
+import { useActionContext, useUserContext } from "@/context";
 import { ReferralType } from "@/api/index.d";
 import SkeletonLoader from "@/components/_general/SkeletonLoader";
 import EmptyContainer from "@/components/_layouts/EmptyContainer";
+import useUser from "@/hooks/useUser";
+import { EmptyReferrersLottieAnimation } from "@/assets/lottie";
 
 const AssistReferrals = () => {
+  const { generationReferrals, userDetails } = useUserContext();
+  const { fetchUserAssistReferrersStat, fetchUserAssistReferrers } = useUser();
   const [activeReferralList, setActiveReferralList] = useState(
     ReferralGenerations.First
   );
   const [referrers, setReferrers] = useState<ReferralType[] | null>(null);
   const { colorScheme } = useActionContext();
+
+  useEffect(() => {
+    fetchUserAssistReferrersStat();
+  }, []);
+
+  useEffect(() => {
+    fetchUserAssistReferrers(activeReferralList.value);
+  }, [activeReferralList]);
+
+  useEffect(() => {
+    const referrers =
+      generationReferrals[activeReferralList.value]?.data || null;
+    setReferrers(referrers);
+  }, [activeReferralList, generationReferrals, userDetails]);
   return (
     <View
       style={{
@@ -45,7 +63,7 @@ const AssistReferrals = () => {
             <GenerationCard
               value={data.value}
               label={data.label}
-              stat={0}
+              stat={generationReferrals[data.value]?.total || 0}
               onChange={() => {
                 setActiveReferralList(data);
               }}
@@ -65,6 +83,10 @@ const AssistReferrals = () => {
         {referrers ? (
           referrers.length < 1 ? (
             <EmptyContainer
+              animation={EmptyReferrersLottieAnimation}
+              containerStyle={{
+                flex: 1
+              }}
               text={`Sorry! You have no ${activeReferralList.label} referrals`}
             />
           ) : (
@@ -73,10 +95,10 @@ const AssistReferrals = () => {
                 minHeight: 0
               }}
             >
-              {referrers.map(({ email, name }, index) => (
+              {referrers.map(({ email, name, avatar }, index) => (
                 <ReferralCard
                   key={index}
-                  image={AvatarImage}
+                  image={avatar}
                   name={name}
                   email={email}
                 />
@@ -84,34 +106,40 @@ const AssistReferrals = () => {
             </ScrollComponent>
           )
         ) : (
-          new Array(6).fill(0).map((_, index) => (
-            <View
-              key={index}
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 10
-              }}
-            >
-              <SkeletonLoader
-                width={50}
-                height={50}
-                style={{
-                  borderRadius: 9000
-                }}
-              />
-
+          <View
+            style={{
+              gap: 20
+            }}
+          >
+            {new Array(6).fill(0).map((_, index) => (
               <View
+                key={index}
                 style={{
-                  flex: 1
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 10
                 }}
               >
-                <SkeletonLoader width={windowWidth * 0.4} />
-                <SkeletonLoader />
+                <SkeletonLoader
+                  width={50}
+                  height={50}
+                  style={{
+                    borderRadius: 9000
+                  }}
+                />
+
+                <View
+                  style={{
+                    flex: 1,
+                    gap: 7
+                  }}
+                >
+                  <SkeletonLoader width={windowWidth * 0.4} />
+                  <SkeletonLoader />
+                </View>
               </View>
-              <SkeletonLoader width={40} />
-            </View>
-          ))
+            ))}
+          </View>
         )}
       </View>
     </View>

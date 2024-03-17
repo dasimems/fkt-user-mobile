@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LoggedInContainer from "@/components/_layouts/LoggedInContainer";
 import InnerScreenHeader from "@/components/_screens/_general/InnerScreenHeader";
 import ProjectCard from "@/components/_screens/projects/ProjectCard";
@@ -20,17 +20,47 @@ import DetailsCard from "@/components/_screens/_general/DetailsCard";
 import { useActionContext } from "@/context";
 import {
   colorSchemes,
+  dateFormat,
   innerPadding,
   padding,
   windowWidth
 } from "@/utils/_variables";
 import { ProjectType } from "@/api/index.d";
 import SkeletonLoader from "@/components/_general/SkeletonLoader";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute
+} from "@react-navigation/native";
+import { processRequest } from "@/api/functions";
+import { getUserProjectsDetailsApi } from "@/api/url";
+import { showToast } from "@/localServices/function";
+import moment from "moment";
 
 const ProjectDetails = () => {
+  const { params }: { params?: { id?: string } } = useRoute();
+  const { goBack } = useNavigation();
+  const isFocused = useIsFocused();
   const [chartWidth, setChartWidth] = useState(0);
   const { colorScheme } = useActionContext();
   const [details, setDetails] = useState<ProjectType | null>(null);
+
+  useEffect(() => {
+    if (isFocused) {
+      if (!params?.id) {
+        goBack();
+      } else {
+        processRequest(getUserProjectsDetailsApi(params?.id))
+          .then((res) => {
+            const project = res.response.data || null;
+            setDetails(project);
+          })
+          .catch((err) => {
+            showToast(err?.statusText);
+          });
+      }
+    }
+  }, [isFocused, params]);
   return (
     <LoggedInContainer
       hideNav
@@ -237,14 +267,14 @@ const ProjectDetails = () => {
         ) : (
           <View
             style={{
-              gap: 2
+              gap: 10
             }}
           >
             {new Array(4).fill(0).map((_, index) => (
               <SkeletonLoader
                 key={index}
                 width={windowWidth - padding * 2 - innerPadding * 2}
-                height={2}
+                height={6}
               />
             ))}
           </View>
@@ -287,8 +317,14 @@ const ProjectDetails = () => {
               title="Revenue generated"
               value={details?.revenue?.display}
             />
-            <DetailsCard title="Start date" value="13 Thursday, April 2023" />
-            <DetailsCard title="End date" value="13 Thursday, April 2023" />
+            <DetailsCard
+              title="Start date"
+              value={moment(details?.starts_at).format(dateFormat)}
+            />
+            <DetailsCard
+              title="End date"
+              value={moment(details?.ends_at).format(dateFormat)}
+            />
             <DetailsCard title="Growth percentage" value={`${details?.rate}`} />
           </>
         ) : (

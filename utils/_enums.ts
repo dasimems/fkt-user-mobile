@@ -3,6 +3,11 @@ export const APP_LOADED = "APP_LOADED",
 
 export type ActionsType = "APP_LOADED" | "SET_COLOR_SCHEME";
 
+export const SET_CHATS = "SET_CHATS",
+  ADD_CHAT = "ADD_CHAT";
+
+export type ChatType = "SET_CHATS" | "ASS_CHATS";
+
 export const SET_PHONE_NUMBER = "SET_PHONE_NUMBER",
   SET_PIN = "SET_PIN",
   SET_PASSWORD = "SET_PASSWORD";

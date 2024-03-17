@@ -52,7 +52,7 @@ const ProjectCard: React.FC<{
   status: string;
   id: string;
   total: number;
-}> = ({ isDetails, name, date, image, images, amount, status, total,, id }) => {
+}> = ({ isDetails, name, date, image, images, amount, status, total, id }) => {
   const { navigate } = useNavigation();
   const { colorScheme } = useActionContext();
   const generalBackgroundColor =
@@ -125,9 +125,12 @@ const ProjectCard: React.FC<{
             onPress={() => {
               if (isDetails) {
               } else {
-                navigate({name: ScreenNames.ProjectDetails.name, params: {
-                  id
-                }} as never);
+                navigate({
+                  name: ScreenNames.ProjectDetails.name,
+                  params: {
+                    id
+                  }
+                } as never);
               }
             }}
             style={{

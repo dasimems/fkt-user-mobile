@@ -1,4 +1,10 @@
-import { StyleSheet, Text, View, useColorScheme } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  useColorScheme
+} from "react-native";
 import React from "react";
 import {
   colorSchemes,
@@ -11,12 +17,20 @@ import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import { useActionContext, useUserContext } from "@/context";
 import SkeletonLoader from "@/components/_general/SkeletonLoader";
+import { shareContent } from "@/localServices/function";
 
 const ReferralCard = () => {
   const { colorScheme } = useActionContext();
   const { userDetails } = useUserContext();
   return userDetails ? (
-    <View
+    <TouchableOpacity
+      onPress={() => {
+        shareContent(
+          userDetails?.link,
+          userDetails?.link,
+          "Your Foodsoldier referral url"
+        );
+      }}
       style={{
         flexDirection: "row",
         alignItems: "center",
@@ -77,7 +91,7 @@ const ReferralCard = () => {
             : blackColor.default
         }
       />
-    </View>
+    </TouchableOpacity>
   ) : (
     <View
       style={{
@@ -96,7 +110,8 @@ const ReferralCard = () => {
 
       <View
         style={{
-          flex: 1
+          flex: 1,
+          gap: 7
         }}
       >
         <SkeletonLoader />

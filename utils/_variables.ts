@@ -20,6 +20,13 @@ export const padding = 20,
   nav = "nav",
   profile = "profile",
   referral = "referral",
+  dateFormat = "DD dddd MMMM YYYY",
+  generalError = "Something went wrong! Please try again later",
+  fireStoreKeys = {
+    chats: "Chats",
+    settings: "Settings",
+    users: "Users"
+  },
   vibrationLengths = {
     short: 1000,
     medium: 3000,
@@ -239,7 +246,7 @@ export const padding = 20,
       label: "Third generation"
     },
     Fourth: {
-      value: "fourth",
+      value: "forth",
       label: "Fourth generation"
     },
     Fifth: {

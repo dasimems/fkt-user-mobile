@@ -54,13 +54,15 @@ const ReferralCard: React.FC<{
         <TextComponent fontFamily={Poppins.semiBold.default}>
           {name}
         </TextComponent>
-        <TextComponent
-          style={{
-            opacity: 0.6
-          }}
-        >
-          {email}
-        </TextComponent>
+        {email && (
+          <TextComponent
+            style={{
+              opacity: 0.6
+            }}
+          >
+            {email}
+          </TextComponent>
+        )}
       </View>
     </View>
   );

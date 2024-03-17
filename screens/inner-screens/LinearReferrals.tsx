@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import ReferralContainer from "@/components/_layouts/ReferralContainer";
 import { backgroundColor, backgroundColorDark } from "@/assets/colors";
 import ReferralCard from "@/components/_screens/referrals/ReferralCard";
@@ -9,10 +9,16 @@ import { useActionContext, useUserContext } from "@/context";
 import { colorSchemes, windowWidth } from "@/utils/_variables";
 import EmptyContainer from "@/components/_layouts/EmptyContainer";
 import SkeletonLoader from "@/components/_general/SkeletonLoader";
+import useUser from "@/hooks/useUser";
 
 const LinearReferrals: React.FC = () => {
   const { colorScheme } = useActionContext();
-  const { linearReferrals } = useUserContext();
+  const { linearReferrals, userDetails } = useUserContext();
+  const { fetchUserLinearReferrers } = useUser();
+
+  useEffect(() => {
+    fetchUserLinearReferrers();
+  }, []);
   return (
     <View
       style={{
@@ -32,10 +38,10 @@ const LinearReferrals: React.FC = () => {
               minHeight: 0
             }}
           >
-            {linearReferrals.data.map(({ email, name }, index) => (
+            {linearReferrals.data.map(({ email, name, avatar }, index) => (
               <ReferralCard
                 key={index}
-                image={AvatarImage}
+                image={avatar}
                 name={name}
                 email={email}
               />
@@ -43,34 +49,40 @@ const LinearReferrals: React.FC = () => {
           </ScrollComponent>
         )
       ) : (
-        new Array(6).fill(0).map((_, index) => (
-          <View
-            key={index}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 10
-            }}
-          >
-            <SkeletonLoader
-              width={50}
-              height={50}
-              style={{
-                borderRadius: 9000
-              }}
-            />
-
+        <View
+          style={{
+            gap: 20
+          }}
+        >
+          {new Array(10).fill(0).map((_, index) => (
             <View
+              key={index}
               style={{
-                flex: 1
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 10
               }}
             >
-              <SkeletonLoader width={windowWidth * 0.4} />
-              <SkeletonLoader />
+              <SkeletonLoader
+                width={50}
+                height={50}
+                style={{
+                  borderRadius: 9000
+                }}
+              />
+
+              <View
+                style={{
+                  flex: 1,
+                  gap: 7
+                }}
+              >
+                <SkeletonLoader width={windowWidth * 0.4} />
+                <SkeletonLoader />
+              </View>
             </View>
-            <SkeletonLoader width={40} />
-          </View>
-        ))
+          ))}
+        </View>
       )}
     </View>
   );

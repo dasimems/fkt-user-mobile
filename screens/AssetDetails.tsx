@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LoggedInContainer from "@/components/_layouts/LoggedInContainer";
 import AssetCard from "@/components/_screens/assets/AssetCard";
 import TextComponent from "@/components/_general/TextComponent";
@@ -15,20 +15,44 @@ import {
 } from "@/assets/colors";
 import { LineChart } from "react-native-chart-kit";
 import DetailsCard from "@/components/_screens/_general/DetailsCard";
-import { useActionContext } from "@/context";
+import { useActionContext, useUserContext } from "@/context";
 import {
   colorSchemes,
+  dateFormat,
   innerPadding,
   padding,
   windowWidth
 } from "@/utils/_variables";
 import { AssetType } from "@/api/index.d";
 import SkeletonLoader from "@/components/_general/SkeletonLoader";
+import {
+  useRoute,
+  useIsFocused,
+  useNavigation
+} from "@react-navigation/native";
+import moment from "moment";
 
 const AssetDetails = () => {
+  const { params }: { params?: { id?: string } } = useRoute();
+  const { goBack } = useNavigation();
+  const isFocused = useIsFocused();
+  const { assets } = useUserContext();
   const [chartWidth, setChartWidth] = useState(0);
   const { colorScheme } = useActionContext();
   const [details, setDetails] = useState<AssetType | null>(null);
+  useEffect(() => {
+    if (isFocused) {
+      if (!params?.id) {
+        goBack();
+      } else {
+        if (assets.data) {
+          const asset =
+            assets.data.find((asset) => asset.id === params.id) || null;
+          setDetails(asset);
+        }
+      }
+    }
+  }, [isFocused, params, assets]);
   return (
     <LoggedInContainer
       hideNav
@@ -158,14 +182,14 @@ const AssetDetails = () => {
         ) : (
           <View
             style={{
-              gap: 2
+              gap: 10
             }}
           >
             {new Array(4).fill(0).map((_, index) => (
               <SkeletonLoader
                 key={index}
                 width={windowWidth - padding * 2 - innerPadding * 2}
-                height={2}
+                height={6}
               />
             ))}
           </View>
@@ -201,7 +225,10 @@ const AssetDetails = () => {
               title="Purchased price"
               value={`$${details?.price_before}`}
             />
-            <DetailsCard title="Purchased at" value="13 Thursday, April 2023" />
+            <DetailsCard
+              title="Purchased at"
+              value={moment(details?.purchased_at).format(dateFormat)}
+            />
             <DetailsCard
               title="Current price"
               value={details?.project?.revenue?.display}

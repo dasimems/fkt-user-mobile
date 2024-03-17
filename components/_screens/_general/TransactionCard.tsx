@@ -5,10 +5,11 @@ import {
   View,
   useColorScheme
 } from "react-native";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   ScreenNames,
   colorSchemes,
+  dateFormat,
   defaultIconProps
 } from "@/utils/_variables";
 import {
@@ -17,20 +18,24 @@ import {
   redColor,
   whiteColor
 } from "@/assets/colors";
+// import InView from "react-native-component-inview";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import { ArrowDown, ArrowUp, Banknote } from "lucide-react-native";
 import { textColor } from "../../../assets/colors";
 import { useNavigation } from "@react-navigation/native";
 import { useActionContext } from "@/context";
+import moment from "moment";
 
 const TransactionCard: React.FC<{
   type?: "debit" | "credit";
   description: string;
-  date: string;
+  date: Date;
   price: string;
-}> = ({ type, description, date, price }) => {
+  id: string;
+}> = ({ type, description, date, price, id }) => {
   const { colorScheme } = useActionContext();
+  const touchableRef = useRef<TouchableOpacity>(null);
   let textColor =
     colorScheme === colorSchemes.dark ? redColor.default : redColor.opacity600;
   const { navigate } = useNavigation();
@@ -45,13 +50,16 @@ const TransactionCard: React.FC<{
     default:
       break;
   }
+
   return (
     <TouchableOpacity
+      ref={touchableRef}
       onPress={() => {
         navigate({
           name: ScreenNames.TransactionDetails.name,
           params: {
-            type
+            type,
+            id
           }
         } as never);
       }}
@@ -89,7 +97,7 @@ const TransactionCard: React.FC<{
             opacity: 0.6
           }}
         >
-          {date}
+          {moment(date).format(dateFormat)}
         </TextComponent>
       </View>
       <View

@@ -3,9 +3,9 @@ import {
   Text,
   View,
   ViewStyle,
-  useColorScheme,
+  useColorScheme
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { colorSchemes, windowWidth } from "@/utils/_variables";
 import TextComponent from "@/components/_general/TextComponent";
 import { blackColor, whiteColor } from "@/assets/colors";
@@ -14,20 +14,26 @@ import { useActionContext, useUserContext } from "@/context";
 import SkeletonLoader from "@/components/_general/SkeletonLoader";
 import { CautionImage } from "@/assets/images";
 import Caution from "../_general/Caution";
+import useUser from "@/hooks/useUser";
 
 const DashboardBalance: React.FC<{ style?: ViewStyle }> = ({ style }) => {
   const { colorScheme } = useActionContext();
-  const { balance } = useUserContext();
+  const { balance, userDetails } = useUserContext();
+  const { fetchBalance } = useUser();
+
+  useEffect(() => {
+    fetchBalance();
+  }, []);
   return (
     <View
       style={{
-        ...style,
+        ...style
       }}
     >
       <TextComponent
         textAlign="center"
         style={{
-          opacity: 0.6,
+          opacity: 0.6
         }}
       >
         Wallet balance
@@ -44,6 +50,8 @@ const DashboardBalance: React.FC<{ style?: ViewStyle }> = ({ style }) => {
         <View
           style={{
             alignItems: "center",
+            marginTop: 10,
+            marginBottom: 10
           }}
         >
           <SkeletonLoader />

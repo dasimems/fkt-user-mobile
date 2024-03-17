@@ -1,4 +1,6 @@
-import { windowWidth } from "@/utils/_variables";
+import { blackColor, whiteColor } from "@/assets/colors";
+import { useActionContext } from "@/context";
+import { colorSchemes, windowWidth } from "@/utils/_variables";
 import React from "react";
 import { View, StyleSheet, ViewStyle } from "react-native";
 import Animated, {
@@ -16,21 +18,24 @@ const SkeletonLoader: React.FC<{
 }> = ({ width = windowWidth * 0.3, height = 10, style }) => {
   const skeletonWidth = useSharedValue(100); // Default width
   const skeletonHeight = useSharedValue(20); // Default height
-  const opacity = useSharedValue(0); // Default opacity
+  const opacity = useSharedValue(0.3); // Default opacity
+  const { colorScheme } = useActionContext();
 
   // Adjust width and height when props change
   React.useEffect(() => {
     skeletonWidth.value = withSpring(width || 100);
     skeletonHeight.value = withSpring(height || 20);
-    opacity.value = withRepeat(withTiming(1, { duration: 500 }), -1);
+    opacity.value = withRepeat(withTiming(1, { duration: 2000 }), -1);
   }, [width, height]);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
       width: skeletonWidth.value,
       height: skeletonHeight.value,
-      backgroundColor: "#E0E0E0", // Placeholder color
-      borderRadius: 15,
+      backgroundColor:
+        colorScheme === colorSchemes?.dark
+          ? whiteColor.opacity200
+          : blackColor.opacity200,
       opacity: opacity.value
     };
   });
@@ -43,7 +48,9 @@ const SkeletonLoader: React.FC<{
 };
 
 const styles = StyleSheet.create({
-  skeleton: {}
+  skeleton: {
+    borderRadius: 15
+  }
 });
 
 export default SkeletonLoader;

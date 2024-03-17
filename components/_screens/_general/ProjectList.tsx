@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ViewStyle } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import ProjectCard from "../projects/ProjectCard";
@@ -8,6 +8,7 @@ import EmptyContainer from "@/components/_layouts/EmptyContainer";
 import SkeletonLoader from "@/components/_general/SkeletonLoader";
 import { innerPadding, padding, windowWidth } from "@/utils/_variables";
 import { EmptyProjectsLottieAnimation } from "@/assets/lottie";
+import useUser from "@/hooks/useUser";
 
 const ProjectList: React.FC<{
   max?: number;
@@ -15,11 +16,17 @@ const ProjectList: React.FC<{
   title?: string;
   emptyContainerStyle?: ViewStyle;
 }> = ({ max, hideTitle, title = "Latest projects", emptyContainerStyle }) => {
-  const { projects } = useUserContext();
+  const { projects, userDetails } = useUserContext();
+  const { fetchUserProjects } = useUser();
+
+  useEffect(() => {
+    fetchUserProjects();
+  }, []);
   return (
     <View
       style={{
-        gap: 20
+        gap: 20,
+        flex: 1
       }}
     >
       {!hideTitle && (

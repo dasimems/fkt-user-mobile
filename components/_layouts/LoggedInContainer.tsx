@@ -43,7 +43,7 @@ import HeaderDropdownButton from "../_general/HeaderDropdownButton";
 import { useActionContext } from "@/context";
 
 const defaultBorderRadius = 30;
-const defaultIconSize = 25;
+const defaultIconSize = 28;
 
 const Header: React.FC<{ headerText: string; hideBackArrow?: boolean }> = ({
   headerText,

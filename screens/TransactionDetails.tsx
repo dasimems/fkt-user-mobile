@@ -8,7 +8,11 @@ import {
 import React, { useEffect, useState } from "react";
 import LoggedInContainer from "@/components/_layouts/LoggedInContainer";
 import InnerScreenHeader from "@/components/_screens/_general/InnerScreenHeader";
-import { useRoute, useIsFocused, useNavigation } from "@react-navigation/native";
+import {
+  useRoute,
+  useIsFocused,
+  useNavigation
+} from "@react-navigation/native";
 import {
   blackColor,
   pendingColor,
@@ -20,6 +24,7 @@ import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import {
   colorSchemes,
+  dateFormat,
   defaultIconProps,
   innerPadding,
   padding,
@@ -30,6 +35,7 @@ import { useActionContext, useUserContext } from "@/context";
 import { TransactionType, WithdrawalType } from "@/api/index.d";
 import SkeletonLoader from "@/components/_general/SkeletonLoader";
 import { formatText } from "@/utils/functions";
+import moment from "moment";
 
 const Details: React.FC<{ title: string; value: string }> = ({
   title,
@@ -71,9 +77,9 @@ const TransactionDetails = () => {
     params
   }: { params?: { type?: "debit" | "credit" | "pending"; id?: string } } =
     useRoute();
-    const {goBack} = useNavigation();
+  const { goBack } = useNavigation();
   const { colorScheme } = useActionContext();
-  const {transactions, balance} = useUserContext();
+  const { transactions, balance } = useUserContext();
   const isFocused = useIsFocused();
   const [details, setDetails] = useState<
     (WithdrawalType & TransactionType) | null
@@ -93,25 +99,22 @@ const TransactionDetails = () => {
       break;
   }
 
-  useEffect(()=>{
-
-    if(isFocused){
-      if(params?.type && params?.id && transactions){
-
-        if(params?.type?.toLowerCase() === "pending"){
-          setDetails(balance?.withdrawal as (WithdrawalType & TransactionType))
-
-        }else{
-
-          const tDetails =  transactions.data?.find(transaction => transaction.id === params?.id)  as (WithdrawalType & TransactionType)
-          setDetails(tDetails)
+  useEffect(() => {
+    if (isFocused) {
+      if (params?.type && params?.id && transactions) {
+        if (params?.type?.toLowerCase() === "pending") {
+          setDetails(balance?.withdrawal as WithdrawalType & TransactionType);
+        } else {
+          const tDetails = transactions.data?.find(
+            (transaction) => transaction.id === params?.id
+          ) as WithdrawalType & TransactionType;
+          setDetails(tDetails);
         }
-      }else{
+      } else {
         goBack();
       }
     }
-
-  }, [isFocused, params, transactions, balance])
+  }, [isFocused, params, transactions, balance]);
   return (
     <LoggedInContainer
       hideNav
@@ -131,8 +134,7 @@ const TransactionDetails = () => {
                 fontFamily={Poppins.semiBold.default}
                 color={textColor}
               >
-                {params?.type?.slice(0, 1).toUpperCase()}
-                {params?.type?.slice(1)}
+                {formatText(params?.type || "")}
               </TextComponent>
             </View>
           }
@@ -147,13 +149,17 @@ const TransactionDetails = () => {
           alignItems: "center"
         }}
       >
-        {details? <TextComponent
-          textAlign="center"
-          fontFamily={Poppins.bold.default}
-          fontSize={windowWidth * 0.08}
-        >
-          {details?.amount?.display}
-        </TextComponent>: <SkeletonLoader width={60} />}
+        {details ? (
+          <TextComponent
+            textAlign="center"
+            fontFamily={Poppins.bold.default}
+            fontSize={windowWidth * 0.08}
+          >
+            {details?.amount?.display}
+          </TextComponent>
+        ) : (
+          <SkeletonLoader width={60} />
+        )}
         <TextComponent
           textAlign="center"
           style={{
@@ -165,8 +171,20 @@ const TransactionDetails = () => {
       </View>
       {details ? (
         <View>
-          <Details title="Date" value={"30 Sunday April 2023"} />
-          <Details title="Title" value={params?.type?.toLowerCase() === "pending"? "Pending withdrawal" :details?.title} />
+          <Details
+            title="Date"
+            value={moment((details?.created_at as any) * 1000).format(
+              dateFormat
+            )}
+          />
+          <Details
+            title="Title"
+            value={
+              params?.type?.toLowerCase() === "pending"
+                ? "Pending withdrawal"
+                : details?.title
+            }
+          />
           <Details title="Status" value={formatText(params?.type || "")} />
         </View>
       ) : (
