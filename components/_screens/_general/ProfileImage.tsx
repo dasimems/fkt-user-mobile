@@ -11,7 +11,7 @@ const ProfileImage: React.FC<ProfileImageType> = ({ size }) => {
     <Image
       type="round"
       innerPadding={3}
-      url={userDetails?.profile_image}
+      url={userDetails?.avatar || undefined}
       width={size}
       height={size}
       image={AvatarImage}

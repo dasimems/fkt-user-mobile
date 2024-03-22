@@ -59,6 +59,10 @@ export const apiVersion = "/v1",
     method: requestType.post,
     url: "/account"
   },
+  updateUserAvatarApi: ApiURLType = {
+    method: requestType.post,
+    url: "/account/avatar"
+  },
   updatePasswordApi: ApiURLType = {
     method: requestType.post,
     url: "/change_password"

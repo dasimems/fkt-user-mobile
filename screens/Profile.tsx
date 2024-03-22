@@ -1,5 +1,12 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from "react-native";
+import React, { useCallback, useState } from "react";
 import LoggedInContainer from "@/components/_layouts/LoggedInContainer";
 import InnerScreenHeader from "@/components/_screens/_general/InnerScreenHeader";
 import {
@@ -15,6 +22,7 @@ import { Moon, Pen, SunMoon } from "lucide-react-native";
 import {
   colorSchemes,
   defaultIconProps,
+  fireStoreKeys,
   padding,
   profileRoutes,
   windowHeight,
@@ -25,16 +33,94 @@ import TextComponent from "@/components/_general/TextComponent";
 import { Logout } from "iconsax-react-native";
 import ProfileStats from "@/components/_screens/profile/ProfileStats";
 import ProfileRoute from "@/components/_screens/profile/ProfileRoute";
-import { useActionContext } from "@/context";
+import { useActionContext, useUserContext } from "@/context";
 import Toggle from "@/components/_general/form/Toggle";
 import { LoadingOne } from "@/assets/images";
 import useUser from "@/hooks/useUser";
-import { showToast } from "@/localServices/function";
+import { generateFileBlob, showToast } from "@/localServices/function";
+import { doc, setDoc } from "firebase/firestore";
+import { firestoreDB } from "@/api/firestore";
+import * as ImagePicker from "expo-image-picker";
+import { processRequest } from "@/api/functions";
+import { updateUserAvatarApi } from "@/api/url";
 
 const Profile = () => {
   const { colorScheme, setColorScheme } = useActionContext();
+  const { userDetails } = useUserContext();
   const [logoutLoading, setLogoutLoading] = useState(false);
-  const { logoutUser, deleteUserRecord } = useUser();
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  const { logoutUser, deleteUserRecord, fetchUserDetails } = useUser();
+
+  const changeColorScheme = useCallback(() => {
+    setColorScheme(
+      (() => {
+        const newColorScheme =
+          colorScheme === colorSchemes.dark
+            ? colorSchemes.light
+            : colorSchemes.dark;
+        if (userDetails) {
+          setDoc(
+            doc(firestoreDB, fireStoreKeys.settings, userDetails.id),
+            {
+              colorScheme: newColorScheme
+            },
+            {
+              merge: true
+            }
+          );
+        }
+        return newColorScheme;
+      })()
+    );
+  }, [colorScheme]);
+
+  const changeAvatar = useCallback(async () => {
+    let permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permission) {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1
+      });
+
+      // console.log(result);
+      // result.assets[0].uri
+      if (!result.canceled) {
+        if (result?.assets && result?.assets[0]?.uri) {
+          setAvatarUploading(true);
+          const localUri = result.assets[0].uri;
+          const data = new FormData();
+          data.append("photo", generateFileBlob(localUri));
+
+          processRequest(updateUserAvatarApi, data, {
+            headers: {
+              "content-type": "multipart/form-data"
+            }
+          })
+            .then(() => {
+              showToast("Profile image updated");
+              fetchUserDetails();
+            })
+            .catch((err) => {
+              showToast(
+                err?.statusText || "Error encountered when uploading image"
+              );
+            })
+            .finally(() => {
+              setAvatarUploading(false);
+            });
+        } else {
+          showToast("Unable to fetch image. Please select image again");
+        }
+      } else {
+        showToast("Operation canceled by the user");
+      }
+    } else {
+      showToast("Please enable permission for media library");
+    }
+  }, []);
+
   return (
     <>
       <LoggedInContainer
@@ -73,28 +159,60 @@ const Profile = () => {
               marginTop: -40
             }}
           >
-            <TouchableOpacity style={{}}>
-              <ProfileImage size={80} />
-              <View
-                style={{
-                  width: 25,
-                  height: 25,
-                  backgroundColor: primaryColor.default,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 9000,
-                  position: "absolute",
-                  bottom: 0,
-                  right: 0
-                }}
+            <View>
+              <Pressable
+                onPress={changeAvatar}
+                style={{ borderRadius: 9000, overflow: "hidden" }}
               >
-                <Pen
-                  {...defaultIconProps}
-                  color={whiteColor.default}
-                  size={13}
-                />
-              </View>
-            </TouchableOpacity>
+                <ProfileImage size={80} />
+                {avatarUploading && (
+                  <View
+                    style={{
+                      width: 80,
+                      height: 80,
+                      backgroundColor: blackColor.opacity600,
+                      position: "absolute",
+                      borderRadius: 9000,
+                      left: 0,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 10,
+                      zIndex: 9
+                    }}
+                  >
+                    <Image
+                      source={LoadingOne}
+                      style={{
+                        width: 35,
+                        height: 35,
+                        resizeMode: "contain"
+                      }}
+                    />
+                  </View>
+                )}
+              </Pressable>
+              {!avatarUploading && (
+                <View
+                  style={{
+                    width: 25,
+                    height: 25,
+                    backgroundColor: primaryColor.default,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: 9000,
+                    position: "absolute",
+                    bottom: 0,
+                    right: 0
+                  }}
+                >
+                  <Pen
+                    {...defaultIconProps}
+                    color={whiteColor.default}
+                    size={13}
+                  />
+                </View>
+              )}
+            </View>
           </View>
 
           <ScrollComponent
@@ -112,13 +230,7 @@ const Profile = () => {
             >
               <ProfileStats />
               <TouchableOpacity
-                onPress={() => {
-                  setColorScheme(
-                    colorScheme === colorSchemes.dark
-                      ? colorSchemes.light
-                      : colorSchemes.dark
-                  );
-                }}
+                onPress={changeColorScheme}
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
@@ -153,13 +265,7 @@ const Profile = () => {
                   {colorScheme === colorSchemes.dark ? "Light" : "Dark"} mode
                 </TextComponent>
                 <Toggle
-                  onChange={() => {
-                    setColorScheme(
-                      colorScheme === colorSchemes.dark
-                        ? colorSchemes.light
-                        : colorSchemes.dark
-                    );
-                  }}
+                  onChange={changeColorScheme}
                   active={colorScheme === colorSchemes.dark}
                 />
               </TouchableOpacity>

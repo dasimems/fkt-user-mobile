@@ -5,7 +5,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useActionContext, useUserContext } from "@/context";
-import { fireStoreKeys, ScreenNames } from "@/utils/_variables";
+import { fireStoreKeys, ScreenNames, colorSchemes } from "@/utils/_variables";
 import { whiteColor } from "@/assets/colors";
 import GettingStarted from "@/screens/GettingStarted";
 import Login from "@/screens/Login";
@@ -50,7 +50,8 @@ const MyTheme = {
 const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
   Moment.locale("en");
   const { setColorScheme, appLoaded, setAppLoaded } = useActionContext();
-  const { token, setToken, userDetails, fireStoreDetails } = useUserContext();
+  const { token, setToken, userDetails, fireStoreDetails, userSettings } =
+    useUserContext();
   const {
     getUserFireStoreDetails,
     saveUserDetailsToFireStore,
@@ -117,6 +118,12 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
       getUserSetting();
     }
   }, [userDetails]);
+
+  useEffect(() => {
+    if (userSettings && userSettings.colorSchemes) {
+      setColorScheme(userSettings?.colorScheme);
+    }
+  }, [userSettings]);
 
   useEffect(() => {
     if (fontLoaded && appLoaded) {
