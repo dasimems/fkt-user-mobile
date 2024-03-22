@@ -12,6 +12,7 @@ import {
   Wallet
 } from "lucide-react-native";
 import { convertObjectToArray } from "./functions";
+import { PROCESS } from "@env";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("screen");
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
@@ -22,10 +23,11 @@ export const padding = 20,
   referral = "referral",
   dateFormat = "DD dddd MMMM YYYY",
   generalError = "Something went wrong! Please try again later",
+  channelConnector = "(-channel-)",
   fireStoreKeys = {
-    chats: "Chats",
-    settings: "Settings",
-    users: "Users"
+    chats: `Chats-${PROCESS}`,
+    settings: `Settings-${PROCESS}`,
+    users: `Users-${PROCESS}`
   },
   vibrationLengths = {
     short: 1000,

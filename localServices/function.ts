@@ -1,7 +1,13 @@
 import { emailRegExp, numberRegExp } from "@/utils/regex";
 import { deleteSecureData, getSecureData, storeSecureData } from ".";
 import { serviceKeys } from "./variables";
-import { LayoutChangeEvent, Share, Vibration } from "react-native";
+import {
+  LayoutChangeEvent,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Share,
+  Vibration
+} from "react-native";
 import { VibrationTypes } from "@/utils/types";
 import { vibrationLengths } from "@/utils/_variables";
 import Toast, { ToastOptions } from "react-native-root-toast";
@@ -281,4 +287,20 @@ export const stripPhoneNumber = (number: string) => {
   }
 
   return phoneNumber;
+};
+
+export const isCloseToBottom = (
+  event: NativeSyntheticEvent<NativeScrollEvent>
+) => {
+  const { layoutMeasurement, contentOffset, contentSize } =
+    event.nativeEvent || {};
+  return layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
+};
+
+export const ifCloseToTop = (
+  event: NativeSyntheticEvent<NativeScrollEvent>
+) => {
+  const { layoutMeasurement, contentOffset, contentSize } =
+    event.nativeEvent || {};
+  return contentOffset.y == 0;
 };

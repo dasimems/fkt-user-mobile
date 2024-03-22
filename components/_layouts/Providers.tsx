@@ -8,6 +8,7 @@ import {
   UserProvider
 } from "@/context";
 import { PaperProvider } from "react-native-paper";
+import { ChatProvider } from "@/context/ChatContext";
 
 const Providers: React.FC<ProviderType> = ({ children }) => {
   return (
@@ -15,7 +16,9 @@ const Providers: React.FC<ProviderType> = ({ children }) => {
       <FormProvider>
         <ActionProvider>
           <UserProvider>
-            <NavigationProvider>{children}</NavigationProvider>
+            <ChatProvider>
+              <NavigationProvider>{children}</NavigationProvider>
+            </ChatProvider>
           </UserProvider>
         </ActionProvider>
       </FormProvider>

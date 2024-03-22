@@ -11,9 +11,11 @@ import {
   SET_USER_ASSETS,
   SET_USER_BALANCE,
   SET_USER_DETAILS,
+  SET_USER_FIRESTORE_DETAILS_TYPE,
   SET_USER_GENERATION_REFERRALS,
   SET_USER_LINEAR_REFERRALS,
   SET_USER_PROJECTS,
+  SET_USER_SETTINGS,
   SET_USER_TOKEN,
   SET_USER_TRANSACTIONS,
   UserType
@@ -43,6 +45,18 @@ export interface TransactionExpectedDataType extends DataTypeValues {
   data: TransactionType[] | null;
 }
 
+export interface FireStoreDetailsType {
+  avatar: string;
+  email: string;
+  id: string;
+  name: string;
+  phoneNumber: string;
+}
+
+export interface UserSettingsType {
+  [name: string]: any;
+}
+
 export interface InitialValueType {
   userDetails: UserDetailsType | null;
   token: string | null;
@@ -54,6 +68,8 @@ export interface InitialValueType {
   };
   balance: WalletResponseType | null;
   transactions: TransactionExpectedDataType;
+  fireStoreDetails: FireStoreDetailsType | null;
+  userSettings: UserSettingsType | null;
 }
 
 export const initialValue: InitialValueType = {
@@ -64,7 +80,9 @@ export const initialValue: InitialValueType = {
   linearReferrals: emptyData,
   generationReferrals: {},
   balance: null,
-  transactions: emptyData
+  transactions: emptyData,
+  fireStoreDetails: null,
+  userSettings: null
 };
 
 export const reducer = (
@@ -90,6 +108,10 @@ export const reducer = (
       return { ...state, generationReferrals: { ...payload } };
     case SET_USER_BALANCE:
       return { ...state, balance: payload };
+    case SET_USER_FIRESTORE_DETAILS_TYPE:
+      return { ...state, fireStoreDetails: payload };
+    case SET_USER_SETTINGS:
+      return { ...state, userSettings: payload };
     case RESET_USER_CONTEXT:
       return initialValue;
     default:

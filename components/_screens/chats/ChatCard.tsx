@@ -15,12 +15,13 @@ import { whiteColor } from "../../../assets/colors";
 import { ScreenNames, colorSchemes } from "@/utils/_variables";
 import { useNavigation } from "@react-navigation/native";
 import { useActionContext } from "@/context";
+import { AvatarImage } from "@/assets/images";
 
 const ChatCard: React.FC<{
   sender: {
     id: string;
     name: string;
-    image: ImageSourcePropType;
+    image: string;
   };
   lastSentMessage: {
     message: string;
@@ -34,7 +35,14 @@ const ChatCard: React.FC<{
   return (
     <TouchableOpacity
       onPress={() => {
-        navigate(ScreenNames.ChatDetails.name as never);
+        navigate({
+          name: ScreenNames.ChatDetails.name,
+          params: {
+            id: sender.id,
+            avatar: sender.image,
+            name: sender.name
+          }
+        } as never);
       }}
       style={{
         flexDirection: "row",
@@ -51,7 +59,8 @@ const ChatCard: React.FC<{
     >
       <View>
         <Image
-          image={sender?.image}
+          url={sender?.image || undefined}
+          image={AvatarImage}
           type="round"
           innerPadding={3}
           imageStyle={{

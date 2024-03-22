@@ -7,6 +7,10 @@ import {
   reducer as formReducer
 } from "./formReducer";
 import {
+  initialValue as chatInitialValue,
+  reducer as chatReducer
+} from "./chatReducer";
+import {
   initialValue as userInitialValue,
   reducer as userReducer
 } from "./userReducer";
@@ -24,5 +28,7 @@ export {
   userInitialValue,
   userReducer,
   navigationInitialValue,
-  navigationReducer
+  navigationReducer,
+  chatInitialValue,
+  chatReducer
 };

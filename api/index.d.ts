@@ -113,6 +113,18 @@ export interface ProjectType {
   status: "active" | "seized";
 }
 
+export interface IssuerType {
+  id: string;
+  name: string;
+  email: string;
+  avatar: string;
+  phone: string;
+  resume: string;
+  user: UserDetailsType;
+  account: BankDetailsType;
+  created_at: Date;
+}
+
 export interface AssetType {
   id: string;
   amount: CurrencyFormattingType;
@@ -123,17 +135,7 @@ export interface AssetType {
   status: "active" | "seized";
   created_at: Date;
   project: ProjectType & {
-    issuer: {
-      id: string;
-      name: string;
-      email: string;
-      avatar: string;
-      phone: string;
-      resume: string;
-      user: UserDetailsType;
-      account: BankDetailsType;
-      created_at: Date;
-    };
+    issuer: IssuerType;
   };
 }
 export interface LoginBodyType {

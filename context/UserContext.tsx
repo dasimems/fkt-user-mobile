@@ -13,18 +13,22 @@ import {
   SET_USER_ASSETS,
   SET_USER_BALANCE,
   SET_USER_DETAILS,
+  SET_USER_FIRESTORE_DETAILS_TYPE,
   SET_USER_GENERATION_REFERRALS,
   SET_USER_LINEAR_REFERRALS,
   SET_USER_PROJECTS,
+  SET_USER_SETTINGS,
   SET_USER_TOKEN,
   SET_USER_TRANSACTIONS
 } from "@/utils/_enums";
 import {
   AssetExpectedDataType,
+  FireStoreDetailsType,
   InitialValueType,
   LinearReferralsExpectedDataType,
   ProjectExpectedDataType,
-  TransactionExpectedDataType
+  TransactionExpectedDataType,
+  UserSettingsType
 } from "@/reducers/userReducer";
 import { UserDetailsType, WalletResponseType } from "@/api/index.d";
 import { setHeaderAuthorization } from "@/api";
@@ -39,6 +43,8 @@ interface UserContextFunctionTypes {
   setUserTransactions: (payload?: TransactionExpectedDataType) => void;
   setUserBalance: (payload?: WalletResponseType) => void;
   setUserLinearReferrals: (payload?: LinearReferralsExpectedDataType) => void;
+  setFireStoreDetails: (payload?: FireStoreDetailsType) => void;
+  setUserSettings: (payload?: UserSettingsType) => void;
   setUserAssistReferral: (payload?: {
     [name: string]: LinearReferralsExpectedDataType;
   }) => void;
@@ -54,7 +60,9 @@ const UserContext = createContext<InitialValueType & UserContextFunctionTypes>({
   setUserTransactions: () => {},
   setUserBalance: () => {},
   setUserLinearReferrals: () => {},
-  setUserAssistReferral: () => {}
+  setFireStoreDetails: () => {},
+  setUserAssistReferral: () => {},
+  setUserSettings: () => {}
 });
 
 export const UserProvider: React.FC<FormProviderTypes> = ({ children }) => {
@@ -118,6 +126,18 @@ export const UserProvider: React.FC<FormProviderTypes> = ({ children }) => {
     },
     []
   );
+  const setFireStoreDetails = useCallback((payload?: FireStoreDetailsType) => {
+    dispatch({
+      type: SET_USER_FIRESTORE_DETAILS_TYPE,
+      payload: payload || null
+    });
+  }, []);
+  const setUserSettings = useCallback((payload?: UserSettingsType) => {
+    dispatch({
+      type: SET_USER_SETTINGS,
+      payload: payload || null
+    });
+  }, []);
 
   const resetUserContext = useCallback(() => {
     dispatch({
@@ -145,7 +165,9 @@ export const UserProvider: React.FC<FormProviderTypes> = ({ children }) => {
         setUserTransactions,
         setUserBalance,
         setUserLinearReferrals,
-        setUserAssistReferral
+        setUserAssistReferral,
+        setFireStoreDetails,
+        setUserSettings
       }}
     >
       {children}

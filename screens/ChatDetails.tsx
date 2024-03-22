@@ -1,29 +1,43 @@
 import {
   ImageSourcePropType,
+  ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
-  View,
-  useColorScheme
+  View
 } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import LoggedInContainer from "@/components/_layouts/LoggedInContainer";
-import InnerScreenHeader from "@/components/_screens/_general/InnerScreenHeader";
 import Image from "@/components/_general/Image";
 import { blackColor, primaryColor, whiteColor } from "@/assets/colors";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Menu } from "react-native-paper";
 import { Ban, Flag, MoreVertical, Send, Trash2 } from "lucide-react-native";
-import { colorSchemes, defaultIconProps, padding } from "@/utils/_variables";
+import {
+  colorSchemes,
+  defaultIconProps,
+  fireStoreKeys,
+  padding,
+  windowWidth
+} from "@/utils/_variables";
 import HeaderDropdownButton from "@/components/_general/HeaderDropdownButton";
 import { AvatarImage } from "@/assets/images";
 import InputField from "@/components/_general/form/InputField";
 import ScrollComponent from "@/components/_general/ScrollComponent";
 import ChatDetailsCard from "@/components/_screens/chats/ChatDetailsCard";
 import { ArrowLeft2 } from "iconsax-react-native";
-import { useActionContext } from "@/context";
+import { useActionContext, useUserContext } from "@/context";
+import useChatContext from "@/context/ChatContext";
+import useChat from "@/hooks/useChat";
+import { ChatDetailsType, ChatsType } from "@/reducers/chatReducer";
+import SomethingWentWrongContainer from "@/components/_layouts/SomethingWentWrongContainer";
+import SkeletonLoader from "@/components/_general/SkeletonLoader";
+import { ifCloseToTop, showToast } from "@/localServices/function";
+import { doc, setDoc } from "firebase/firestore";
+import { firestoreDB } from "@/api/firestore";
+import moment from "moment";
+import EmptyContainer from "@/components/_layouts/EmptyContainer";
 
 const ChatHeader: React.FC<{
   image: ImageSourcePropType;
@@ -31,7 +45,8 @@ const ChatHeader: React.FC<{
   lastSeen: string;
   id: string;
   isOnline?: boolean;
-}> = ({ image, name, lastSeen, id, isOnline }) => {
+  imageUrl?: string;
+}> = ({ image, name, lastSeen, id, isOnline, imageUrl }) => {
   const defaultBorderRadius = 30;
   const defaultIconSize = 25;
 
@@ -74,6 +89,7 @@ const ChatHeader: React.FC<{
         </TouchableOpacity>
         <View>
           <Image
+            url={imageUrl || undefined}
             image={image}
             type="round"
             innerPadding={3}
@@ -156,16 +172,109 @@ const ChatHeader: React.FC<{
   );
 };
 
+let defaultCount = 15;
+
 const ChatDetails = () => {
+  const {
+    params
+  }: {
+    params?: {
+      id?: string;
+      avatar?: string;
+      name?: string;
+    };
+  } = useRoute();
+  const { goBack } = useNavigation();
+  const { chats } = useChatContext();
+  const { getChat } = useChat();
+  const { userDetails } = useUserContext();
+  const [userChatError, setUserChatError] = useState(false);
+  const [userChats, setUserChats] = useState<ChatsType[] | null>(null);
+  const [chatChannel, setChatChannel] = useState<string | null>(null);
+  const [chatCount, setChatCount] = useState(defaultCount);
+  const [chatContent, setChatContent] = useState("");
+  const scrollComponentRef = useRef<ScrollView>(null);
+
+  const sendChat = useCallback(async () => {
+    if (chatContent) {
+      if (chatChannel && params?.id && userDetails) {
+        let previousChat: ChatsType[] = userChats || [];
+        const data: ChatDetailsType = {
+          date: Date.now(),
+          channel: chatChannel,
+          users: [params.id, userDetails.id],
+          chats: [
+            ...previousChat,
+            {
+              date: Date.now(),
+              message: chatContent,
+              receiverId: params.id,
+              senderId: userDetails.id,
+              id: `${userDetails.id}-${Date.now()}`,
+              isDeleted: null,
+              isRead: null
+            }
+          ]
+        };
+        try {
+          setChatContent("");
+          await setDoc(
+            doc(firestoreDB, fireStoreKeys.chats, chatChannel),
+            data,
+            { merge: true }
+          );
+          setUserChats(data.chats);
+        } catch (error) {
+          showToast("Error encountered whilst sending message");
+        }
+      } else {
+        showToast("Invalid channel detected");
+      }
+    }
+  }, [chatChannel, chatContent, userChats, params, userDetails]);
+
+  const scrollToBottom = () => {
+    if (scrollComponentRef.current) {
+      scrollComponentRef.current.scrollToEnd();
+    }
+  };
+
+  useEffect(() => {
+    if (!params?.name || !params?.id) {
+      goBack();
+    }
+  }, [params]);
+
+  useEffect(() => {
+    if (params?.id) {
+      getChat(params?.id)
+        .then((res) => {
+          const channel = res.channel;
+          const chat = res.chat;
+          setChatChannel(channel);
+          setUserChats(chat);
+        })
+        .catch(() => {
+          setUserChatError(true);
+        });
+    }
+  }, [chats, params]);
+
+  useEffect(() => {
+    if (userChats) {
+      setTimeout(scrollToBottom);
+    }
+  }, [userChats]);
   return (
     <LoggedInContainer
       unScrollable
       hideNav
       header={
         <ChatHeader
-          name="Duyil Ayomid"
-          id=""
+          name={params?.name || ""}
+          id={params?.id || ""}
           image={AvatarImage}
+          imageUrl={params?.avatar}
           lastSeen="Just now"
         />
       }
@@ -180,22 +289,72 @@ const ChatDetails = () => {
           flex: 1
         }}
       >
-        <ScrollComponent
-          style={{
-            minHeight: 0,
-            paddingVertical: 20,
-            paddingHorizontal: padding
-          }}
-        >
-          {new Array(6).fill(0).map((_, index) => (
-            <ChatDetailsCard
-              key={index}
-              message="Testing message"
-              time="8:19pm"
-              isSender={index % 2 === 0}
+        {userChatError ? (
+          <SomethingWentWrongContainer />
+        ) : userChats ? (
+          userChats.length < 1 ? (
+            <EmptyContainer
+              containerStyle={{
+                flex: 1
+              }}
+              text="You have no conversation with this person at the present moment. Please send a message to start a chat"
             />
-          ))}
-        </ScrollComponent>
+          ) : (
+            <ScrollComponent
+              ref={scrollComponentRef}
+              onScroll={(e) => {
+                if (ifCloseToTop(e)) {
+                  setChatCount((prevState) =>
+                    prevState + defaultCount >= userChats.length
+                      ? userChats.length
+                      : prevState + defaultCount
+                  );
+                }
+              }}
+              style={{
+                minHeight: 0,
+                paddingVertical: 20,
+                paddingHorizontal: padding,
+                gap: 2
+              }}
+            >
+              {userChats
+                .slice(
+                  userChats.length - chatCount > 0
+                    ? userChats.length - chatCount
+                    : 0
+                )
+                .map(({ date, message, senderId }, index) => (
+                  <ChatDetailsCard
+                    key={index}
+                    message={message}
+                    time={moment(new Date(date)).format("DD/MM/YYYY hh:mm a")}
+                    isSender={senderId === userDetails?.id}
+                  />
+                ))}
+            </ScrollComponent>
+          )
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              gap: 20
+            }}
+          >
+            {new Array(6).fill(0).map((_, index) => (
+              <View
+                key={index}
+                style={{
+                  flexDirection: index % 2 === 0 ? "row-reverse" : "row",
+                  width: "100%",
+                  paddingHorizontal: padding
+                }}
+              >
+                <SkeletonLoader width={windowWidth * 0.5} height={100} />
+              </View>
+            ))}
+          </View>
+        )}
       </View>
 
       <View
@@ -206,14 +365,26 @@ const ChatDetails = () => {
       >
         <InputField
           multiline
+          value={chatContent}
+          onChangeText={(value) => {
+            setChatContent(value);
+          }}
           inputStyle={{
             paddingVertical: 8,
             borderRadius: 25,
             textAlignVertical: "top",
             maxHeight: 150
           }}
+          rightIconAction={sendChat}
           rightIcon={
-            <Send {...defaultIconProps} color={primaryColor.default} />
+            <Send
+              {...defaultIconProps}
+              color={
+                chatContent.length > 0
+                  ? primaryColor.default
+                  : primaryColor.opacity600
+              }
+            />
           }
           rightIconStyle={{
             paddingHorizontal: 15

@@ -1,26 +1,40 @@
-import { ChatType } from "@/utils/_enums";
+import { ChatType, SET_CHAT_PROFILES, SET_CHATS } from "@/utils/_enums";
 
-export interface ChatDetailsType {
+export interface ChatsType {
   message: string;
   id?: string;
-  isDeleted?: boolean;
-  isRead?: boolean;
-  date: Date;
+  isDeleted?: number | null;
+  isRead?: number | null;
+  date: number;
   senderId: string;
   receiverId: string;
 }
-export interface ChatProfilesType {
-  lastMessage: string;
+
+export interface ChatDetailsType {
+  chats: ChatsType[];
+  date: number;
+  users: string[];
+  channel: string;
 }
 
-interface InitialValueType {
-  chatKeys: string[] | null;
-  chats: { [chatChannel: string]: ChatDetailsType[] };
-  //   chatProfiles: {}
+export interface ChatContentType {
+  [chatChannel: string]: ChatDetailsType;
+}
+export interface ChatProfilesType {
+  lastMessage: ChatsType;
+  unReadMessages: number;
+  name: string;
+  avatar: string | null;
+  id: string;
+}
+
+export interface InitialValueType {
+  chatProfiles: ChatProfilesType[] | null;
+  chats: ChatContentType;
 }
 
 export const initialValue: InitialValueType = {
-  chatKeys: null,
+  chatProfiles: null,
   chats: {}
 };
 
@@ -31,6 +45,10 @@ export const reducer = (
   const { type, payload } = action;
 
   switch (type) {
+    case SET_CHATS:
+      return { ...state, chats: { ...state.chats, ...payload } };
+    case SET_CHAT_PROFILES:
+      return { ...state, chatProfiles: payload };
     default:
       return state;
   }

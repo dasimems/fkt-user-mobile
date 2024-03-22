@@ -1,27 +1,31 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import {
+  ScrollView,
+  ScrollViewProps,
+  StyleSheet,
+  Text,
+  View
+} from "react-native";
+import React, { forwardRef } from "react";
 import { ScrollComponentType } from "@/utils/types";
 
-const ScrollComponent: React.FC<ScrollComponentType> = ({
-  children,
-  style,
-  showScrollIndicator,
-  ...props
-}) => {
-  return (
-    <ScrollView
-      showsHorizontalScrollIndicator={showScrollIndicator || false}
-      showsVerticalScrollIndicator={showScrollIndicator || false}
-      contentContainerStyle={{
-        minHeight: "100%",
-        ...style
-      }}
-      {...props}
-    >
-      {children}
-    </ScrollView>
-  );
-};
+const ScrollComponent = forwardRef<ScrollView, ScrollComponentType>(
+  ({ children, style, showScrollIndicator, ...props }, ref) => {
+    return (
+      <ScrollView
+        ref={ref}
+        showsHorizontalScrollIndicator={showScrollIndicator || false}
+        showsVerticalScrollIndicator={showScrollIndicator || false}
+        contentContainerStyle={{
+          minHeight: "100%",
+          ...style
+        }}
+        {...props}
+      >
+        {children}
+      </ScrollView>
+    );
+  }
+);
 
 export default ScrollComponent;
 

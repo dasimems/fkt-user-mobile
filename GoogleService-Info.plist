@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyD3pmQWUDiceFme6JIq1J8-QZqC89nM8PM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>634239836538</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.foodsoldier.user</string>
+	<key>PROJECT_ID</key>
+	<string>foodsoldier-2cf37</string>
+	<key>STORAGE_BUCKET</key>
+	<string>foodsoldier-2cf37.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:634239836538:ios:ac89ece3b3bfa0055ab6c3</string>
+</dict>
+</plist>

@@ -69,7 +69,9 @@ const useUser = () => {
         .then((res) => {
           const userDetails = res?.response?.data;
           setUserDetails(userDetails);
-          getUserFireStoreDetails();
+          // if (userDetails) {
+          //   getUserFireStoreDetails();
+          // }
         })
         .catch((err) => {
           const errMessage =

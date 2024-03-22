@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "634239836538",
+    "project_id": "foodsoldier-2cf37",
+    "storage_bucket": "foodsoldier-2cf37.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634239836538:android:3b4d0147a1102c675ab6c3",
+        "android_client_info": {
+          "package_name": "com.foodsoldier.issuer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLVARxPETDzYj-C32VXZ2crTPleFV4vOE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634239836538:android:b74918a147b239eb5ab6c3",
+        "android_client_info": {
+          "package_name": "com.foodsoldier.user"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLVARxPETDzYj-C32VXZ2crTPleFV4vOE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

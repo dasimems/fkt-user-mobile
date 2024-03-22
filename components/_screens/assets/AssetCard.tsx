@@ -34,6 +34,7 @@ import { blackColor } from "../../../assets/colors";
 import { useNavigation } from "@react-navigation/native";
 import { useActionContext } from "@/context";
 import { formatText, stripText } from "@/utils/functions";
+import { IssuerType } from "@/api/index.d";
 
 const AssetCard: React.FC<{
   isDetails?: boolean;
@@ -44,7 +45,8 @@ const AssetCard: React.FC<{
   amount: string;
   title: string;
   image: string;
-}> = ({ isDetails, id, status, value, rate, amount, title, image }) => {
+  issuer?: IssuerType;
+}> = ({ isDetails, id, status, value, rate, amount, title, image, issuer }) => {
   const { navigate } = useNavigation();
   const { colorScheme } = useActionContext();
   const generalBackgroundColor =
@@ -115,6 +117,16 @@ const AssetCard: React.FC<{
           <TouchableOpacity
             onPress={() => {
               if (isDetails) {
+                if (issuer && issuer.name && issuer.id) {
+                  navigate({
+                    name: ScreenNames.ChatDetails.name,
+                    params: {
+                      id: issuer.id,
+                      avatar: issuer.avatar,
+                      name: issuer.name
+                    }
+                  } as never);
+                }
               } else {
                 navigate({
                   name: ScreenNames.AssetDetails.name,

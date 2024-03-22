@@ -71,6 +71,7 @@ const AssetDetails = () => {
           amount={details?.amount?.display}
           id={details?.id}
           isDetails
+          issuer={details?.project?.issuer}
         />
       ) : (
         <SkeletonLoader

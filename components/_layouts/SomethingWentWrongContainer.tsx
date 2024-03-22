@@ -3,7 +3,7 @@ import TextComponent from "../_general/TextComponent";
 import LottieView, { AnimationObject } from "lottie-react-native";
 import { EmptyAssetsLottieAnimation } from "@/assets/lottie";
 
-const EmptyContainer: React.FC<{
+const SomethingWentWrongContainer: React.FC<{
   animation?: AnimationObject;
   containerStyle?: ViewStyle;
   text?: string;
@@ -26,15 +26,14 @@ const EmptyContainer: React.FC<{
         loop
       />
       <TextComponent
-        textAlign="center"
         style={{
           opacity: 0.6
         }}
       >
-        {text || "No data found"}
+        {text || "Something went wrong! Unable to process request"}
       </TextComponent>
     </View>
   );
 };
 
-export default EmptyContainer;
+export default SomethingWentWrongContainer;

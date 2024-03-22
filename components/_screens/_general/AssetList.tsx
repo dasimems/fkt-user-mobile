@@ -55,6 +55,7 @@ const AssetList: React.FC<{
                 title={project?.name}
                 image={project?.image}
                 key={index}
+                issuer={project?.issuer}
               />
             ))
         )

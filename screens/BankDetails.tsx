@@ -28,7 +28,12 @@ const BankDetails = () => {
     [userDetails]
   );
   const [formDetails, setFormDetails] = useState(initialValue);
-  const [formDetailsErr, setFormDetailsErr] = useState(initialValue);
+  const [formDetailsErr, setFormDetailsErr] = useState({
+    ...initialValue,
+    account_bank: "",
+    account_name: "",
+    account_number: ""
+  });
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
 

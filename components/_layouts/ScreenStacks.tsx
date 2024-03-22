@@ -5,7 +5,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useActionContext, useUserContext } from "@/context";
-import { ScreenNames } from "@/utils/_variables";
+import { fireStoreKeys, ScreenNames } from "@/utils/_variables";
 import { whiteColor } from "@/assets/colors";
 import GettingStarted from "@/screens/GettingStarted";
 import Login from "@/screens/Login";
@@ -34,6 +34,8 @@ import { getUserToken } from "@/localServices/function";
 import { setHeaderAuthorization } from "@/api";
 import Moment from "moment";
 import useUser from "@/hooks/useUser";
+import useFireStoreDetails from "@/hooks/useFireStoreDetails";
+import useChat from "@/hooks/useChat";
 
 const Stack = createNativeStackNavigator<any>();
 
@@ -48,8 +50,14 @@ const MyTheme = {
 const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
   Moment.locale("en");
   const { setColorScheme, appLoaded, setAppLoaded } = useActionContext();
-  const { token, setToken } = useUserContext();
+  const { token, setToken, userDetails, fireStoreDetails } = useUserContext();
+  const {
+    getUserFireStoreDetails,
+    saveUserDetailsToFireStore,
+    getUserSetting
+  } = useFireStoreDetails();
   const { fetchUserDetails } = useUser();
+  const { getChats } = useChat();
   const showAppScreens = useCallback(async () => {
     if (fontLoaded && appLoaded) {
       await SplashScreen.hideAsync();
@@ -70,6 +78,45 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
   useEffect(() => {
     loadApp();
   }, []);
+
+  useEffect(() => {
+    if (userDetails && fireStoreDetails) {
+      const { name, email, phone, avatar, id, phone_verified, email_verified } =
+        userDetails;
+      const {
+        name: fireStoreName,
+        avatar: fireStoreAvatar,
+        email: fireStoreEmail,
+        id: fireStoreId,
+        phoneNumber
+      } = fireStoreDetails;
+
+      let fetchedEmail = email_verified ? email : null;
+      let fetchedPhone = phone_verified ? phone : null;
+
+      if (
+        name !== fireStoreName ||
+        avatar !== fireStoreAvatar ||
+        fetchedEmail !== fireStoreEmail ||
+        id !== fireStoreId ||
+        fetchedPhone !== phoneNumber
+      ) {
+        saveUserDetailsToFireStore();
+      }
+    }
+
+    if (!fireStoreDetails) {
+      getUserFireStoreDetails();
+    }
+  }, [userDetails, fireStoreDetails]);
+
+  useEffect(() => {
+    if (userDetails) {
+      getUserFireStoreDetails();
+      getChats();
+      getUserSetting();
+    }
+  }, [userDetails]);
 
   useEffect(() => {
     if (fontLoaded && appLoaded) {
