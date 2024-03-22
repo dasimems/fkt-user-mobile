@@ -87,6 +87,8 @@ const useChat = () => {
           showToast("Error encountered when fetching user chats");
         }
       );
+
+      setChatProfiles(profiles);
     }
   }, [userDetails]);
   const getChat = useCallback(

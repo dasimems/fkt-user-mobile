@@ -66,7 +66,7 @@ const Chats = () => {
         minHeight: userChats.length < 1 || chatError ? "100%" : 0
       }}
     >
-      {userChats.length > 0 && (
+      {Object.keys(chats).length > 0 && (
         <InputField
           onChangeText={(text) => {
             setSearch(text);
@@ -95,7 +95,8 @@ const Chats = () => {
       )}
       <View
         style={{
-          flex: userChats.length < 1 || chatError ? 1 : undefined
+          flex: userChats.length < 1 || chatError ? 1 : undefined,
+          overflow: "hidden"
         }}
       >
         {chatError ? (
@@ -103,17 +104,25 @@ const Chats = () => {
         ) : chatProfiles ? (
           userChats.length < 1 ? (
             <EmptyContainer
+              animationStyle={{
+                marginTop: Object.keys(chats).length > 0 ? -60 : 0
+              }}
               containerStyle={{
                 flex: 1,
                 height: "100%"
               }}
               animation={EmptyChatsLottieAnimation}
-              text="You have no chats at the present moment"
+              text={
+                search.length > 0
+                  ? `No chat result found for your search query "${search}"`
+                  : "You have no chats at the present moment"
+              }
             />
           ) : (
             userChats.map(
               ({ avatar, id, lastMessage, name, unReadMessages }, index) => (
                 <ChatCard
+                  key={id}
                   unReadMessages={unReadMessages}
                   isOnline={true}
                   sender={{

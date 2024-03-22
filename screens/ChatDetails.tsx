@@ -119,10 +119,10 @@ const ChatHeader: React.FC<{
           <TextComponent fontFamily={Poppins.semiBold.default}>
             {name}
           </TextComponent>
-          <TextComponent style={{ opacity: 0.6 }}>{lastSeen}</TextComponent>
+          {/* <TextComponent style={{ opacity: 0.6 }}>{lastSeen}</TextComponent> */}
         </View>
 
-        <View>
+        {/* <View>
           <Menu
             contentStyle={{
               top: defaultIconSize + 10,
@@ -166,7 +166,7 @@ const ChatHeader: React.FC<{
               title={<HeaderDropdownButton Icon={Flag} label="Report" />}
             />
           </Menu>
-        </View>
+        </View> */}
       </View>
     </View>
   );

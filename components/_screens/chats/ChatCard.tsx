@@ -67,7 +67,7 @@ const ChatCard: React.FC<{
             borderRadius: 9000
           }}
         />
-        {isOnline && (
+        {/* {isOnline && (
           <View
             style={{
               width: 10,
@@ -79,7 +79,7 @@ const ChatCard: React.FC<{
               bottom: 4
             }}
           ></View>
-        )}
+        )} */}
       </View>
       <View
         style={{
