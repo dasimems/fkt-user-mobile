@@ -33,14 +33,19 @@ const AssistReferrals = () => {
   }, []);
 
   useEffect(() => {
-    fetchUserAssistReferrers(activeReferralList.value);
-  }, [activeReferralList]);
+    if (
+      generationReferrals[activeReferralList.value] &&
+      !generationReferrals[activeReferralList.value]?.data
+    ) {
+      fetchUserAssistReferrers(activeReferralList.value);
+    }
+  }, [activeReferralList, generationReferrals]);
 
   useEffect(() => {
     const referrers =
       generationReferrals[activeReferralList.value]?.data || null;
     setReferrers(referrers);
-  }, [activeReferralList, generationReferrals, userDetails]);
+  }, [activeReferralList, generationReferrals]);
   return (
     <View
       style={{
