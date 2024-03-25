@@ -1,7 +1,7 @@
 import { firestoreDB } from "@/api/firestore";
 import { useUserContext } from "@/context";
 import useChatContext from "@/context/ChatContext";
-import { showToast } from "@/localServices/function";
+import { showToast } from "@/utils/functions";
 import {
   ChatContentType,
   ChatDetailsType,
@@ -40,8 +40,9 @@ const useChat = () => {
                 let expectedProfile: ChatProfilesType = {
                   lastMessage: data.chats[data.chats.length - 1],
                   name: "User",
-                  unReadMessages: data.chats.filter((chat) => !chat.isRead)
-                    .length,
+                  unReadMessages: data.chats.filter(
+                    (chat) => !chat.isRead && chat.senderId !== userDetails.id
+                  ).length,
                   id: secondUser,
                   avatar: null
                 };

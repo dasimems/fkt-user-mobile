@@ -6,12 +6,12 @@ import React, {
   useReducer
 } from "react";
 import { actionInitialValue, actionReducer } from "@/reducers";
-import { ActionProviderTypes } from "@/utils/types";
+import { ActionProviderTypes, ColorSchemeType } from "@/utils/types";
 import { APP_LOADED, SET_COLOR_SCHEME } from "@/utils/_enums";
 
 const ActionContext = createContext({
   ...actionInitialValue,
-  setColorScheme: (payload?: string): void => {},
+  setColorScheme: (payload?: ColorSchemeType): void => {},
   setAppLoaded: (): void => {}
 });
 
@@ -20,7 +20,7 @@ export const ActionProvider: React.FC<ActionProviderTypes> = ({ children }) => {
   const colorScheme = useColorScheme();
 
   const setColorScheme = useCallback(
-    (payload?: string): void => {
+    (payload?: ColorSchemeType): void => {
       dispatch({
         type: SET_COLOR_SCHEME,
         payload: payload || colorScheme

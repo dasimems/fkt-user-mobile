@@ -6,7 +6,7 @@ import { Poppins } from "@/assets/fonts";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { ScreenNames } from "@/utils/_variables";
 import InputField from "@/components/_general/form/InputField";
-import { showToast } from "@/localServices/function";
+import { showToast } from "@/utils/functions";
 
 const ConfirmTransfer = () => {
   const { params }: { params?: { amount?: string; email?: string } } =

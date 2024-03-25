@@ -21,6 +21,8 @@ export type VibrationTypes = "long" | "short" | "medium";
 
 export type ImageDimensionType = "round" | "square";
 
+export type ColorSchemeType = "light" | "dark";
+
 export interface ButtonType extends TouchableOpacityProps {
   children: React.ReactNode;
   disabled?: boolean;

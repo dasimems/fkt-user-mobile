@@ -9,7 +9,7 @@ import { whiteColor } from "@/assets/colors";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { ScreenNames, generalError } from "@/utils/_variables";
 import { processRequest } from "@/api/functions";
-import { showToast, validateValues } from "@/localServices/function";
+import { showToast, validateValues } from "@/utils/functions";
 import { WithdrawalBodyType } from "@/api/index.d";
 import { createWithdrawalApi } from "@/api/url";
 import useUser from "@/hooks/useUser";

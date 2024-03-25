@@ -8,7 +8,7 @@ import TextComponent from "@/components/_general/TextComponent";
 import { whiteColor } from "../assets/colors";
 import { useUserContext } from "@/context";
 import { UpdateProfileBodyType } from "@/api/index.d";
-import { showToast, validateValues } from "@/localServices/function";
+import { showToast, validateValues } from "@/utils/functions";
 import { emailRegExp, phoneNumberRegExp } from "@/utils/regex";
 import { processRequest } from "@/api/functions";
 import { updateUserDetailsApi } from "@/api/url";

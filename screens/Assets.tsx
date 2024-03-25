@@ -1,11 +1,45 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
 import LoggedInContainer from "@/components/_layouts/LoggedInContainer";
 import AssetList from "@/components/_screens/_general/AssetList";
+import { useUserContext } from "@/context";
+import { LoadingOne } from "@/assets/images";
+import axios from "axios";
+import { showToast } from "@/utils/functions";
+import { AllResponseType } from "@/api/index.d";
+import { AssetExpectedDataType } from "@/reducers/userReducer";
 
 const Assets = () => {
+  const { assets, setUserAssets } = useUserContext();
+  const [nextLoading, setNextLoading] = useState(false);
   return (
     <LoggedInContainer
+      runOnScrollEnd={() => {
+        console.log("worked");
+        if (assets.next && !nextLoading) {
+          setNextLoading(true);
+          axios
+            .get<AllResponseType>(assets.next)
+            .then((res) => {
+              const response = res?.data;
+              const availableAssets = assets.data || [];
+
+              const userAssets: AssetExpectedDataType = {
+                data: [...availableAssets, ...response?.assets],
+                next: response?.links?.next || null,
+                total: response?.meta?.total || 0
+              };
+              setUserAssets(userAssets);
+            })
+            .catch((err) => {
+              showToast(
+                err?.response?.data?.message ||
+                  err?.message ||
+                  "Something went wrong while fetching other available assets"
+              );
+            });
+        }
+      }}
       contentContainerStyle={{
         minHeight: "100%"
       }}
@@ -18,6 +52,24 @@ const Assets = () => {
           height: "100%"
         }}
       />
+      {nextLoading && (
+        <View
+          style={{
+            alignItems: "center",
+            gap: 10,
+            paddingTop: 20
+          }}
+        >
+          <Image
+            source={LoadingOne}
+            style={{
+              width: 40,
+              height: 40,
+              resizeMode: "contain"
+            }}
+          />
+        </View>
+      )}
     </LoggedInContainer>
   );
 };

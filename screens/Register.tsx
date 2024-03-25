@@ -34,12 +34,8 @@ import { UserPlus } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useActionContext, useUserContext } from "@/context";
 import { SignupBodyType } from "@/api/index.d";
-import {
-  saveUserToken,
-  showToast,
-  stripPhoneNumber,
-  validateValues
-} from "@/localServices/function";
+import { showToast, stripPhoneNumber, validateValues } from "@/utils/functions";
+import { saveUserToken } from "@/localServices/function";
 import { emailRegExp, phoneNumberRegExp } from "@/utils/regex";
 import { processRequest } from "@/api/functions";
 import { signupApi } from "@/api/url";

@@ -1,5 +1,5 @@
 import { Dimensions } from "react-native";
-import { ImageDimensionType, ScreenNamesType } from "./types";
+import { ColorSchemeType, ImageDimensionType, ScreenNamesType } from "./types";
 import { blackColor, whiteColor } from "@/assets/colors";
 import {
   Component,
@@ -46,7 +46,7 @@ export const padding = 20,
     default: "default",
     transparent: "transparent"
   },
-  colorSchemes = {
+  colorSchemes: { [name: string]: ColorSchemeType } = {
     dark: "dark",
     light: "light"
   },

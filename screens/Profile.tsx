@@ -37,12 +37,14 @@ import { useActionContext, useUserContext } from "@/context";
 import Toggle from "@/components/_general/form/Toggle";
 import { LoadingOne } from "@/assets/images";
 import useUser from "@/hooks/useUser";
-import { generateFileBlob, showToast } from "@/localServices/function";
+import { generateFileBlob, showToast } from "@/utils/functions";
 import { doc, setDoc } from "firebase/firestore";
 import { firestoreDB } from "@/api/firestore";
 import * as ImagePicker from "expo-image-picker";
 import { processRequest } from "@/api/functions";
 import { updateUserAvatarApi } from "@/api/url";
+import { getColorScheme, saveColorScheme } from "@/localServices/function";
+import { ColorSchemeType } from "@/utils/types";
 
 const Profile = () => {
   const { colorScheme, setColorScheme } = useActionContext();
@@ -51,13 +53,15 @@ const Profile = () => {
   const [avatarUploading, setAvatarUploading] = useState(false);
   const { logoutUser, deleteUserRecord, fetchUserDetails } = useUser();
 
-  const changeColorScheme = useCallback(() => {
+  const changeColorScheme = useCallback(async () => {
     setColorScheme(
       (() => {
-        const newColorScheme =
+        const newColorScheme: ColorSchemeType =
           colorScheme === colorSchemes.dark
             ? colorSchemes.light
             : colorSchemes.dark;
+        saveColorScheme(newColorScheme);
+
         if (userDetails) {
           setDoc(
             doc(firestoreDB, fireStoreKeys.settings, userDetails.id),

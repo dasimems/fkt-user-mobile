@@ -20,11 +20,8 @@ import { useActionContext, useUserContext } from "@/context";
 import { LoginBodyType } from "@/api/index.d";
 import { processRequest } from "@/api/functions";
 import { loginApi } from "@/api/url";
-import {
-  openLinkInBrowser,
-  saveUserToken,
-  showToast
-} from "@/localServices/function";
+import { openLinkInBrowser, showToast } from "@/utils/functions";
+import { saveUserToken } from "@/localServices/function";
 import { setHeaderAuthorization } from "@/api";
 import useUser from "@/hooks/useUser";
 

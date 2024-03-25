@@ -30,7 +30,7 @@ import Chats from "@/screens/Chats";
 import ChatDetails from "@/screens/ChatDetails";
 import ProjectDetails from "@/screens/ProjectDetails";
 import AssetDetails from "@/screens/AssetDetails";
-import { getUserToken } from "@/localServices/function";
+import { getColorScheme, getUserToken } from "@/localServices/function";
 import { setHeaderAuthorization } from "@/api";
 import Moment from "moment";
 import useUser from "@/hooks/useUser";
@@ -66,7 +66,9 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
   }, [fontLoaded, appLoaded]);
 
   const loadApp = useCallback(async () => {
-    setColorScheme();
+    const colorScheme = await getColorScheme();
+    console.log(colorScheme);
+    setColorScheme(colorScheme || undefined);
     const token = await getUserToken();
     if (token) {
       setToken(token);
@@ -120,7 +122,7 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
   }, [userDetails]);
 
   useEffect(() => {
-    if (userSettings && userSettings.colorSchemes) {
+    if (userSettings && userSettings.colorScheme) {
       setColorScheme(userSettings?.colorScheme);
     }
   }, [userSettings]);

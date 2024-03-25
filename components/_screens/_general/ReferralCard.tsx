@@ -17,7 +17,7 @@ import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import { useActionContext, useUserContext } from "@/context";
 import SkeletonLoader from "@/components/_general/SkeletonLoader";
-import { shareContent } from "@/localServices/function";
+import { shareContent } from "@/utils/functions";
 
 const ReferralCard = () => {
   const { colorScheme } = useActionContext();

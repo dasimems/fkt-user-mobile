@@ -8,7 +8,7 @@ import InputField from "@/components/_general/form/InputField";
 import { whiteColor } from "@/assets/colors";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { ScreenNames, generalError } from "@/utils/_variables";
-import { showToast, validateValues } from "@/localServices/function";
+import { showToast, validateValues } from "@/utils/functions";
 import { emailRegExp } from "@/utils/regex";
 import { processRequest } from "@/api/functions";
 import { createTransferApi } from "@/api/url";

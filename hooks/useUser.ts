@@ -1,11 +1,8 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useCallback } from "react";
 import { useUserContext } from "@/context";
-import {
-  deleteUserToken,
-  getUserToken,
-  showToast
-} from "@/localServices/function";
+import { deleteUserToken, getUserToken } from "@/localServices/function";
+import { showToast } from "@/utils/functions";
 import { processRequest } from "@/api/functions";
 import {
   getUserAssetsApi,

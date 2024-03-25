@@ -1,4 +1,6 @@
 import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -41,6 +43,7 @@ import { useColorScheme } from "react-native";
 import { colorSchemes } from "@/utils/_variables";
 import HeaderDropdownButton from "../_general/HeaderDropdownButton";
 import { useActionContext } from "@/context";
+import { ifCloseToTop, isCloseToBottom } from "@/utils/functions";
 
 const defaultBorderRadius = 30;
 const defaultIconSize = 28;
@@ -142,6 +145,8 @@ const LoggedInContainer: React.FC<{
   children: React.ReactNode;
   unScrollable?: boolean;
   unSafeView?: boolean;
+  runOnScrollEnd?: (e: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  runOnScrollToTop?: (e: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }> = ({
   hideHeader,
   hideNav,
@@ -152,7 +157,9 @@ const LoggedInContainer: React.FC<{
   contentContainerStyle,
   children,
   unScrollable,
-  unSafeView
+  unSafeView,
+  runOnScrollEnd,
+  runOnScrollToTop
 }) => {
   const [activeScreen, setActiveScreen] = useState<ScreenNamesType | null>(
       null
@@ -220,6 +227,20 @@ const LoggedInContainer: React.FC<{
             </View>
           ) : (
             <ScrollComponent
+              onScroll={(e) => {
+                const scrolledToBottom = isCloseToBottom(e);
+                const scrolledToTop = ifCloseToTop(e);
+                if (scrolledToBottom) {
+                  if (runOnScrollEnd) {
+                    runOnScrollEnd(e);
+                  }
+                }
+                if (scrolledToTop) {
+                  if (runOnScrollToTop) {
+                    runOnScrollToTop(e);
+                  }
+                }
+              }}
               style={{
                 minHeight: 0,
                 ...styles.contentContainerStyle,

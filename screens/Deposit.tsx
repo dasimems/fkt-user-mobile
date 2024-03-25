@@ -11,7 +11,7 @@ import { ScreenNames, generalError } from "@/utils/_variables";
 import { DepositBodyType } from "@/api/index.d";
 import { processRequest } from "@/api/functions";
 import { createDepositApi } from "@/api/url";
-import { showToast } from "@/localServices/function";
+import { showToast } from "@/utils/functions";
 import useUser from "@/hooks/useUser";
 
 const Deposit = () => {

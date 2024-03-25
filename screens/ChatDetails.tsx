@@ -33,7 +33,7 @@ import useChat from "@/hooks/useChat";
 import { ChatDetailsType, ChatsType } from "@/reducers/chatReducer";
 import SomethingWentWrongContainer from "@/components/_layouts/SomethingWentWrongContainer";
 import SkeletonLoader from "@/components/_general/SkeletonLoader";
-import { ifCloseToTop, showToast } from "@/localServices/function";
+import { ifCloseToTop, showToast } from "@/utils/functions";
 import { doc, setDoc } from "firebase/firestore";
 import { firestoreDB } from "@/api/firestore";
 import moment from "moment";

@@ -10,7 +10,7 @@ import { useUserContext } from "@/context";
 import { useNavigation } from "@react-navigation/native";
 import useUser from "@/hooks/useUser";
 import { UpdateBankDetailsBodyType } from "@/api/index.d";
-import { showToast, validateValues } from "@/localServices/function";
+import { showToast, validateValues } from "@/utils/functions";
 import { processRequest } from "@/api/functions";
 import { generalError } from "@/utils/_variables";
 import { updateUserDetailsApi } from "@/api/url";

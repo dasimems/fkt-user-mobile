@@ -34,7 +34,7 @@ import {
 } from "@react-navigation/native";
 import { processRequest } from "@/api/functions";
 import { getUserProjectsDetailsApi } from "@/api/url";
-import { showToast } from "@/localServices/function";
+import { showToast } from "@/utils/functions";
 import moment from "moment";
 
 const ProjectDetails = () => {
