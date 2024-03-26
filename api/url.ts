@@ -1,8 +1,8 @@
 import { ApiURLType } from "./index.d";
 import { requestType } from "./_variables";
+import { BASE_URL, API_VERSION } from "@env";
 
-export const apiVersion = "/v1",
-  baseURL = `https://staging.foodsoldier.io/api${apiVersion}`,
+export const baseURL = `${BASE_URL}${API_VERSION}`,
   loginApi: ApiURLType = {
     method: requestType.post,
     url: "/login"

@@ -7,6 +7,8 @@ declare module "*.svg" {
 
 declare module "@env" {
   export const PROCESS: string;
+  export const BASE_URL: string;
+  export const API_VERSION: string;
   export const FIREBASE_API_KEY: string;
   export const FIREBASE_AUTH_DOMAIN: string;
   export const FIREBASE_DATABASE_URL: string;
