@@ -21,7 +21,7 @@
     "scheme": "foodsoldier",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "app.foodsoldier.user",
+      "bundleIdentifier": "com.foodsoldier.app",
       "buildNumber": "1.0.0",
       "googleServicesFile": "./GoogleService-Info.plist",
       "config": {
@@ -29,7 +29,7 @@
       }
     },
     "android": {
-      "package": "app.foodsoldier.user",
+      "package": "com.foodsoldier.app",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -42,7 +42,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "e3b12d91-dc37-4363-adca-559a7fbc7d3a"
+        "projectId": "6211b0d3-9a94-4d58-a074-bdbfd44068c9"
       }
     }
   }
