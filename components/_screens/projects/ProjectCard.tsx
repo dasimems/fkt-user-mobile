@@ -202,7 +202,12 @@ const ProjectCard: React.FC<{
               maxWidth: isDetails ? "68%" : "45%"
             }}
           >
-            <TextComponent fontFamily={Poppins.semiBold.default}>
+            <TextComponent
+              style={{
+                flex: 1
+              }}
+              fontFamily={Poppins.semiBold.default}
+            >
               {isDetails ? name : stripText(name)}
             </TextComponent>
             <TextComponent>2023-04-13</TextComponent>

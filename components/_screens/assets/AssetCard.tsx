@@ -202,7 +202,8 @@ const AssetCard: React.FC<{
           <TextComponent
             fontFamily={Poppins.semiBold.default}
             style={{
-              maxWidth: isDetails ? "68%" : "45%"
+              maxWidth: isDetails ? "68%" : "45%",
+              flex: 1
             }}
           >
             {isDetails ? title : stripText(title)}
