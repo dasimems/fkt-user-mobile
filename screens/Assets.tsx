@@ -15,7 +15,6 @@ const Assets = () => {
   return (
     <LoggedInContainer
       runOnScrollEnd={() => {
-        console.log("worked");
         if (assets.next && !nextLoading) {
           setNextLoading(true);
           axios
@@ -37,6 +36,9 @@ const Assets = () => {
                   err?.message ||
                   "Something went wrong while fetching other available assets"
               );
+            })
+            .finally(() => {
+              setNextLoading(false);
             });
         }
       }}
