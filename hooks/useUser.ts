@@ -182,12 +182,17 @@ const useUser = () => {
       if (token && gen) {
         processRequest(getUserAssistReferrersApi(gen))
           .then((res) => {
-            const referrals = res?.response?.users || [];
+            const response = res?.response || {};
+            const referrals = response?.users || [];
             let userGenerationReferrer: {
               [name: string]: LinearReferralsExpectedDataType;
             } = {
               ...generationReferrals,
-              [gen]: { ...generationReferrals[gen], data: referrals }
+              [gen]: {
+                ...generationReferrals[gen],
+                data: referrals,
+                next: response?.links?.next
+              }
             };
 
             setUserAssistReferral(userGenerationReferrer);

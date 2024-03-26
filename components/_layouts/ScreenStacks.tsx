@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useCallback, useEffect } from "react";
-import { ScreenStackType } from "@/utils/types";
+import { ColorSchemeType, ScreenStackType } from "@/utils/types";
 import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -66,9 +66,10 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
   }, [fontLoaded, appLoaded]);
 
   const loadApp = useCallback(async () => {
-    const colorScheme = await getColorScheme();
-    console.log(colorScheme);
-    setColorScheme(colorScheme || undefined);
+    const colorScheme: ColorSchemeType =
+      (await getColorScheme()) as ColorSchemeType;
+    // console.log(colorScheme);
+    setColorScheme(colorScheme);
     const token = await getUserToken();
     if (token) {
       setToken(token);

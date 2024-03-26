@@ -194,6 +194,16 @@ const ChatDetails = () => {
   const [chatCount, setChatCount] = useState(defaultCount);
   const [chatContent, setChatContent] = useState("");
   const scrollComponentRef = useRef<ScrollView>(null);
+  const [activeChats, setActiveChats] = useState<ChatsType[]>([]);
+
+  const loadOtherChat = useCallback(() => {
+    if (userChats) {
+      const totalNumberOfChatToShow = activeChats.length + defaultCount;
+      const chatToSlice = userChats.length - totalNumberOfChatToShow;
+      const newActiveChat = userChats.slice(chatToSlice > 0 ? chatToSlice : 0);
+      setActiveChats(newActiveChat);
+    }
+  }, [activeChats, userChats]);
 
   const sendChat = useCallback(async () => {
     if (chatContent) {
@@ -265,6 +275,17 @@ const ChatDetails = () => {
       setTimeout(scrollToBottom);
     }
   }, [userChats]);
+
+  useEffect(() => {
+    if (
+      userChats &&
+      userChats.length > 1 &&
+      activeChats.length < 1 &&
+      activeChats.length < defaultCount
+    ) {
+      loadOtherChat();
+    }
+  }, [userChats, activeChats]);
   return (
     <LoggedInContainer
       unScrollable
@@ -304,11 +325,12 @@ const ChatDetails = () => {
               ref={scrollComponentRef}
               onScroll={(e) => {
                 if (ifCloseToTop(e)) {
-                  setChatCount((prevState) =>
-                    prevState + defaultCount >= userChats.length
-                      ? userChats.length
-                      : prevState + defaultCount
-                  );
+                  // setChatCount((prevState) =>
+                  //   prevState + defaultCount >= userChats.length
+                  //     ? userChats.length
+                  //     : prevState + defaultCount
+                  // );
+                  loadOtherChat();
                 }
               }}
               style={{
@@ -318,20 +340,14 @@ const ChatDetails = () => {
                 gap: 2
               }}
             >
-              {userChats
-                .slice(
-                  userChats.length - chatCount > 0
-                    ? userChats.length - chatCount
-                    : 0
-                )
-                .map(({ date, message, senderId }, index) => (
-                  <ChatDetailsCard
-                    key={index}
-                    message={message}
-                    time={moment(new Date(date)).format("DD/MM/YYYY hh:mm a")}
-                    isSender={senderId === userDetails?.id}
-                  />
-                ))}
+              {activeChats.map(({ date, message, senderId }, index) => (
+                <ChatDetailsCard
+                  key={index}
+                  message={message}
+                  time={moment(new Date(date)).format("DD/MM/YYYY hh:mm a")}
+                  isSender={senderId === userDetails?.id}
+                />
+              ))}
             </ScrollComponent>
           )
         ) : (

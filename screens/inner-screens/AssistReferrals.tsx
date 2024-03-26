@@ -120,7 +120,8 @@ const AssistReferrals = () => {
                           .next as string
                       )
                       .then((res) => {
-                        const referrals = res?.data?.users;
+                        const response = res?.data || {};
+                        const referrals = response?.users || [];
                         const availableLinearReferrals =
                           generationReferrals[activeReferralList.value].data ||
                           [];
@@ -131,7 +132,8 @@ const AssistReferrals = () => {
                           ...generationReferrals,
                           [activeReferralList.value]: {
                             ...generationReferrals[activeReferralList.value],
-                            data: [...availableLinearReferrals, ...referrals]
+                            data: [...availableLinearReferrals, ...referrals],
+                            next: response?.links?.next
                           }
                         };
 
