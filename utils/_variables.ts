@@ -29,6 +29,7 @@ export const padding = 20,
     settings: `Settings-${PROCESS}`,
     users: `Users-${PROCESS}`
   },
+  nextLoadingSize = 40,
   vibrationLengths = {
     short: 1000,
     medium: 3000,

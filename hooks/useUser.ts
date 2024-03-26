@@ -182,7 +182,7 @@ const useUser = () => {
       if (token && gen) {
         processRequest(getUserAssistReferrersApi(gen))
           .then((res) => {
-            const referrals = res?.response?.users || {};
+            const referrals = res?.response?.users || [];
             let userGenerationReferrer: {
               [name: string]: LinearReferralsExpectedDataType;
             } = {

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import ReferralContainer from "@/components/_layouts/ReferralContainer";
 import { backgroundColor, backgroundColorDark } from "@/assets/colors";
@@ -7,21 +7,28 @@ import {
   ReferralGenerations,
   allGenerations,
   colorSchemes,
+  nextLoadingSize,
   windowWidth
 } from "@/utils/_variables";
 import GenerationCard from "@/components/_screens/referrals/GenerationCard";
 import ReferralCard from "@/components/_screens/referrals/ReferralCard";
-import { AvatarImage } from "@/assets/images";
+import { AvatarImage, LoadingOne } from "@/assets/images";
 import { useActionContext, useUserContext } from "@/context";
-import { ReferralType } from "@/api/index.d";
+import { AllResponseType, ReferralType } from "@/api/index.d";
 import SkeletonLoader from "@/components/_general/SkeletonLoader";
 import EmptyContainer from "@/components/_layouts/EmptyContainer";
 import useUser from "@/hooks/useUser";
 import { EmptyReferrersLottieAnimation } from "@/assets/lottie";
+import { isCloseToBottom, showToast } from "@/utils/functions";
+import axios from "axios";
+import { LinearReferralsExpectedDataType } from "@/reducers/userReducer";
 
 const AssistReferrals = () => {
-  const { generationReferrals, userDetails } = useUserContext();
+  const { generationReferrals, userDetails, setUserAssistReferral } =
+    useUserContext();
   const { fetchUserAssistReferrersStat, fetchUserAssistReferrers } = useUser();
+
+  const [nextLoading, setNextLoading] = useState(false);
   const [activeReferralList, setActiveReferralList] = useState(
     ReferralGenerations.First
   );
@@ -95,20 +102,86 @@ const AssistReferrals = () => {
               text={`Sorry! You have no ${activeReferralList.label} referrals`}
             />
           ) : (
-            <ScrollComponent
-              style={{
-                minHeight: 0
-              }}
-            >
-              {referrers.map(({ email, name, avatar }, index) => (
-                <ReferralCard
-                  key={index}
-                  image={avatar}
-                  name={name}
-                  email={email}
-                />
-              ))}
-            </ScrollComponent>
+            <>
+              <ScrollComponent
+                onScroll={(e) => {
+                  const closeToBottom = isCloseToBottom(e);
+                  if (
+                    generationReferrals &&
+                    generationReferrals[activeReferralList.value] &&
+                    generationReferrals[activeReferralList.value]?.next &&
+                    !nextLoading &&
+                    closeToBottom
+                  ) {
+                    setNextLoading(true);
+                    axios
+                      .get<AllResponseType>(
+                        generationReferrals[activeReferralList.value]
+                          .next as string
+                      )
+                      .then((res) => {
+                        const referrals = res?.data?.users;
+                        const availableLinearReferrals =
+                          generationReferrals[activeReferralList.value].data ||
+                          [];
+
+                        let userGenerationReferrer: {
+                          [name: string]: LinearReferralsExpectedDataType;
+                        } = {
+                          ...generationReferrals,
+                          [activeReferralList.value]: {
+                            ...generationReferrals[activeReferralList.value],
+                            data: [...availableLinearReferrals, ...referrals]
+                          }
+                        };
+
+                        setUserAssistReferral(userGenerationReferrer);
+                      })
+                      .catch((err) => {
+                        showToast(
+                          err?.response?.data?.message ||
+                            err?.message ||
+                            "Something went wrong while fetching other available referrals"
+                        );
+                      })
+                      .finally(() => {
+                        setNextLoading(false);
+                      });
+                  }
+                }}
+                style={{
+                  minHeight: 0
+                }}
+              >
+                {referrers.map(({ email, name, avatar }, index) => (
+                  <ReferralCard
+                    key={index}
+                    image={avatar}
+                    name={name}
+                    email={email}
+                  />
+                ))}
+              </ScrollComponent>
+
+              {nextLoading && (
+                <View
+                  style={{
+                    alignItems: "center",
+                    gap: 10,
+                    paddingTop: 20
+                  }}
+                >
+                  <Image
+                    source={LoadingOne}
+                    style={{
+                      width: nextLoadingSize,
+                      height: nextLoadingSize,
+                      resizeMode: "contain"
+                    }}
+                  />
+                </View>
+              )}
+            </>
           )
         ) : (
           <View

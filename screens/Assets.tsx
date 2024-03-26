@@ -8,6 +8,7 @@ import axios from "axios";
 import { showToast } from "@/utils/functions";
 import { AllResponseType } from "@/api/index.d";
 import { AssetExpectedDataType } from "@/reducers/userReducer";
+import { nextLoadingSize } from "@/utils/_variables";
 
 const Assets = () => {
   const { assets, setUserAssets } = useUserContext();
@@ -65,8 +66,8 @@ const Assets = () => {
           <Image
             source={LoadingOne}
             style={{
-              width: 40,
-              height: 40,
+              width: nextLoadingSize,
+              height: nextLoadingSize,
               resizeMode: "contain"
             }}
           />

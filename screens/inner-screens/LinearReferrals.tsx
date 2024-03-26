@@ -1,20 +1,26 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
 import ReferralContainer from "@/components/_layouts/ReferralContainer";
 import { backgroundColor, backgroundColorDark } from "@/assets/colors";
 import ReferralCard from "@/components/_screens/referrals/ReferralCard";
-import { AvatarImage } from "@/assets/images";
+import { AvatarImage, LoadingOne } from "@/assets/images";
 import ScrollComponent from "@/components/_general/ScrollComponent";
 import { useActionContext, useUserContext } from "@/context";
-import { colorSchemes, windowWidth } from "@/utils/_variables";
+import { colorSchemes, nextLoadingSize, windowWidth } from "@/utils/_variables";
 import EmptyContainer from "@/components/_layouts/EmptyContainer";
 import SkeletonLoader from "@/components/_general/SkeletonLoader";
 import useUser from "@/hooks/useUser";
+import { isCloseToBottom, showToast } from "@/utils/functions";
+import axios from "axios";
+import { AllResponseType } from "@/api/index.d";
+import { LinearReferralsExpectedDataType } from "@/reducers/userReducer";
 
 const LinearReferrals: React.FC = () => {
   const { colorScheme } = useActionContext();
-  const { linearReferrals, userDetails } = useUserContext();
+  const { linearReferrals, userDetails, setUserLinearReferrals } =
+    useUserContext();
   const { fetchUserLinearReferrers } = useUser();
+  const [nextLoading, setNextLoading] = useState(false);
 
   useEffect(() => {
     fetchUserLinearReferrers();
@@ -33,20 +39,74 @@ const LinearReferrals: React.FC = () => {
         linearReferrals.data.length < 1 ? (
           <EmptyContainer text="Sorry! You have no linear referrals" />
         ) : (
-          <ScrollComponent
-            style={{
-              minHeight: 0
-            }}
-          >
-            {linearReferrals.data.map(({ email, name, avatar }, index) => (
-              <ReferralCard
-                key={index}
-                image={avatar}
-                name={name}
-                email={email}
-              />
-            ))}
-          </ScrollComponent>
+          <>
+            <ScrollComponent
+              onScroll={(e) => {
+                const closeToBottom = isCloseToBottom(e);
+                if (linearReferrals.next && !nextLoading && closeToBottom) {
+                  setNextLoading(true);
+                  axios
+                    .get<AllResponseType>(linearReferrals.next)
+                    .then((res) => {
+                      const response = res?.data;
+                      const availableLinearReferrals =
+                        linearReferrals.data || [];
+
+                      const userLinearReferrals: LinearReferralsExpectedDataType =
+                        {
+                          data: [
+                            ...availableLinearReferrals,
+                            ...response?.users
+                          ],
+                          next: response?.links?.next || null,
+                          total: response?.meta?.total || 0
+                        };
+                      setUserLinearReferrals(userLinearReferrals);
+                    })
+                    .catch((err) => {
+                      showToast(
+                        err?.response?.data?.message ||
+                          err?.message ||
+                          "Something went wrong while fetching other available referrals"
+                      );
+                    })
+                    .finally(() => {
+                      setNextLoading(false);
+                    });
+                }
+              }}
+              style={{
+                minHeight: 0
+              }}
+            >
+              {linearReferrals.data.map(({ email, name, avatar }, index) => (
+                <ReferralCard
+                  key={index}
+                  image={avatar}
+                  name={name}
+                  email={email}
+                />
+              ))}
+            </ScrollComponent>
+            {nextLoading && (
+              <View
+                style={{
+                  alignItems: "center",
+                  gap: 10,
+                  paddingTop: 20
+                }}
+              >
+                <Image
+                  source={LoadingOne}
+                  style={{
+                    width: nextLoadingSize,
+                    height: nextLoadingSize,
+                    resizeMode: "contain"
+                  }}
+                />
+              </View>
+            )}
+          </>
         )
       ) : (
         <View
