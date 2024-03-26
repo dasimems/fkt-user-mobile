@@ -24,6 +24,7 @@ import { openLinkInBrowser, showToast } from "@/utils/functions";
 import { saveUserToken } from "@/localServices/function";
 import { setHeaderAuthorization } from "@/api";
 import useUser from "@/hooks/useUser";
+import { FORGOT_PASSWORD_URL } from "@env";
 
 const Login = () => {
   const { colorScheme } = useActionContext();
@@ -189,9 +190,7 @@ const Login = () => {
         >
           <TouchableOpacity
             onPress={() => {
-              openLinkInBrowser(
-                "https://staging.foodsoldier.io/forgot-password"
-              );
+              openLinkInBrowser(FORGOT_PASSWORD_URL);
             }}
           >
             <TextComponent color={primaryColor.default}>
