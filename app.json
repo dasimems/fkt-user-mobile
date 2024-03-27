@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "Foodsoldier user",
-    "slug": "fkt-user",
-    "version": "1.0.0",
+    "slug": "foodsoldier-user",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "primaryColor": "#03490b",
@@ -22,7 +22,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.foodsoldier.user",
-      "buildNumber": "1.0.0",
+      "buildNumber": "1.0.3",
       "googleServicesFile": "./GoogleService-Info.plist",
       "config": {
         "usesNonExemptEncryption": false
@@ -30,7 +30,7 @@
     },
     "android": {
       "package": "com.foodsoldier.user",
-      "versionCode": 1,
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -42,6 +42,8 @@
     },
     "extra": {
       "eas": {
+        "projectId": "4b4dc370-1f4f-44ee-9534-75970ac4a94e"
+      }
     }
   }
-}}
+}
