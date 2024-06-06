@@ -11,7 +11,6 @@ const controller = new AbortController();
 
 const api = axios.create({
   baseURL,
-  timeout: 2000,
   signal: controller.signal
 });
 
@@ -27,6 +26,7 @@ export const setHeaderAuthorization: (token: string) => void = (token) => {
     config?: AxiosRequestConfig
   ) => ApiRequestResponseType = (url, data, config) => {
     return new Promise<ResponseType>((resolve, reject) => {
+      console.log(baseURL, url);
       if (data) {
         api
           .post(url, data, config)

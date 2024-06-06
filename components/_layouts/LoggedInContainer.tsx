@@ -37,6 +37,7 @@ import {
   LucideIcon,
   MessageCircle,
   MoreVertical,
+  Trash,
   X
 } from "lucide-react-native";
 import { useColorScheme } from "react-native";
@@ -49,8 +50,7 @@ const defaultBorderRadius = 30;
 const defaultIconSize = 28;
 
 const Header: React.FC<{ headerText: string; hideBackArrow?: boolean }> = ({
-  headerText,
-  hideBackArrow
+  headerText
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -124,6 +124,13 @@ const Header: React.FC<{ headerText: string; hideBackArrow?: boolean }> = ({
           <Menu.Item
             onPress={() => {
               closeMenu();
+              navigate(ScreenNames.Waste.name as never);
+            }}
+            title={<HeaderDropdownButton Icon={Trash} label="Waste" />}
+          />
+          <Menu.Item
+            onPress={() => {
+              closeMenu();
               navigate(ScreenNames.Profile.name as never);
             }}
             title={<HeaderDropdownButton Icon={Bolt} label="Settings" />}
@@ -139,7 +146,6 @@ const LoggedInContainer: React.FC<{
   hideNav?: boolean;
   header?: React.ReactNode;
   headerText?: string;
-  hideBackArrow?: boolean;
   style?: ViewStyle;
   contentContainerStyle?: ViewStyle;
   children: React.ReactNode;
@@ -152,7 +158,6 @@ const LoggedInContainer: React.FC<{
   hideNav,
   header,
   headerText,
-  hideBackArrow,
   style,
   contentContainerStyle,
   children,
@@ -208,7 +213,6 @@ const LoggedInContainer: React.FC<{
           : !hideHeader && (
               <Header
                 headerText={headerText || activeScreen?.label || "Screen"}
-                hideBackArrow={hideBackArrow}
               />
             )}
         <View

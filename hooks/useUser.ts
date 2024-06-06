@@ -74,11 +74,11 @@ const useUser = () => {
           const errMessage =
             err?.statusText || "Error encountered fetching user details";
 
-          if (errMessage.toLowerCase() === "unauthenticated") {
-            deleteUserRecord();
-          } else {
-            showToast(errMessage);
-          }
+          // if (errMessage.toLowerCase() === "unauthenticated") {
+          //   deleteUserRecord();
+          // } else {
+          showToast(errMessage);
+          // }
         });
     }
   }, [token]);

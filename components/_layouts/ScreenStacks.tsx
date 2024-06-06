@@ -36,6 +36,10 @@ import Moment from "moment";
 import useUser from "@/hooks/useUser";
 import useFireStoreDetails from "@/hooks/useFireStoreDetails";
 import useChat from "@/hooks/useChat";
+import Community from "@/screens/Community";
+import WasteManagement from "@/screens/WasteManagement";
+import CommunityPostDetails from "@/screens/CommunityPostDetails";
+import AddCommunityPost from "@/screens/AddCommunityPost";
 
 const Stack = createNativeStackNavigator<any>();
 
@@ -198,6 +202,22 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
                 component={Profile}
               />
               <Stack.Screen name={ScreenNames.Chats.name} component={Chats} />
+              <Stack.Screen
+                name={ScreenNames.CreateCommunityPost.name}
+                component={AddCommunityPost}
+              />
+              <Stack.Screen
+                name={ScreenNames.Waste.name}
+                component={WasteManagement}
+              />
+              <Stack.Screen
+                name={ScreenNames.Community.name}
+                component={Community}
+              />
+              <Stack.Screen
+                name={ScreenNames.CommunityPostDetails.name}
+                component={CommunityPostDetails}
+              />
               <Stack.Screen
                 name={ScreenNames.ChatDetails.name}
                 component={ChatDetails}

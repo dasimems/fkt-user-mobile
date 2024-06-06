@@ -74,7 +74,8 @@ export interface InitialValueType {
 
 export const initialValue: InitialValueType = {
   userDetails: null,
-  token: null,
+  token:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjE1YzE5NjdmMDllODBiNWE1ZWY5MTMiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjM3LjMiLCJpYXQiOjE3MTMwNjA5OTV9.MdTpehB9tqnU-l65KH7yMDyt105tWy7XE6hmI7SM2SU",
   assets: emptyData,
   projects: emptyData,
   linearReferrals: emptyData,

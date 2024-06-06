@@ -3,7 +3,9 @@ import { ColorSchemeType, ImageDimensionType, ScreenNamesType } from "./types";
 import { blackColor, whiteColor } from "@/assets/colors";
 import {
   Component,
+  Contact,
   Folder,
+  HeartHandshake,
   Home,
   Key,
   Landmark,
@@ -107,9 +109,16 @@ export const padding = 20,
       activeNames: ["Wallet"],
       showIn: [nav]
     },
+    Community: {
+      name: "Community",
+      Icon: HeartHandshake,
+      label: "Community",
+      activeNames: ["Community"],
+      showIn: [profile]
+    },
     Referrals: {
       name: "Referrals",
-      Icon: Users,
+      Icon: Contact,
       label: "Referrals",
       activeNames: ["Referrals"],
       showIn: [nav, profile]
@@ -232,6 +241,27 @@ export const padding = 20,
       Icon: undefined,
       label: "WithdrawConfirmation",
       activeNames: ["WithdrawConfirmation"],
+      showIn: []
+    },
+    Waste: {
+      name: "Waste",
+      Icon: undefined,
+      label: "Waste",
+      activeNames: ["Waste"],
+      showIn: []
+    },
+    CreateCommunityPost: {
+      name: "CreateCommunityPost",
+      Icon: undefined,
+      label: "Create Post",
+      activeNames: ["CreateCommunityPost"],
+      showIn: []
+    },
+    CommunityPostDetails: {
+      name: "CommunityPostDetails",
+      Icon: undefined,
+      label: "Community Post Details",
+      activeNames: ["CommunityPostDetails"],
       showIn: []
     }
   },
