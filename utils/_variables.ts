@@ -29,7 +29,9 @@ export const padding = 20,
   fireStoreKeys = {
     chats: `Chats-${PROCESS}`,
     settings: `Settings-${PROCESS}`,
-    users: `Users-${PROCESS}`
+    users: `Users-${PROCESS}`,
+    post: `Post-${PROCESS}`,
+    comment: `Comment-${PROCESS}`
   },
   nextLoadingSize = 40,
   vibrationLengths = {

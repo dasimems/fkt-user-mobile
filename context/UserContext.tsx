@@ -32,7 +32,7 @@ import {
 } from "@/reducers/userReducer";
 import { UserDetailsType, WalletResponseType } from "@/api/index.d";
 import { setHeaderAuthorization } from "@/api";
-import { saveUserToken } from "@/localServices/function";
+import { deleteUserToken, saveUserToken } from "@/localServices/function";
 
 interface UserContextFunctionTypes {
   setToken: (payload?: string) => void;
@@ -150,6 +150,7 @@ export const UserProvider: React.FC<FormProviderTypes> = ({ children }) => {
     if (state.token) {
       setHeaderAuthorization(state.token);
       saveUserToken(state.token);
+      deleteUserToken();
     }
   }, [state.token]);
 

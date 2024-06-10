@@ -46,7 +46,6 @@ export default function App() {
       >
         {fontsLoaded && (
           <Providers>
-            <StatusBar style={"light"} backgroundColor="transparent" />
             <ScreenStacks fontLoaded={fontsLoaded} />
           </Providers>
         )}

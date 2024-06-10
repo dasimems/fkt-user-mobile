@@ -71,6 +71,7 @@ const InputField = forwardRef<TextInput, InputFieldType>(
       leftContent,
       rightContent,
       preventKeyBoardAutoHide,
+      keyboardType,
       ...props
     },
     ref
@@ -170,6 +171,13 @@ const InputField = forwardRef<TextInput, InputFieldType>(
                 ...inputStyle
               }}
               secureTextEntry={hidePassword}
+              keyboardType={
+                secureTextEntry
+                  ? !hidePassword
+                    ? "visible-password"
+                    : keyboardType
+                  : keyboardType
+              }
               {...props}
             />
             {secureTextEntry && !rightIcon ? (

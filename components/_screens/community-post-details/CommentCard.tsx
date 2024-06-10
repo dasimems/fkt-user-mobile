@@ -1,13 +1,40 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TextComponent from "@/components/_general/TextComponent";
 import { blackColor, primaryColor, whiteColor } from "@/assets/colors";
 import { useActionContext } from "@/context";
-import { colorSchemes } from "@/utils/_variables";
+import { colorSchemes, fireStoreKeys } from "@/utils/_variables";
 import { Poppins } from "@/assets/fonts";
+import { PostCommentType } from "@/api/index.d";
+import { firestoreDB } from "@/api/firestore";
+import { doc, getDoc } from "firebase/firestore";
+import { FireStoreDetailsType } from "@/reducers/userReducer";
 
-const CommentCard: React.FC<{ isSender?: boolean }> = ({ isSender }) => {
+const CommentCard: React.FC<PostCommentType & { isSender?: boolean }> = ({
+  isSender,
+  comment,
+  userId
+}) => {
   const { colorScheme } = useActionContext();
+  const [userDetails, setUserDetails] = useState<FireStoreDetailsType | null>(
+    null
+  );
+  useEffect(() => {
+    if (userId) {
+      (async () => {
+        try {
+          const userDetailsRef = doc(firestoreDB, fireStoreKeys.users, userId);
+          const userDetails = await getDoc(userDetailsRef);
+
+          if (userDetails.exists()) {
+            const user = userDetails.data() as FireStoreDetailsType;
+
+            setUserDetails(user);
+          }
+        } catch (error) {}
+      })();
+    }
+  }, [userId]);
   return (
     <View
       style={{
@@ -33,7 +60,7 @@ const CommentCard: React.FC<{ isSender?: boolean }> = ({ isSender }) => {
           color={isSender ? whiteColor.default : undefined}
           fontFamily={Poppins.medium.default}
         >
-          {isSender ? "You" : "Duyil Ayomid"}
+          {isSender ? "You" : userDetails?.name || "User"}
         </TextComponent>
         <TextComponent
           style={{
@@ -41,7 +68,7 @@ const CommentCard: React.FC<{ isSender?: boolean }> = ({ isSender }) => {
           }}
           color={isSender ? whiteColor.default : undefined}
         >
-          This is a comment made to this comment
+          {comment}
         </TextComponent>
       </View>
     </View>

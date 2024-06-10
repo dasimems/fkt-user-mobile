@@ -40,6 +40,7 @@ import Community from "@/screens/Community";
 import WasteManagement from "@/screens/WasteManagement";
 import CommunityPostDetails from "@/screens/CommunityPostDetails";
 import AddCommunityPost from "@/screens/AddCommunityPost";
+import { StatusBar } from "expo-status-bar";
 
 const Stack = createNativeStackNavigator<any>();
 
@@ -53,7 +54,8 @@ const MyTheme = {
 
 const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
   Moment.locale("en");
-  const { setColorScheme, appLoaded, setAppLoaded } = useActionContext();
+  const { setColorScheme, appLoaded, setAppLoaded, colorScheme } =
+    useActionContext();
   const { token, setToken, userDetails, fireStoreDetails, userSettings } =
     useUserContext();
   const {
@@ -139,57 +141,17 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
   }, [fontLoaded, appLoaded]);
 
   return (
-    <NavigationContainer theme={MyTheme}>
-      <Stack.Navigator
-        initialRouteName={
-          token ? ScreenNames.Dashboard.name : ScreenNames.GettingStarted.name
-        }
-      >
-        {/*screens that shows when user isn't loggedin yet */}
-        {!token && (
-          <Stack.Group
-            screenOptions={{
-              animation: "slide_from_right",
-              headerShown: false,
-              gestureEnabled: true
-            }}
-          >
-            <Stack.Screen
-              name={ScreenNames.GettingStarted.name}
-              component={GettingStarted}
-            />
-            <Stack.Screen name={ScreenNames.Login.name} component={Login} />
-            <Stack.Screen
-              name={ScreenNames.Register.name}
-              component={Register}
-            />
-          </Stack.Group>
-        )}
-        {/* Screens when users are loggedin */}
+    <>
+      <StatusBar style={colorScheme === colorSchemes.dark ? "light" : "dark"} />
 
-        {token && (
-          <Stack.Group
-            screenOptions={{
-              animation: "fade_from_bottom",
-              headerShown: false,
-              gestureEnabled: true
-            }}
-          >
-            <Stack.Screen
-              name={ScreenNames.Dashboard.name}
-              component={Dashboard}
-            />
-            <Stack.Screen
-              name={ScreenNames.Projects.name}
-              component={Projects}
-            />
-            <Stack.Screen name={ScreenNames.Assets.name} component={Assets} />
-            <Stack.Screen name={ScreenNames.Wallet.name} component={Wallet} />
-            <Stack.Screen
-              name={ScreenNames.Referrals.name}
-              component={Referrals}
-            />
-
+      <NavigationContainer theme={MyTheme}>
+        <Stack.Navigator
+          initialRouteName={
+            token ? ScreenNames.Dashboard.name : ScreenNames.GettingStarted.name
+          }
+        >
+          {/*screens that shows when user isn't loggedin yet */}
+          {!token && (
             <Stack.Group
               screenOptions={{
                 animation: "slide_from_right",
@@ -198,92 +160,136 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
               }}
             >
               <Stack.Screen
-                name={ScreenNames.Profile.name}
-                component={Profile}
+                name={ScreenNames.GettingStarted.name}
+                component={GettingStarted}
               />
-              <Stack.Screen name={ScreenNames.Chats.name} component={Chats} />
+              <Stack.Screen name={ScreenNames.Login.name} component={Login} />
               <Stack.Screen
-                name={ScreenNames.CreateCommunityPost.name}
-                component={AddCommunityPost}
-              />
-              <Stack.Screen
-                name={ScreenNames.Waste.name}
-                component={WasteManagement}
-              />
-              <Stack.Screen
-                name={ScreenNames.Community.name}
-                component={Community}
-              />
-              <Stack.Screen
-                name={ScreenNames.CommunityPostDetails.name}
-                component={CommunityPostDetails}
-              />
-              <Stack.Screen
-                name={ScreenNames.ChatDetails.name}
-                component={ChatDetails}
-              />
-              <Stack.Screen
-                name={ScreenNames.Deposit.name}
-                component={Deposit}
-              />
-              <Stack.Screen
-                name={ScreenNames.Withdraw.name}
-                component={Withdraw}
-              />
-              <Stack.Screen
-                name={ScreenNames.Transfer.name}
-                component={Transfer}
-              />
-              <Stack.Screen
-                name={ScreenNames.ProjectDetails.name}
-                component={ProjectDetails}
-              />
-              <Stack.Screen
-                name={ScreenNames.AssetDetails.name}
-                component={AssetDetails}
-              />
-              <Stack.Screen
-                name={ScreenNames.TransactionDetails.name}
-                component={TransactionDetails}
-              />
-              <Stack.Screen
-                name={ScreenNames.ProfileDetails.name}
-                component={ProfileDetails}
-              />
-              <Stack.Screen
-                name={ScreenNames.BankDetails.name}
-                component={BankDetails}
-              />
-              <Stack.Screen
-                name={ScreenNames.ChangePassword.name}
-                component={ChangePassword}
+                name={ScreenNames.Register.name}
+                component={Register}
               />
             </Stack.Group>
+          )}
+          {/* Screens when users are loggedin */}
+
+          {token && (
             <Stack.Group
               screenOptions={{
-                animation: "fade",
+                animation: "fade_from_bottom",
                 headerShown: false,
-                gestureEnabled: true,
-                presentation: "transparentModal"
+                gestureEnabled: true
               }}
             >
               <Stack.Screen
-                name={ScreenNames.TransferConfirmation.name}
-                component={ConfirmTransfer}
+                name={ScreenNames.Dashboard.name}
+                component={Dashboard}
               />
               <Stack.Screen
-                name={ScreenNames.DepositConfirmation.name}
-                component={ConfirmDeposit}
+                name={ScreenNames.Projects.name}
+                component={Projects}
               />
+              <Stack.Screen name={ScreenNames.Assets.name} component={Assets} />
+              <Stack.Screen name={ScreenNames.Wallet.name} component={Wallet} />
               <Stack.Screen
-                name={ScreenNames.WithdrawConfirmation.name}
-                component={ConfirmWithdraw}
+                name={ScreenNames.Referrals.name}
+                component={Referrals}
               />
+
+              <Stack.Group
+                screenOptions={{
+                  animation: "slide_from_right",
+                  headerShown: false,
+                  gestureEnabled: true
+                }}
+              >
+                <Stack.Screen
+                  name={ScreenNames.Profile.name}
+                  component={Profile}
+                />
+                <Stack.Screen name={ScreenNames.Chats.name} component={Chats} />
+                <Stack.Screen
+                  name={ScreenNames.CreateCommunityPost.name}
+                  component={AddCommunityPost}
+                />
+                <Stack.Screen
+                  name={ScreenNames.Waste.name}
+                  component={WasteManagement}
+                />
+                <Stack.Screen
+                  name={ScreenNames.Community.name}
+                  component={Community}
+                />
+                <Stack.Screen
+                  name={ScreenNames.CommunityPostDetails.name}
+                  component={CommunityPostDetails}
+                />
+                <Stack.Screen
+                  name={ScreenNames.ChatDetails.name}
+                  component={ChatDetails}
+                />
+                <Stack.Screen
+                  name={ScreenNames.Deposit.name}
+                  component={Deposit}
+                />
+                <Stack.Screen
+                  name={ScreenNames.Withdraw.name}
+                  component={Withdraw}
+                />
+                <Stack.Screen
+                  name={ScreenNames.Transfer.name}
+                  component={Transfer}
+                />
+                <Stack.Screen
+                  name={ScreenNames.ProjectDetails.name}
+                  component={ProjectDetails}
+                />
+                <Stack.Screen
+                  name={ScreenNames.AssetDetails.name}
+                  component={AssetDetails}
+                />
+                <Stack.Screen
+                  name={ScreenNames.TransactionDetails.name}
+                  component={TransactionDetails}
+                />
+                <Stack.Screen
+                  name={ScreenNames.ProfileDetails.name}
+                  component={ProfileDetails}
+                />
+                <Stack.Screen
+                  name={ScreenNames.BankDetails.name}
+                  component={BankDetails}
+                />
+                <Stack.Screen
+                  name={ScreenNames.ChangePassword.name}
+                  component={ChangePassword}
+                />
+              </Stack.Group>
+              <Stack.Group
+                screenOptions={{
+                  animation: "fade",
+                  headerShown: false,
+                  gestureEnabled: true,
+                  presentation: "transparentModal"
+                }}
+              >
+                <Stack.Screen
+                  name={ScreenNames.TransferConfirmation.name}
+                  component={ConfirmTransfer}
+                />
+                <Stack.Screen
+                  name={ScreenNames.DepositConfirmation.name}
+                  component={ConfirmDeposit}
+                />
+                <Stack.Screen
+                  name={ScreenNames.WithdrawConfirmation.name}
+                  component={ConfirmWithdraw}
+                />
+              </Stack.Group>
             </Stack.Group>
-          </Stack.Group>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 };
 

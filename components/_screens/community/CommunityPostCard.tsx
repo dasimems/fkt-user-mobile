@@ -12,14 +12,29 @@ import { Poppins } from "@/assets/fonts";
 import { EyeSlash } from "iconsax-react-native";
 import { MessageCircleMore } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
+import { FetchedCommunityPostType } from "@/api/index.d";
+import moment from "moment";
 
-const CommunityPostCard = () => {
+const CommunityPostCard: React.FC<FetchedCommunityPostType> = ({
+  comments = [],
+  createdAt = new Date(),
+  id,
+  post = "",
+  title = "",
+  views = [],
+  likes
+}) => {
   const { colorScheme } = useActionContext();
   const { navigate } = useNavigation();
   return (
     <TouchableOpacity
       onPress={() => {
-        navigate(ScreenNames.CommunityPostDetails.name as never);
+        navigate({
+          name: ScreenNames.CommunityPostDetails.name,
+          params: {
+            id
+          }
+        } as never);
       }}
       style={{
         paddingVertical: 20,
@@ -46,14 +61,14 @@ const CommunityPostCard = () => {
         }}
       >
         <TextComponent fontFamily={Poppins.semiBold.default}>
-          This is the post title
+          {title}
         </TextComponent>
         <TextComponent
           style={{
             opacity: 0.6
           }}
         >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...
+          {post.length > 63 ? `${post.slice(0, 62)}...` : post}
         </TextComponent>
         <View
           style={{
@@ -64,7 +79,9 @@ const CommunityPostCard = () => {
             opacity: 0.6
           }}
         >
-          <TextComponent fontSize={13}>11-12-2024</TextComponent>
+          <TextComponent fontSize={13}>
+            {moment(createdAt).format("DD-MM-YYYY")}
+          </TextComponent>
 
           <View
             style={{
@@ -82,7 +99,7 @@ const CommunityPostCard = () => {
               }
               size={13}
             />
-            <TextComponent>20</TextComponent>
+            <TextComponent>{views.length}</TextComponent>
           </View>
 
           <View
@@ -101,7 +118,7 @@ const CommunityPostCard = () => {
               }
               size={13}
             />
-            <TextComponent>40</TextComponent>
+            <TextComponent>{comments.length}</TextComponent>
           </View>
         </View>
       </View>

@@ -249,6 +249,35 @@ export interface ErrorResponseType {
   status?: string;
 }
 
+export interface PostContentType {
+  userId: string;
+  id: string;
+  postId: string;
+  createdAt: Date;
+}
+
+export interface PostCommentType extends PostContentType {
+  comment: string;
+  failed?: boolean;
+  isSending?: boolean;
+}
+
+export interface CommunityPostType {
+  title: string;
+  post: string;
+  createdAt: Date;
+  userId: string;
+  likes: PostContentType[];
+  comments: PostCommentType[];
+  id: string;
+  views: PostContentType[];
+}
+
+export interface FetchedCommunityPostType extends CommunityPostType {
+  userPersonalName: string;
+  avatar: string;
+}
+
 export interface ApiErrorType {
   type: ResponseStatus;
   code: string | number;
