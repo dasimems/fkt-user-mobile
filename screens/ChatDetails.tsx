@@ -13,7 +13,14 @@ import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Menu } from "react-native-paper";
-import { Ban, Flag, MoreVertical, Send, Trash2 } from "lucide-react-native";
+import {
+  Ban,
+  ChevronLeft,
+  Flag,
+  MoreVertical,
+  Send,
+  Trash2
+} from "lucide-react-native";
 import {
   colorSchemes,
   defaultIconProps,
@@ -26,7 +33,6 @@ import { AvatarImage } from "@/assets/images";
 import InputField from "@/components/_general/form/InputField";
 import ScrollComponent from "@/components/_general/ScrollComponent";
 import ChatDetailsCard from "@/components/_screens/chats/ChatDetailsCard";
-import { ArrowLeft2 } from "iconsax-react-native";
 import { useActionContext, useUserContext } from "@/context";
 import useChatContext from "@/context/ChatContext";
 import useChat from "@/hooks/useChat";
@@ -77,7 +83,7 @@ const ChatHeader: React.FC<{
         }}
       >
         <TouchableOpacity onPress={goBack}>
-          <ArrowLeft2
+          <ChevronLeft
             {...defaultIconProps}
             size={30}
             color={

@@ -18,7 +18,7 @@ import {
   whiteColor
 } from "../assets/colors";
 import ProfileImage from "@/components/_screens/_general/ProfileImage";
-import { Moon, Pen, SunMoon } from "lucide-react-native";
+import { LogOut, Moon, Pen, SunMoon } from "lucide-react-native";
 import {
   colorSchemes,
   defaultIconProps,
@@ -30,7 +30,6 @@ import {
 } from "@/utils/_variables";
 import ScrollComponent from "@/components/_general/ScrollComponent";
 import TextComponent from "@/components/_general/TextComponent";
-import { Logout } from "iconsax-react-native";
 import ProfileStats from "@/components/_screens/profile/ProfileStats";
 import ProfileRoute from "@/components/_screens/profile/ProfileRoute";
 import { useActionContext, useUserContext } from "@/context";
@@ -305,7 +304,7 @@ const Profile = () => {
                   gap: 5
                 }}
               >
-                <Logout {...defaultIconProps} color={whiteColor.default} />
+                <LogOut {...defaultIconProps} color={whiteColor.default} />
                 <TextComponent color={whiteColor.default}>Logout</TextComponent>
               </TouchableOpacity>
             </View>

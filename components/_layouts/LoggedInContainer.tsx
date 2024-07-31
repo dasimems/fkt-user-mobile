@@ -19,7 +19,6 @@ import {
   nav,
   padding
 } from "@/utils/_variables";
-import { ArrowLeft2 } from "iconsax-react-native";
 import TextComponent from "../_general/TextComponent";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { ScreenNamesType } from "@/utils/types";

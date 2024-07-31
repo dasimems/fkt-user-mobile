@@ -3,8 +3,9 @@ import React from "react";
 import { whiteColor } from "@/assets/colors";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
+import { DonationType } from "@/api/index.d";
 
-const WasteCard = () => {
+const WasteCard: React.FC<DonationType> = ({ pickup_location, _id: id }) => {
   return (
     <View
       style={{
@@ -15,7 +16,7 @@ const WasteCard = () => {
       }}
     >
       <TextComponent fontFamily={Poppins.semiBold.default}>
-        MAFUKU Area, oshodi / Isolo, Lagos Nigeria
+        {pickup_location.address}
       </TextComponent>
       <View
         style={{
@@ -32,7 +33,7 @@ const WasteCard = () => {
           Donation ID:
         </TextComponent>
         <TextComponent fontFamily={Poppins.semiBold.default}>
-          6634D34343D53442
+          {id}
         </TextComponent>
       </View>
     </View>

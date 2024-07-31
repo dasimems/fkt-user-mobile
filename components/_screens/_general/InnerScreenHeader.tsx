@@ -10,7 +10,6 @@ import {
 import React, { useEffect, useState } from "react";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
-import { ArrowLeft2 } from "iconsax-react-native";
 import {
   allScreenNames,
   colorSchemes,
@@ -21,6 +20,7 @@ import { ScreenNamesType } from "@/utils/types";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { blackColor, whiteColor } from "@/assets/colors";
 import { useActionContext } from "@/context";
+import { ChevronLeft } from "lucide-react-native";
 
 const InnerScreenHeader: React.FC<{
   headerText?: string;
@@ -70,7 +70,11 @@ const InnerScreenHeader: React.FC<{
     >
       {!hideBackFunction && (
         <TouchableOpacity onPress={goBack}>
-          <ArrowLeft2 {...defaultIconProps} color={color as string} size={27} />
+          <ChevronLeft
+            {...defaultIconProps}
+            color={color as string}
+            size={27}
+          />
         </TouchableOpacity>
       )}
       {!hideHeaderText && (

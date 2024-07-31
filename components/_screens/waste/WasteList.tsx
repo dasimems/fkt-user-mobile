@@ -1,14 +1,36 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from "react-native";
+import React, { useEffect } from "react";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import { primaryColor } from "@/assets/colors";
 import WasteCard from "./WasteCard";
+import useUser from "@/hooks/useUser";
+import { useUserContext } from "@/context";
+import { useIsFocused } from "@react-navigation/native";
+import EmptyContainer from "@/components/_layouts/EmptyContainer";
 
 const WasteList: React.FC<{ max?: number; showViewAll?: boolean }> = ({
   max,
   showViewAll
 }) => {
+  const { getDonationList } = useUser();
+  const { donations, setDonationList } = useUserContext();
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      getDonationList();
+    } else {
+      setDonationList();
+      getDonationList();
+    }
+  }, [isFocused]);
   return (
     <View
       style={{
@@ -34,12 +56,36 @@ const WasteList: React.FC<{ max?: number; showViewAll?: boolean }> = ({
         )}
       </View>
 
-      {new Array(10)
-        .fill(0)
-        .slice(0, max)
-        .map((_, index) => (
-          <WasteCard key={index} />
-        ))}
+      {!donations && (
+        <View
+          style={{
+            paddingVertical: 30,
+            alignItems: "center",
+            gap: 6,
+            justifyContent: "center"
+          }}
+        >
+          <ActivityIndicator size="large" color={primaryColor.default} />
+        </View>
+      )}
+      {donations && donations.length < 1 && (
+        <EmptyContainer
+          // animation={EmptyReferrersLottieAnimation}
+          containerStyle={{
+            paddingVertical: 30,
+            alignItems: "center",
+            gap: 6,
+            justifyContent: "center"
+          }}
+          text={`Sorry! You have donations made yet`}
+        />
+      )}
+
+      {donations &&
+        donations.length > 0 &&
+        donations
+          .slice(0, max)
+          .map((data, index) => <WasteCard key={index} {...data} />)}
     </View>
   );
 };

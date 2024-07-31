@@ -1,16 +1,19 @@
 import {
   AssetType,
+  DonationType,
   ProjectType,
   ReferralType,
   TransactionType,
   UserDetailsType,
-  WalletResponseType
+  WalletResponseType,
+  WasteStatType
 } from "@/api/index.d";
 import {
   RESET_USER_CONTEXT,
   SET_USER_ASSETS,
   SET_USER_BALANCE,
   SET_USER_DETAILS,
+  SET_USER_DONATION,
   SET_USER_FIRESTORE_DETAILS_TYPE,
   SET_USER_GENERATION_REFERRALS,
   SET_USER_LINEAR_REFERRALS,
@@ -18,6 +21,7 @@ import {
   SET_USER_SETTINGS,
   SET_USER_TOKEN,
   SET_USER_TRANSACTIONS,
+  SET_USER_WASTE_STATS,
   UserType
 } from "@/utils/_enums";
 
@@ -67,6 +71,8 @@ export interface InitialValueType {
     [name: string]: LinearReferralsExpectedDataType;
   };
   balance: WalletResponseType | null;
+  donations: DonationType[] | null;
+  wasteStat: WasteStatType | null;
   transactions: TransactionExpectedDataType;
   fireStoreDetails: FireStoreDetailsType | null;
   userSettings: UserSettingsType | null;
@@ -82,7 +88,9 @@ export const initialValue: InitialValueType = {
   balance: null,
   transactions: emptyData,
   fireStoreDetails: null,
-  userSettings: null
+  userSettings: null,
+  donations: null,
+  wasteStat: null
 };
 
 export const reducer = (
@@ -112,6 +120,10 @@ export const reducer = (
       return { ...state, fireStoreDetails: payload };
     case SET_USER_SETTINGS:
       return { ...state, userSettings: payload };
+    case SET_USER_DONATION:
+      return { ...state, donations: payload };
+    case SET_USER_WASTE_STATS:
+      return { ...state, wasteStat: payload };
     case RESET_USER_CONTEXT:
       return initialValue;
     default:

@@ -5,6 +5,7 @@ import { deleteUserToken, getUserToken } from "@/localServices/function";
 import { showToast } from "@/utils/functions";
 import { processRequest } from "@/api/functions";
 import {
+  getDonationListApi,
   getUserAssetsApi,
   getUserAssistReferrersApi,
   getUserAssistReferrersStatApi,
@@ -13,6 +14,7 @@ import {
   getUserLinearReferrersApi,
   getUserProjectsApi,
   getUserTransactionsApi,
+  getWasteStatApi,
   logoutApi
 } from "@/api/url";
 import { setHeaderAuthorization } from "@/api";
@@ -24,6 +26,14 @@ import {
   TransactionExpectedDataType
 } from "@/reducers/userReducer";
 import useFireStoreDetails from "./useFireStoreDetails";
+import {
+  DonationListResponseType,
+  UserWasteRole,
+  WasteDonationListStatus,
+  WasteStateResponseType
+} from "@/api/index.d";
+import { processRequest2 } from "@/api/function2";
+import { setHeaderAuthorization2 } from "@/api/index2";
 
 const useUser = () => {
   const {
@@ -37,7 +47,9 @@ const useUser = () => {
     setUserProjects,
     setUserTransactions,
     setUserAssistReferral,
-    generationReferrals
+    generationReferrals,
+    setDonationList,
+    setUserWastStat
   } = useUserContext();
   const { getUserFireStoreDetails } = useFireStoreDetails();
 
@@ -51,6 +63,39 @@ const useUser = () => {
       });
   };
 
+  const getDonationList = useCallback((status?: WasteDonationListStatus) => {
+    processRequest2(getDonationListApi(status))
+      .then((res) => {
+        const response = res?.response as DonationListResponseType;
+        setDonationList(response?.response?.request_details);
+      })
+      .catch((err) => {
+        showToast(
+          err?.statusText || "An error occurred whilst getting donation list"
+        );
+      });
+  }, []);
+
+  const getWasteStats = useCallback((userType: UserWasteRole) => {
+    let urlExt = "donor";
+    switch (userType) {
+      case "waste-aggregator":
+        urlExt = "aggregator";
+        break;
+      case "waste-master":
+        urlExt = "master";
+        break;
+      default:
+        break;
+    }
+    processRequest2(getWasteStatApi(urlExt))
+      .then((res) => {
+        const response = res?.response as WasteStateResponseType;
+        setUserWastStat(response?.response);
+      })
+      .catch(() => {});
+  }, []);
+
   const fetchUserDetails = useCallback(async () => {
     let savedToken = token;
     if (!token) {
@@ -62,6 +107,7 @@ const useUser = () => {
 
     if (savedToken) {
       setHeaderAuthorization(savedToken);
+      setHeaderAuthorization2(savedToken);
       processRequest(getUserDetailsApi)
         .then((res) => {
           const userDetails = res?.response?.data;
@@ -233,7 +279,9 @@ const useUser = () => {
     fetchUserLinearReferrers,
     fetchUserTransactions,
     fetchUserAssistReferrersStat,
-    fetchUserAssistReferrers
+    fetchUserAssistReferrers,
+    getWasteStats,
+    getDonationList
   };
 };
 

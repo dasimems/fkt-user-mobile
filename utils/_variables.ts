@@ -133,6 +133,27 @@ export const padding = 20,
       activeNames: ["Profile"],
       showIn: []
     },
+    DonateWaste: {
+      name: "DonateWaste",
+      Icon: User,
+      label: "Donate waste",
+      activeNames: ["DonateWaste"],
+      showIn: []
+    },
+    ViewWaste: {
+      name: "ViewWaste",
+      Icon: User,
+      label: "Waste list",
+      activeNames: ["ViewWaste"],
+      showIn: []
+    },
+    ViewWasteDetails: {
+      name: "ViewWasteDetails",
+      Icon: User,
+      label: "Waste Details",
+      activeNames: ["ViewWasteDetails"],
+      showIn: []
+    },
     ProfileDetails: {
       name: "ProfileDetails",
       Icon: User,

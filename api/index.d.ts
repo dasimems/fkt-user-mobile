@@ -1,6 +1,14 @@
 import { AxiosError, AxiosResponse } from "axios";
 import Login from "../screens/login/Login";
 
+export type WasteDonationListStatus = "active" | "completed" | "pending";
+export type UserWasteRole = "donor" | "waste-aggregator" | "waste-master";
+export interface CurrencyFormattingType {
+  amount: string;
+  display: string;
+  symbol: string;
+  currency: string;
+}
 export interface AuthenticationType {
   type: string;
   token: string;
@@ -41,13 +49,6 @@ export interface WithdrawalType {
   status: string;
   created_at: Date;
   updated_at: Date;
-}
-
-export interface CurrencyFormattingType {
-  amount: string;
-  display: string;
-  symbol: string;
-  currency: string;
 }
 export interface ResponseLinkType {
   first: string;
@@ -91,6 +92,17 @@ export interface UserDetailsType {
   link: string;
   is_issuer: number;
   created_at: Date;
+  role: UserWasteRole;
+  status: string;
+  is_issuer: boolean;
+  created_at: number;
+  userPaidStatus: number;
+  pending_waste_points: number;
+  valid_waste_points: number;
+  total_donations: number;
+  total_donations_picked: number;
+  total_waste_weight_donated: number;
+  weightiest_waste_donate: number;
 }
 
 export interface ProjectType {
@@ -253,7 +265,7 @@ export interface PostContentType {
   userId: string;
   id: string;
   postId: string;
-  createdAt: Date;
+  createdAt: Date | number;
 }
 
 export interface PostCommentType extends PostContentType {
@@ -265,12 +277,56 @@ export interface PostCommentType extends PostContentType {
 export interface CommunityPostType {
   title: string;
   post: string;
-  createdAt: Date;
+  createdAt: Date | number;
   userId: string;
   likes: PostContentType[];
   comments: PostCommentType[];
   id: string;
   views: PostContentType[];
+}
+
+export interface DonationType {
+  _id: string;
+  aggregator: {
+    id: string;
+    name: string;
+    phone_number: string;
+  };
+  aggregators: string[];
+  category: string;
+  datetime_created: Date;
+  donor_id: string;
+  donor_name: string;
+  phone_number: string;
+  pickup_location: {
+    address: string;
+    latitude: number;
+    longitude: number;
+  };
+  scheduled_pickup_time: string;
+  status: string;
+  user_role: string;
+  weight: string;
+}
+export interface WasteStatType {
+  active_donations: number;
+  completed_donations: number;
+  pending_confirmations: number;
+  pickup_requests: number;
+}
+
+export interface WasteStateResponseType {
+  message: string;
+  response: WasteStatType;
+  status: "success" | "failed";
+}
+export interface DonationListResponseType {
+  message: string;
+  response: {
+    length: number;
+    request_details: DonationType[];
+  };
+  status: "success" | "failed";
 }
 
 export interface FetchedCommunityPostType extends CommunityPostType {
@@ -301,7 +357,9 @@ export type AllResponseType = LoginResponseType &
   TransactionsResponseType &
   AssetResponseType &
   ReferralsResponseType &
-  GenerationReferralStatResponseType;
+  GenerationReferralStatResponseType &
+  WasteStateResponseType &
+  DonationListResponseType;
 
 export type AllRequestType = "post" | "get" | "delete" | "put";
 

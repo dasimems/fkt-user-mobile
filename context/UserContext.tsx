@@ -13,13 +13,15 @@ import {
   SET_USER_ASSETS,
   SET_USER_BALANCE,
   SET_USER_DETAILS,
+  SET_USER_DONATION,
   SET_USER_FIRESTORE_DETAILS_TYPE,
   SET_USER_GENERATION_REFERRALS,
   SET_USER_LINEAR_REFERRALS,
   SET_USER_PROJECTS,
   SET_USER_SETTINGS,
   SET_USER_TOKEN,
-  SET_USER_TRANSACTIONS
+  SET_USER_TRANSACTIONS,
+  SET_USER_WASTE_STATS
 } from "@/utils/_enums";
 import {
   AssetExpectedDataType,
@@ -30,9 +32,15 @@ import {
   TransactionExpectedDataType,
   UserSettingsType
 } from "@/reducers/userReducer";
-import { UserDetailsType, WalletResponseType } from "@/api/index.d";
+import {
+  DonationType,
+  UserDetailsType,
+  WalletResponseType,
+  WasteStatType
+} from "@/api/index.d";
 import { setHeaderAuthorization } from "@/api";
 import { deleteUserToken, saveUserToken } from "@/localServices/function";
+import { setHeaderAuthorization2 } from "@/api/index2";
 
 interface UserContextFunctionTypes {
   setToken: (payload?: string) => void;
@@ -45,6 +53,8 @@ interface UserContextFunctionTypes {
   setUserLinearReferrals: (payload?: LinearReferralsExpectedDataType) => void;
   setFireStoreDetails: (payload?: FireStoreDetailsType) => void;
   setUserSettings: (payload?: UserSettingsType) => void;
+  setDonationList: (payload?: DonationType[]) => void;
+  setUserWastStat: (payload?: WasteStatType) => void;
   setUserAssistReferral: (payload?: {
     [name: string]: LinearReferralsExpectedDataType;
   }) => void;
@@ -62,7 +72,9 @@ const UserContext = createContext<InitialValueType & UserContextFunctionTypes>({
   setUserLinearReferrals: () => {},
   setFireStoreDetails: () => {},
   setUserAssistReferral: () => {},
-  setUserSettings: () => {}
+  setUserSettings: () => {},
+  setDonationList: () => {},
+  setUserWastStat: () => {}
 });
 
 export const UserProvider: React.FC<FormProviderTypes> = ({ children }) => {
@@ -102,6 +114,18 @@ export const UserProvider: React.FC<FormProviderTypes> = ({ children }) => {
     },
     []
   );
+  const setDonationList = useCallback((payload?: DonationType[]) => {
+    dispatch({
+      type: SET_USER_DONATION,
+      payload: payload || null
+    });
+  }, []);
+  const setUserWastStat = useCallback((payload?: WasteStatType) => {
+    dispatch({
+      type: SET_USER_WASTE_STATS,
+      payload: payload || null
+    });
+  }, []);
   const setUserBalance = useCallback((payload?: WalletResponseType) => {
     dispatch({
       type: SET_USER_BALANCE,
@@ -149,8 +173,9 @@ export const UserProvider: React.FC<FormProviderTypes> = ({ children }) => {
     // console.log(state);
     if (state.token) {
       setHeaderAuthorization(state.token);
-      saveUserToken(state.token);
-      deleteUserToken();
+      setHeaderAuthorization2(state.token);
+      // saveUserToken(state.token);
+      // deleteUserToken();
     }
   }, [state.token]);
 
@@ -168,7 +193,9 @@ export const UserProvider: React.FC<FormProviderTypes> = ({ children }) => {
         setUserLinearReferrals,
         setUserAssistReferral,
         setFireStoreDetails,
-        setUserSettings
+        setUserSettings,
+        setDonationList,
+        setUserWastStat
       }}
     >
       {children}

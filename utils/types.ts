@@ -197,7 +197,7 @@ export interface SelectBoxOptionType {
   disable?: boolean;
 }
 
-export interface SelectBoxType extends SelectListProps {
+export interface SelectBoxType extends Omit<SelectListProps, "setSelected"> {
   onChange: (value: string) => void;
   data: SelectBoxOptionType[];
   style?: ViewStyle;

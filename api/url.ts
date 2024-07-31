@@ -1,8 +1,11 @@
-import { ApiURLType } from "./index.d";
+import { ApiURLType, WasteDonationListStatus } from "./index.d";
 import { requestType } from "./_variables";
-import { BASE_URL, API_VERSION } from "@env";
+import { /* BASE_URL, */ API_VERSION, BASE_URL2 } from "@env";
+
+let BASE_URL = "https://app.foodsoldiers.io/api";
 
 export const baseURL = `${BASE_URL}${API_VERSION}`,
+  baseURL2 = BASE_URL2,
   loginApi: ApiURLType = {
     method: requestType.post,
     url: "/login"
@@ -78,4 +81,18 @@ export const baseURL = `${BASE_URL}${API_VERSION}`,
   createTransferApi: ApiURLType = {
     method: requestType.post,
     url: "/wallet/transfer"
-  };
+  },
+  donateWasteApi: ApiURLType = {
+    method: requestType.post,
+    url: "/donate"
+  },
+  getWasteStatApi: (ext: string) => ApiURLType = (ext) => ({
+    method: requestType.get,
+    url: `/dashboard/${ext}`
+  }),
+  getDonationListApi: (status?: WasteDonationListStatus) => ApiURLType = (
+    status
+  ) => ({
+    method: requestType.get,
+    url: `/donations${status ? `/${status}` : ""}`
+  });

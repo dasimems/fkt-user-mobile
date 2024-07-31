@@ -25,6 +25,7 @@ import { saveUserToken } from "@/localServices/function";
 import { setHeaderAuthorization } from "@/api";
 import useUser from "@/hooks/useUser";
 import { FORGOT_PASSWORD_URL } from "@env";
+import { setHeaderAuthorization2 } from "@/api/index2";
 
 const Login = () => {
   const { colorScheme } = useActionContext();
@@ -43,7 +44,7 @@ const Login = () => {
     if (email.length > 0 && password.length > 0) {
       // navigate(ScreenNames.Dashboard.name as never);
       setLoading(true);
-      processRequest(loginApi, loginForm)
+      processRequest(loginApi, { ...loginForm, email: email.toLowerCase() })
         .then((res) => {
           const token = res?.response?.authentication?.token;
 
@@ -51,6 +52,7 @@ const Login = () => {
             setToken(token);
             saveUserToken(token);
             setHeaderAuthorization(token);
+            setHeaderAuthorization2(token);
             fetchUserDetails();
           } else {
             showToast("Invalid Request - Token error");

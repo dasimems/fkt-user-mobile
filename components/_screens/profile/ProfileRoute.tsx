@@ -3,10 +3,10 @@ import React from "react";
 import { defaultIconProps, colorSchemes } from "@/utils/_variables";
 import { ScreenNamesType } from "@/utils/types";
 import TextComponent from "@/components/_general/TextComponent";
-import { ArrowRight2 } from "iconsax-react-native";
 import { useNavigation } from "@react-navigation/native";
 import { blackColor, whiteColor } from "@/assets/colors";
 import { useActionContext } from "@/context";
+import { ChevronRight } from "lucide-react-native";
 
 const ProfileRoute: React.FC<
   ScreenNamesType & { rightContent?: React.ReactNode }
@@ -43,7 +43,7 @@ const ProfileRoute: React.FC<
         {label}
       </TextComponent>
       {rightContent || (
-        <ArrowRight2
+        <ChevronRight
           {...defaultIconProps}
           color={
             colorScheme === colorSchemes.dark

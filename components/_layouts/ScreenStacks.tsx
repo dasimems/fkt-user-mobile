@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React, { useCallback, useEffect } from "react";
 import { ColorSchemeType, ScreenStackType } from "@/utils/types";
 import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useActionContext, useUserContext } from "@/context";
-import { fireStoreKeys, ScreenNames, colorSchemes } from "@/utils/_variables";
+import { ScreenNames, colorSchemes } from "@/utils/_variables";
 import { whiteColor } from "@/assets/colors";
 import GettingStarted from "@/screens/GettingStarted";
 import Login from "@/screens/Login";
@@ -41,6 +41,8 @@ import WasteManagement from "@/screens/WasteManagement";
 import CommunityPostDetails from "@/screens/CommunityPostDetails";
 import AddCommunityPost from "@/screens/AddCommunityPost";
 import { StatusBar } from "expo-status-bar";
+import { setHeaderAuthorization2 } from "@/api/index2";
+import DonateWaste from "@/screens/DonateWaste";
 
 const Stack = createNativeStackNavigator<any>();
 
@@ -77,9 +79,11 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
     // console.log(colorScheme);
     setColorScheme(colorScheme);
     const token = await getUserToken();
+    console.log("Token from storage", token);
     if (token) {
       setToken(token);
       setHeaderAuthorization(token);
+      setHeaderAuthorization2(token);
       fetchUserDetails();
     }
     setAppLoaded();
@@ -114,7 +118,6 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
         saveUserDetailsToFireStore();
       }
     }
-
     if (!fireStoreDetails) {
       getUserFireStoreDetails();
     }
@@ -214,6 +217,10 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
                 <Stack.Screen
                   name={ScreenNames.Waste.name}
                   component={WasteManagement}
+                />
+                <Stack.Screen
+                  name={ScreenNames.DonateWaste.name}
+                  component={DonateWaste}
                 />
                 <Stack.Screen
                   name={ScreenNames.Community.name}

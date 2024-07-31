@@ -3,8 +3,10 @@ import React from "react";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 import { windowWidth } from "@/utils/_variables";
+import { useUserContext } from "@/context";
 
 const PointBalance = () => {
+  const { wasteStat, userDetails } = useUserContext();
   return (
     <View
       style={{
@@ -15,7 +17,7 @@ const PointBalance = () => {
         fontFamily={Poppins.semiBold.default}
         fontSize={windowWidth * 0.07}
       >
-        1,085VWP
+        {userDetails?.valid_waste_points}VWP
       </TextComponent>
       <TextComponent
         style={{

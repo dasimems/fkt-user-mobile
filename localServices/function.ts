@@ -7,7 +7,6 @@ import {
   storeSecureData
 } from ".";
 import { serviceKeys } from "./variables";
-import { colorSchemes } from "@/utils/_variables";
 
 export const saveUserToken = (token: string): Promise<void> => {
   return storeSecureData(serviceKeys.token, token);

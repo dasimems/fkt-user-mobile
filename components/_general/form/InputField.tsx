@@ -160,7 +160,7 @@ const InputField = forwardRef<TextInput, InputFieldType>(
                   ? whiteColor.opacity200
                   : blackColor.opacity200,
                 borderRadius: 10,
-                paddingVertical: 20,
+                paddingVertical: 15,
                 paddingLeft: leftIcon ? 5 + leftIconWidth : inputPadding,
                 paddingRight: rightIcon ? rightIconWidth : inputPadding,
                 flex: 1,

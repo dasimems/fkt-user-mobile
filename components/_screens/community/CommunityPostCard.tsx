@@ -9,8 +9,7 @@ import {
 } from "@/utils/_variables";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
-import { EyeSlash } from "iconsax-react-native";
-import { MessageCircleMore } from "lucide-react-native";
+import { EyeOff, MessageCircleMore, ThumbsUp } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FetchedCommunityPostType } from "@/api/index.d";
 import moment from "moment";
@@ -22,10 +21,11 @@ const CommunityPostCard: React.FC<FetchedCommunityPostType> = ({
   post = "",
   title = "",
   views = [],
-  likes
+  likes = []
 }) => {
   const { colorScheme } = useActionContext();
   const { navigate } = useNavigation();
+  console.log(createdAt);
   return (
     <TouchableOpacity
       onPress={() => {
@@ -90,7 +90,7 @@ const CommunityPostCard: React.FC<FetchedCommunityPostType> = ({
               gap: 2
             }}
           >
-            <EyeSlash
+            <EyeOff
               {...defaultIconProps}
               color={
                 colorScheme === colorSchemes.dark
@@ -119,6 +119,25 @@ const CommunityPostCard: React.FC<FetchedCommunityPostType> = ({
               size={13}
             />
             <TextComponent>{comments.length}</TextComponent>
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 2
+            }}
+          >
+            <ThumbsUp
+              {...defaultIconProps}
+              color={
+                colorScheme === colorSchemes.dark
+                  ? whiteColor.default
+                  : blackColor.default
+              }
+              size={13}
+            />
+            <TextComponent>{likes.length || 0}</TextComponent>
           </View>
         </View>
       </View>

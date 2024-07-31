@@ -2,12 +2,13 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { blackColor, whiteColor } from "@/assets/colors";
 import { colorSchemes } from "@/utils/_variables";
-import { useActionContext } from "@/context";
+import { useActionContext, useUserContext } from "@/context";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
 
 const PointStats = () => {
   const { colorScheme } = useActionContext();
+  const { userDetails } = useUserContext();
   return (
     <View
       style={{
@@ -31,7 +32,7 @@ const PointStats = () => {
         }}
       >
         <TextComponent fontFamily={Poppins.semiBold.default} textAlign="center">
-          12
+          {userDetails?.total_donations}
         </TextComponent>
         <TextComponent
           style={{
@@ -57,7 +58,7 @@ const PointStats = () => {
         }}
       >
         <TextComponent fontFamily={Poppins.semiBold.default} textAlign="center">
-          5020kg
+          {userDetails?.total_waste_weight_donated}kg
         </TextComponent>
         <TextComponent
           style={{
@@ -83,7 +84,7 @@ const PointStats = () => {
         }}
       >
         <TextComponent fontFamily={Poppins.semiBold.default} textAlign="center">
-          50800VWP
+          {userDetails?.pending_waste_points}VWP
         </TextComponent>
         <TextComponent
           style={{

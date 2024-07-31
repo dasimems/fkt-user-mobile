@@ -43,6 +43,7 @@ import { setHeaderAuthorization } from "@/api";
 import useUser from "@/hooks/useUser";
 import Moment from "moment";
 import { CountryItem, CountryPicker } from "react-native-country-codes-picker";
+import { setHeaderAuthorization2 } from "@/api/index2";
 
 const Register = () => {
   const { colorScheme } = useActionContext();
@@ -106,14 +107,16 @@ const Register = () => {
         password_confirmation: "Your password doesn't match"
       }));
     } else {
-      const { phone: sentPhone } = formDetails;
+      const { phone: sentPhone, email, username } = formDetails;
       let phone = stripPhoneNumber(
         `${countryCode?.dial_code}${stripPhoneNumber(sentPhone)}`
       );
       setLoading(true);
       processRequest(signupApi, {
         ...formDetails,
-        phone
+        phone,
+        email: email.toLowerCase(),
+        username: username.toLowerCase()
       })
         .then((res) => {
           const response = res?.response?.authentication;
@@ -121,9 +124,10 @@ const Register = () => {
           const userDetails = response?.user;
 
           if (userToken) {
+            setHeaderAuthorization(userToken);
+            setHeaderAuthorization2(userToken);
             saveUserToken(userToken);
             setToken(userToken);
-            setHeaderAuthorization(userToken);
             fetchUserDetails();
             if (userDetails) {
               setUserDetails(userDetails);
@@ -133,6 +137,7 @@ const Register = () => {
           }
         })
         .catch((err) => {
+          console.log(err?.statusText);
           showToast(err?.statusText || generalError);
         })
         .finally(() => {

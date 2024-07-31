@@ -24,7 +24,7 @@ const AddCommunityPost = () => {
   const initialValue: CommunityPostType = {
     title: "",
     post: "",
-    createdAt: new Date(),
+    createdAt: Date.now(),
     userId: userDetails?.id || "",
     likes: [],
     comments: [],
@@ -71,7 +71,7 @@ const AddCommunityPost = () => {
         const postId = `${userDetails.id}-time-${date.now()}`;
         const postDetails: CommunityPostType = {
           ...postForm,
-          createdAt: new Date(),
+          createdAt: Date.now(),
           userId: userDetails.id,
           id: postId
         };
@@ -107,21 +107,27 @@ const AddCommunityPost = () => {
     >
       <InputField
         rightIcon={
-          <View>
+          <View
+            style={{
+              ...styles.rightIconButtonStyle
+            }}
+          >
             <TextComponent
+              fontSize={11}
               style={{
                 opacity: 0.6
               }}
             >
               {postForm.title.length}
             </TextComponent>
-            <TextComponent fontFamily={Poppins.medium.default}>
+            <TextComponent fontSize={11} fontFamily={Poppins.medium.default}>
               /100
             </TextComponent>
           </View>
         }
         label="Post title"
         inputStyle={{
+          ...styles.inputStyle,
           backgroundColor:
             colorScheme === colorSchemes.dark
               ? whiteColor.opacity100
@@ -143,29 +149,41 @@ const AddCommunityPost = () => {
         }}
       />
       <InputField
+        rightIconStyle={{
+          justifyContent: "flex-end",
+          paddingBottom: 10
+        }}
         rightIcon={
-          <View>
+          <View
+            style={{
+              ...styles.rightIconButtonStyle
+            }}
+          >
             <TextComponent
+              fontSize={11}
               style={{
                 opacity: 0.6
               }}
             >
               {postForm.post.length}
             </TextComponent>
-            <TextComponent fontFamily={Poppins.medium.default}>
+            <TextComponent fontSize={11} fontFamily={Poppins.medium.default}>
               /500
             </TextComponent>
           </View>
         }
         label="Your post"
         inputStyle={{
+          ...styles.inputStyle,
           backgroundColor:
             colorScheme === colorSchemes.dark
               ? whiteColor.opacity100
               : blackColor.opacity50,
           paddingVertical: 13,
           height: 150,
-          textAlignVertical: "top"
+          textAlignVertical: "top",
+          paddingRight: 10,
+          paddingBottom: 25
         }}
         placeholder="Enter post"
         multiline
@@ -193,4 +211,11 @@ const AddCommunityPost = () => {
 
 export default AddCommunityPost;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  inputStyle: {
+    borderWidth: 0
+  },
+  rightIconButtonStyle: {
+    flexDirection: "row"
+  }
+});

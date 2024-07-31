@@ -11,7 +11,6 @@ import {
 } from "@/utils/_variables";
 import TextComponent from "@/components/_general/TextComponent";
 import { Poppins } from "@/assets/fonts";
-import { EyeSlash, Send2 } from "iconsax-react-native";
 import InnerScreenHeader from "@/components/_screens/_general/InnerScreenHeader";
 import InputField from "@/components/_general/form/InputField";
 import ScrollComponent from "@/components/_general/ScrollComponent";
@@ -42,6 +41,7 @@ import { LoadingTwo } from "@/assets/images";
 import moment from "moment";
 import { showToast } from "@/utils/functions";
 import EmptyContainer from "@/components/_layouts/EmptyContainer";
+import { EyeOff, Send, ThumbsUp } from "lucide-react-native";
 
 const CommunityPostDetails = () => {
   const { colorScheme } = useActionContext();
@@ -58,9 +58,30 @@ const CommunityPostDetails = () => {
   const [likeLoading, setLikeLoading] = useState(false);
   const [comment, setComment] = useState("");
 
+  const isLikedByUser =
+    userDetails &&
+    postDetails &&
+    postDetails.likes &&
+    Array.isArray(postDetails.likes) &&
+    postDetails.likes.find((likes) => likes.userId === userDetails?.id);
+
+  useEffect(() => {
+    if (!isFocused) {
+      setLastListener((prevState) => {
+        if (prevState) {
+          prevState();
+        }
+
+        return null;
+      });
+      setPost(null);
+      setPostDetails(null);
+    }
+  }, [isFocused]);
+
   useEffect(() => {
     (async () => {
-      if (id) {
+      if (id && !post && isFocused) {
         try {
           const unsub = onSnapshot(
             doc(firestoreDB, fireStoreKeys.post, id),
@@ -98,7 +119,7 @@ const CommunityPostDetails = () => {
     if (!id) {
       goBack();
     }
-  }, [id, isFocused]);
+  }, [id, isFocused, post]);
 
   useEffect(() => {
     (async () => {
@@ -117,7 +138,6 @@ const CommunityPostDetails = () => {
 
             if (userDetails.exists()) {
               const user = userDetails.data() as FireStoreDetailsType;
-
               postData = {
                 ...postData,
                 avatar: user.avatar,
@@ -144,6 +164,19 @@ const CommunityPostDetails = () => {
     [postDetails]
   );
 
+  const getPostDetails = useCallback(async () => {
+    if (postDetails) {
+      const postRef = doc(firestoreDB, fireStoreKeys.post, postDetails.id);
+      const fetchedPost = await getDoc(postRef);
+
+      if (fetchedPost.exists()) {
+        return fetchedPost.data() as CommunityPostType;
+      } else {
+        return undefined;
+      }
+    }
+  }, [postDetails]);
+
   const processLike = useCallback(async () => {
     if (
       userDetails &&
@@ -153,28 +186,26 @@ const CommunityPostDetails = () => {
     ) {
       setLikeLoading(true);
       let newLike: PostContentType[] = [];
-      const postRef = doc(firestoreDB, fireStoreKeys.post, postDetails.id);
-      const fetchedPost = await getDoc(postRef);
-      const isLikedByUser = postDetails.likes.find(
-        (details) => details.userId === userDetails.id
-      );
+      const fetchedPost = await getPostDetails();
 
-      if (fetchedPost.exists()) {
-        const fetchedPostDetails = fetchedPost.data() as CommunityPostType;
+      if (fetchedPost) {
+        const isLikedByUser = fetchedPost.likes.find(
+          (details) => details.userId === userDetails.id
+        );
         if (isLikedByUser) {
-          newLike = fetchedPostDetails.likes.filter(
+          newLike = fetchedPost.likes.filter(
             (details) => details.userId !== userDetails.id
           );
         }
 
         if (!isLikedByUser) {
           newLike = [
-            ...fetchedPostDetails.likes,
+            ...fetchedPost.likes,
             {
               userId: userDetails.id,
               id: `${userDetails.id}-${Date.now()}`,
               postId: postDetails.id,
-              createdAt: new Date()
+              createdAt: Date.now()
             }
           ];
         }
@@ -196,7 +227,7 @@ const CommunityPostDetails = () => {
           });
       }
 
-      if (!fetchedPost.exists()) {
+      if (!fetchedPost) {
         setError("This post have been deleted!");
       }
     }
@@ -205,24 +236,22 @@ const CommunityPostDetails = () => {
   const postComment = useCallback(
     async (comment: string) => {
       if (postDetails && userDetails && Array.isArray(postDetails.comments)) {
-        const postRef = doc(firestoreDB, fireStoreKeys.post, postDetails.id);
-        const fetchedPost = await getDoc(postRef);
+        const fetchedPost = await getPostDetails();
 
-        if (fetchedPost.exists()) {
-          const fetchedPostDetails = fetchedPost.data() as CommunityPostType;
+        if (fetchedPost) {
           const commentData: PostCommentType = {
             userId: userDetails.id,
             id: `${userDetails.id}-${Date.now()}`,
             postId: postDetails.id,
-            createdAt: new Date(),
+            createdAt: Date.now(),
             comment
           };
 
           const newComments: PostCommentType[] = [
-            ...fetchedPostDetails.comments,
-            commentData
+            commentData,
+            ...fetchedPost.comments
           ];
-          updatePostDetails({ ...fetchedPostDetails, comments: newComments })
+          updatePostDetails({ ...fetchedPost, comments: newComments })
             .then((res) => {
               showToast("Hooray. Your comment have been posted!");
             })
@@ -231,7 +260,7 @@ const CommunityPostDetails = () => {
             });
         }
 
-        if (!fetchedPost.exists()) {
+        if (!fetchedPost) {
           setError("This post have been deleted!");
         }
       }
@@ -240,33 +269,39 @@ const CommunityPostDetails = () => {
   );
 
   useEffect(() => {
-    if (
-      postDetails &&
-      postDetails?.views &&
-      Array.isArray(postDetails?.views) &&
-      userDetails
-    ) {
-      const isViewedByUser = postDetails.views.find(
-        (details) => details.userId === userDetails.id
-      );
+    (async () => {
+      if (
+        postDetails &&
+        postDetails?.views &&
+        Array.isArray(postDetails?.views) &&
+        userDetails
+      ) {
+        const isViewedByUser = postDetails.views.find(
+          (details) => details.userId === userDetails.id
+        );
 
-      if (!isViewedByUser) {
-        try {
-          const views = [
-            ...postDetails.views,
-            {
-              userId: userDetails.id,
-              id: `${userDetails.id}-${Date.now()}`,
-              postId: postDetails.id,
-              createdAt: new Date()
+        if (!isViewedByUser) {
+          try {
+            const fetchedPost = await getPostDetails();
+
+            if (fetchedPost) {
+              const views = [
+                ...fetchedPost.views,
+                {
+                  userId: userDetails.id,
+                  id: `${userDetails.id}-${Date.now()}`,
+                  postId: postDetails.id,
+                  createdAt: Date.now()
+                }
+              ];
+              updatePostDetails({ ...fetchedPost, views }).catch(() => {
+                showToast("Error updating post details");
+              });
             }
-          ];
-          updatePostDetails({ ...postDetails, views }).catch(() => {
-            showToast("Error updating post details");
-          });
-        } catch (error) {}
+          } catch (error) {}
+        }
       }
-    }
+    })();
   }, [postDetails, isFocused, userDetails]);
 
   return (
@@ -274,9 +309,8 @@ const CommunityPostDetails = () => {
       contentContainerStyle={{
         flex: 1
       }}
-      header={<InnerScreenHeader />}
+      header={<InnerScreenHeader headerText="Post details" />}
       hideNav
-      headerText="Post details"
       unScrollable
     >
       {postDetails && !error && (
@@ -302,6 +336,46 @@ const CommunityPostDetails = () => {
                   gap: 6
                 }}
               >
+                <View
+                  style={{
+                    width: "100%",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 15,
+                    paddingBottom: 20
+                  }}
+                >
+                  <View
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 900,
+                      backgroundColor:
+                        colorScheme === colorSchemes.dark
+                          ? whiteColor.opacity100
+                          : blackColor.opacity100
+                    }}
+                  ></View>
+
+                  <View
+                    style={{
+                      gap: 3
+                    }}
+                  >
+                    <TextComponent fontFamily={Poppins.medium.default}>
+                      {postDetails?.userPersonalName}
+                    </TextComponent>
+                    <TextComponent
+                      style={{
+                        opacity: 0.6
+                      }}
+                      fontSize={13}
+                    >
+                      Posted on{" "}
+                      {moment(postDetails?.createdAt).format("DD-MM-YYYY")}
+                    </TextComponent>
+                  </View>
+                </View>
                 <TextComponent
                   fontSize={20}
                   fontFamily={Poppins.semiBold.default}
@@ -317,9 +391,6 @@ const CommunityPostDetails = () => {
                     gap: 20
                   }}
                 >
-                  <TextComponent fontSize={13}>
-                    {moment(postDetails?.createdAt).format("DD-MM-YYYY")}
-                  </TextComponent>
                   <View
                     style={{
                       flexDirection: "row",
@@ -327,7 +398,7 @@ const CommunityPostDetails = () => {
                       gap: 2
                     }}
                   >
-                    <EyeSlash
+                    <EyeOff
                       {...defaultIconProps}
                       color={
                         colorScheme === colorSchemes.dark
@@ -340,6 +411,33 @@ const CommunityPostDetails = () => {
                       {postDetails?.views?.length || 0}
                     </TextComponent>
                   </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (!likeLoading) {
+                        processLike();
+                      }
+                    }}
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 2
+                    }}
+                  >
+                    <ThumbsUp
+                      {...defaultIconProps}
+                      color={
+                        isLikedByUser
+                          ? primaryColor.default
+                          : colorScheme === colorSchemes.dark
+                          ? whiteColor.default
+                          : blackColor.default
+                      }
+                      size={13}
+                    />
+                    <TextComponent>
+                      {postDetails?.likes?.length || 0}
+                    </TextComponent>
+                  </TouchableOpacity>
                 </View>
 
                 <TextComponent>{postDetails?.post}</TextComponent>
@@ -422,17 +520,16 @@ const CommunityPostDetails = () => {
                 setComment("");
               }}
             >
-              <Send2
+              <Send
                 {...defaultIconProps}
                 color={primaryColor.default}
                 size={30}
-                variant="Bold"
               />
             </TouchableOpacity>
           </View>
         </>
       )}
-      {!postDetails && (
+      {!postDetails && !error && (
         <View
           style={{
             flex: 1,

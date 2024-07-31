@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
-import { baseURL } from "./url";
+import { baseURL, baseURL2 } from "./url";
 import {
   ApiRequestResponseType,
   ErrorResponseType,
@@ -10,17 +10,17 @@ import { status } from "./_variables";
 const controller = new AbortController();
 
 const api = axios.create({
-  baseURL,
+  baseURL: baseURL2,
   signal: controller.signal
 });
 
-export const setHeaderAuthorization: (token: string) => void = (token) => {
+export const setHeaderAuthorization2: (token: string) => void = (token) => {
     if (token) {
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
   },
-  postData: <T>(
+  postData2: <T>(
     url: string,
     data: T,
     config?: AxiosRequestConfig
@@ -50,7 +50,7 @@ export const setHeaderAuthorization: (token: string) => void = (token) => {
         });
     });
   },
-  getData: (
+  getData2: (
     url: string,
     config?: AxiosRequestConfig
   ) => ApiRequestResponseType = (url, config) => {
@@ -76,7 +76,7 @@ export const setHeaderAuthorization: (token: string) => void = (token) => {
         });
     });
   },
-  putData: <T>(
+  putData2: <T>(
     url: string,
     data: T,
     config?: AxiosRequestConfig
@@ -103,7 +103,7 @@ export const setHeaderAuthorization: (token: string) => void = (token) => {
         });
     });
   },
-  deleteData: <T>(
+  deleteData2: <T>(
     url: string,
     config?: AxiosRequestConfig
   ) => ApiRequestResponseType = (url, config) => {
@@ -129,7 +129,7 @@ export const setHeaderAuthorization: (token: string) => void = (token) => {
         });
     });
   },
-  abortOutgoingRequest = () => {
+  abortOutgoingRequest2 = () => {
     controller.abort();
   };
 

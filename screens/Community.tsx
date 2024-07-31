@@ -2,16 +2,17 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import LoggedInContainer from "@/components/_layouts/LoggedInContainer";
 import { blackColor, primaryColor, whiteColor } from "@/assets/colors";
-import { Add } from "iconsax-react-native";
 import {
   colorSchemes,
   defaultIconProps,
   fireStoreKeys,
+  innerPadding,
+  padding,
   ScreenNames
 } from "@/utils/_variables";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import InputField from "@/components/_general/form/InputField";
-import { SearchIcon } from "lucide-react-native";
+import { Plus, SearchIcon } from "lucide-react-native";
 import CommunityPostCard from "@/components/_screens/community/CommunityPostCard";
 import { useActionContext } from "@/context";
 import InnerScreenHeader from "@/components/_screens/_general/InnerScreenHeader";
@@ -23,6 +24,7 @@ import EmptyContainer from "@/components/_layouts/EmptyContainer";
 import ScrollComponent from "@/components/_general/ScrollComponent";
 import SomethingWentWrongContainer from "@/components/_layouts/SomethingWentWrongContainer";
 import { FireStoreDetailsType } from "@/reducers/userReducer";
+import { windowWidth } from "@/utils/_variables";
 
 const Community = () => {
   const { navigate } = useNavigation();
@@ -64,6 +66,7 @@ const Community = () => {
           };
           return postInformation;
         });
+        console.log(data);
         setPostList(data);
       } catch (error) {
         setErrorFetchingPost(true);
@@ -73,7 +76,7 @@ const Community = () => {
   return (
     <>
       <LoggedInContainer
-        header={<InnerScreenHeader />}
+        header={<InnerScreenHeader headerText="Town" />}
         hideNav
         unScrollable
         contentContainerStyle={{
@@ -165,7 +168,8 @@ const Community = () => {
                 flexDirection: "row",
                 alignItems: "flex-start",
                 gap: 10,
-                paddingTop: 20
+                paddingTop: 20,
+                width: "100%"
               }}
             >
               <SkeletonLoader
@@ -181,18 +185,14 @@ const Community = () => {
                   gap: 3
                 }}
               >
-                <SkeletonLoader
-                  style={{
-                    width: "100%"
-                  }}
-                />
+                <SkeletonLoader />
 
                 {new Array(4).fill(0).map(() => (
                   <SkeletonLoader
-                    style={{
-                      width: "100%",
-                      height: 10
-                    }}
+                    height={10}
+                    width={
+                      windowWidth - padding * 2 - innerPadding * 2 - 50 - 10
+                    }
                   />
                 ))}
               </View>
@@ -217,7 +217,7 @@ const Community = () => {
             bottom: 30
           }}
         >
-          <Add {...defaultIconProps} color={whiteColor.default} size={30} />
+          <Plus {...defaultIconProps} color={whiteColor.default} size={30} />
         </TouchableOpacity>
       )}
     </>
