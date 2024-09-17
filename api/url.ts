@@ -26,6 +26,22 @@ export const baseURL = `${BASE_URL}${API_VERSION}`,
     method: requestType.get,
     url: "/account"
   },
+  verifyEmailApi: ApiURLType = {
+    method: requestType.post,
+    url: "/verify/email"
+  },
+  verifyPhoneApi: ApiURLType = {
+    method: requestType.post,
+    url: "/verify/phone"
+  },
+  sendPhoneOTPApi: ApiURLType = {
+    method: requestType.post,
+    url: "/resend-phone-otp"
+  },
+  sendEmailOTPApi: ApiURLType = {
+    method: requestType.post,
+    url: "/resend-email-otp"
+  },
   getUserBalanceApi: ApiURLType = {
     method: requestType.get,
     url: "/wallet"

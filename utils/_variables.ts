@@ -83,6 +83,20 @@ export const padding = 20,
       activeNames: ["Register"],
       showIn: []
     },
+    VerifyEmail: {
+      name: "VerifyEmail",
+      Icon: undefined,
+      label: "Verify Email",
+      activeNames: ["VerifyEmail"],
+      showIn: []
+    },
+    VerifyPhone: {
+      name: "VerifyPhone",
+      Icon: undefined,
+      label: "Verify Phone",
+      activeNames: ["VerifyPhone"],
+      showIn: []
+    },
     Dashboard: {
       name: "Dashboard",
       Icon: Home,

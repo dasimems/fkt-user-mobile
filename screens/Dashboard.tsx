@@ -9,9 +9,11 @@ import ProjectList from "@/components/_screens/_general/ProjectList";
 import AssetList from "@/components/_screens/_general/AssetList";
 import TransactionList from "@/components/_screens/_general/TransactionList";
 import { useUserContext } from "@/context";
+import VerifyAccount from "@/components/_screens/_general/VerifyAccount";
 
 const Dashboard = () => {
-  const { balance } = useUserContext();
+  const { balance, userDetails } = useUserContext();
+  console.log("user details", userDetails);
   return (
     <LoggedInContainer
       headerText="Welcome user"
@@ -25,7 +27,16 @@ const Dashboard = () => {
         }}
       >
         <DashboardBalance />
-        <ReferralCard />
+        {userDetails && (
+          <>
+            {userDetails?.email_verified && userDetails?.phone_verified && (
+              <ReferralCard />
+            )}
+            {(!userDetails?.email_verified || !userDetails?.phone_verified) && (
+              <VerifyAccount />
+            )}
+          </>
+        )}
       </View>
       <DashboardStats />
 

@@ -24,7 +24,7 @@ const WalletActions = () => {
       style={{
         flexDirection: "row",
         alignItems: "center",
-        gap: 20,
+        gap: 10,
         justifyContent: "space-between",
         flexWrap: "wrap"
       }}
@@ -49,7 +49,7 @@ const WalletActions = () => {
               : blackColor.default
           }
         />
-        <TextComponent>Transfer</TextComponent>
+        <TextComponent fontSize={14}>Transfer</TextComponent>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
@@ -61,7 +61,9 @@ const WalletActions = () => {
         }}
       >
         <ArrowLeftRight {...defaultIconProps} color={whiteColor.default} />
-        <TextComponent color={whiteColor.default}>Deposit</TextComponent>
+        <TextComponent color={whiteColor.default} fontSize={14}>
+          Deposit
+        </TextComponent>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
@@ -73,7 +75,9 @@ const WalletActions = () => {
         }}
       >
         <Landmark {...defaultIconProps} color={whiteColor.default} />
-        <TextComponent color={whiteColor.default}>Withdraw</TextComponent>
+        <TextComponent color={whiteColor.default} fontSize={14}>
+          Withdraw
+        </TextComponent>
       </TouchableOpacity>
     </View>
   );

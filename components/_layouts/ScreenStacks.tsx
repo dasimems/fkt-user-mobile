@@ -43,6 +43,9 @@ import AddCommunityPost from "@/screens/AddCommunityPost";
 import { StatusBar } from "expo-status-bar";
 import { setHeaderAuthorization2 } from "@/api/index2";
 import DonateWaste from "@/screens/DonateWaste";
+import VerifyEmail from "@/screens/VerifyEmail";
+import VerifyPhone from "@/screens/VerifyPhone";
+import Wastes from "@/screens/Wastes";
 
 const Stack = createNativeStackNavigator<any>();
 
@@ -219,6 +222,10 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
                   component={WasteManagement}
                 />
                 <Stack.Screen
+                  name={ScreenNames.ViewWaste.name}
+                  component={Wastes}
+                />
+                <Stack.Screen
                   name={ScreenNames.DonateWaste.name}
                   component={DonateWaste}
                 />
@@ -294,6 +301,23 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
               </Stack.Group>
             </Stack.Group>
           )}
+
+          <Stack.Group
+            screenOptions={{
+              animation: "slide_from_right",
+              headerShown: false,
+              gestureEnabled: true
+            }}
+          >
+            <Stack.Screen
+              name={ScreenNames.VerifyEmail.name}
+              component={VerifyEmail}
+            />
+            <Stack.Screen
+              name={ScreenNames.VerifyPhone.name}
+              component={VerifyPhone}
+            />
+          </Stack.Group>
         </Stack.Navigator>
       </NavigationContainer>
     </>

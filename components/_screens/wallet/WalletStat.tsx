@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  useColorScheme,
+  useColorScheme
 } from "react-native";
 import React from "react";
 import { Banknote } from "lucide-react-native";
@@ -33,19 +33,19 @@ const WalletStatCard: React.FC<{
             ? blackColor.default
             : whiteColor.default,
         padding: 20,
-        flex: 1 / 2,
+        flex: 1 / 2
       }}
     >
       <Banknote {...defaultIconProps} color={color} />
 
       <View
         style={{
-          gap: 1,
+          gap: 1
         }}
       >
         <TextComponent
           style={{
-            opacity: 0.6,
+            opacity: 0.6
           }}
         >
           {title}
@@ -70,7 +70,7 @@ const WalletStat = () => {
       style={{
         flexDirection: "row",
         alignItems: "stretch",
-        gap: 20,
+        gap: 20
       }}
     >
       <WalletStatCard
@@ -80,13 +80,13 @@ const WalletStat = () => {
             ? whiteColor.default
             : primaryColor.default
         }
-        title="Credit dismount"
+        title="Total Credit"
         value={balance?.credits?.display}
       />
       <WalletStatCard
         loading={!balance}
         color={redColor.default}
-        title="Debit dismount"
+        title="Total Debit"
         value={balance?.debits?.display}
       />
     </View>

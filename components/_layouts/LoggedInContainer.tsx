@@ -44,6 +44,7 @@ import { colorSchemes } from "@/utils/_variables";
 import HeaderDropdownButton from "../_general/HeaderDropdownButton";
 import { useActionContext } from "@/context";
 import { ifCloseToTop, isCloseToBottom } from "@/utils/functions";
+import { StatusBar } from "expo-status-bar";
 
 const defaultBorderRadius = 30;
 const defaultIconSize = 28;
@@ -178,85 +179,88 @@ const LoggedInContainer: React.FC<{
     }
   }, [name]);
   return (
-    <Container
-      safeView={!unSafeView}
-      style={{
-        backgroundColor: primaryColor.default,
-        padding: innerPadding
-      }}
-    >
-      <View
+    <>
+      <StatusBar style={"light"} />
+      <Container
+        safeView={!unSafeView}
         style={{
-          backgroundColor:
-            colorScheme === colorSchemes.dark
-              ? backgroundColorDark.default
-              : backgroundColor.default,
-          borderRadius: defaultBorderRadius,
-          borderBottomLeftRadius: !hideNav
-            ? activeScreen?.name === ScreenNames.Dashboard.name
-              ? 0
-              : defaultBorderRadius * 0.5
-            : defaultBorderRadius,
-          borderBottomRightRadius: !hideNav
-            ? activeScreen?.name === ScreenNames.Referrals.name
-              ? 0
-              : defaultBorderRadius * 0.5
-            : defaultBorderRadius,
-          flex: 1,
-          paddingBottom: !hideNav ? padding : 0,
-          ...style
+          backgroundColor: primaryColor.default,
+          padding: innerPadding
         }}
       >
-        {header
-          ? header
-          : !hideHeader && (
-              <Header
-                headerText={headerText || activeScreen?.label || "Screen"}
-              />
-            )}
         <View
           style={{
-            flex: 1
+            backgroundColor:
+              colorScheme === colorSchemes.dark
+                ? backgroundColorDark.default
+                : backgroundColor.default,
+            borderRadius: defaultBorderRadius,
+            borderBottomLeftRadius: !hideNav
+              ? activeScreen?.name === ScreenNames.Dashboard.name
+                ? 0
+                : defaultBorderRadius * 0.5
+              : defaultBorderRadius,
+            borderBottomRightRadius: !hideNav
+              ? activeScreen?.name === ScreenNames.Referrals.name
+                ? 0
+                : defaultBorderRadius * 0.5
+              : defaultBorderRadius,
+            flex: 1,
+            paddingBottom: !hideNav ? padding : 0,
+            ...style
           }}
         >
-          {unScrollable ? (
-            <View
-              style={{
-                ...styles.contentContainerStyle,
-                ...contentContainerStyle
-              }}
-            >
-              {children}
-            </View>
-          ) : (
-            <ScrollComponent
-              onScroll={(e) => {
-                const scrolledToBottom = isCloseToBottom(e);
-                const scrolledToTop = ifCloseToTop(e);
-                if (scrolledToBottom) {
-                  if (runOnScrollEnd) {
-                    runOnScrollEnd(e);
+          {header
+            ? header
+            : !hideHeader && (
+                <Header
+                  headerText={headerText || activeScreen?.label || "Screen"}
+                />
+              )}
+          <View
+            style={{
+              flex: 1
+            }}
+          >
+            {unScrollable ? (
+              <View
+                style={{
+                  ...styles.contentContainerStyle,
+                  ...contentContainerStyle
+                }}
+              >
+                {children}
+              </View>
+            ) : (
+              <ScrollComponent
+                onScroll={(e) => {
+                  const scrolledToBottom = isCloseToBottom(e);
+                  const scrolledToTop = ifCloseToTop(e);
+                  if (scrolledToBottom) {
+                    if (runOnScrollEnd) {
+                      runOnScrollEnd(e);
+                    }
                   }
-                }
-                if (scrolledToTop) {
-                  if (runOnScrollToTop) {
-                    runOnScrollToTop(e);
+                  if (scrolledToTop) {
+                    if (runOnScrollToTop) {
+                      runOnScrollToTop(e);
+                    }
                   }
-                }
-              }}
-              style={{
-                minHeight: 0,
-                ...styles.contentContainerStyle,
-                ...contentContainerStyle
-              }}
-            >
-              {children}
-            </ScrollComponent>
-          )}
+                }}
+                style={{
+                  minHeight: 0,
+                  ...styles.contentContainerStyle,
+                  ...contentContainerStyle
+                }}
+              >
+                {children}
+              </ScrollComponent>
+            )}
+          </View>
         </View>
-      </View>
-      {!hideNav && <Nav />}
-    </Container>
+        {!hideNav && <Nav />}
+      </Container>
+    </>
   );
 };
 

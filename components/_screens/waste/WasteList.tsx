@@ -12,14 +12,17 @@ import { primaryColor } from "@/assets/colors";
 import WasteCard from "./WasteCard";
 import useUser from "@/hooks/useUser";
 import { useUserContext } from "@/context";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import EmptyContainer from "@/components/_layouts/EmptyContainer";
+import { ScreenNames } from "@/utils/_variables";
 
-const WasteList: React.FC<{ max?: number; showViewAll?: boolean }> = ({
-  max,
-  showViewAll
-}) => {
+const WasteList: React.FC<{
+  max?: number;
+  showViewAll?: boolean;
+  hideTitle?: boolean;
+}> = ({ max, showViewAll, hideTitle }) => {
   const { getDonationList } = useUser();
+  const { navigate } = useNavigation();
   const { donations, setDonationList } = useUserContext();
   const isFocused = useIsFocused();
 
@@ -27,7 +30,7 @@ const WasteList: React.FC<{ max?: number; showViewAll?: boolean }> = ({
     if (isFocused) {
       getDonationList();
     } else {
-      setDonationList();
+      // setDonationList();
       getDonationList();
     }
   }, [isFocused]);
@@ -45,12 +48,18 @@ const WasteList: React.FC<{ max?: number; showViewAll?: boolean }> = ({
           flexDirection: "row"
         }}
       >
-        <TextComponent fontFamily={Poppins.semiBold.default}>
-          Donated wastes
-        </TextComponent>
+        {!hideTitle && (
+          <TextComponent fontFamily={Poppins.semiBold.default}>
+            Donated wastes
+          </TextComponent>
+        )}
 
         {showViewAll && (
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigate(ScreenNames.ViewWaste.name as never);
+            }}
+          >
             <TextComponent color={primaryColor.default}>View all</TextComponent>
           </TouchableOpacity>
         )}

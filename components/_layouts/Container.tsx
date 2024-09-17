@@ -13,7 +13,7 @@ const Container: React.FC<ContainerType> = ({
     <SafeAreaView
       style={{
         flex: 1,
-        ...style,
+        ...style
       }}
       {...props}
     >
@@ -23,7 +23,7 @@ const Container: React.FC<ContainerType> = ({
     <View
       style={{
         flex: 1,
-        ...style,
+        ...style
       }}
       {...props}
     >

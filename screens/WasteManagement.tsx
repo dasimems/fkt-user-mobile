@@ -12,6 +12,7 @@ import useUser from "@/hooks/useUser";
 import { useUserContext } from "@/context";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNames } from "@/utils/_variables";
+import WasteCard from "@/components/_screens/waste/WasteCard";
 
 const WasteManagement = () => {
   const { userDetails } = useUserContext();
