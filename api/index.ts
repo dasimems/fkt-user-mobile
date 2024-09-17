@@ -29,7 +29,7 @@ export const setHeaderAuthorization: (token: string) => void = (token) => {
       api
         .post(url, data, config)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           resolve({
             type: status.success,
             code: res?.status,
@@ -38,9 +38,9 @@ export const setHeaderAuthorization: (token: string) => void = (token) => {
           });
         })
         .catch((err: AxiosError<ErrorResponseType, ErrorResponseType>) => {
-          console.log(err);
+          // console.log(err)
 
-          console.log(err);
+          // console.log(err)
           reject({
             type: status.error,
             code: err?.response?.status || err?.code,
@@ -66,7 +66,7 @@ export const setHeaderAuthorization: (token: string) => void = (token) => {
           });
         })
         .catch((err: AxiosError<ErrorResponseType, ErrorResponseType>) => {
-          console.log(err);
+          // console.log(err)
           reject({
             type: status.error,
             code: err?.response?.status || err?.code,
@@ -93,7 +93,7 @@ export const setHeaderAuthorization: (token: string) => void = (token) => {
           });
         })
         .catch((err: AxiosError<ErrorResponseType, ErrorResponseType>) => {
-          console.log(err);
+          // console.log(err)
           reject({
             type: status.error,
             code: err?.response?.status || err?.code,
@@ -119,7 +119,7 @@ export const setHeaderAuthorization: (token: string) => void = (token) => {
           });
         })
         .catch((err: AxiosError<ErrorResponseType, ErrorResponseType>) => {
-          console.log(err);
+          // console.log(err)
           reject({
             type: status.error,
             code: err?.response?.status || err?.code,

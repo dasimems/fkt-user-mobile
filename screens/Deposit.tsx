@@ -51,7 +51,7 @@ const Deposit = () => {
         showToast(
           "Please follow the instructions in the next screen to proceed"
         );
-        console.log(res);
+        // console.log(res);
         fetchBalance();
         fetchUserTransactions();
       })

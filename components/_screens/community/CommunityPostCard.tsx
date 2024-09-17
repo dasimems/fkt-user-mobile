@@ -25,7 +25,6 @@ const CommunityPostCard: React.FC<FetchedCommunityPostType> = ({
 }) => {
   const { colorScheme } = useActionContext();
   const { navigate } = useNavigation();
-  console.log(createdAt);
   return (
     <TouchableOpacity
       onPress={() => {

@@ -247,6 +247,7 @@ const LoggedInContainer: React.FC<{
                     }
                   }
                 }}
+                keyboardShouldPersistTaps="always"
                 style={{
                   minHeight: 0,
                   ...styles.contentContainerStyle,

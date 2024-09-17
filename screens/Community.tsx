@@ -66,7 +66,6 @@ const Community = () => {
           };
           return postInformation;
         });
-        console.log(data);
         setPostList(data);
       } catch (error) {
         setErrorFetchingPost(true);

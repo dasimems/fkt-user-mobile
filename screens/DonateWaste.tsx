@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import LoggedInContainer from "@/components/_layouts/LoggedInContainer";
 import InnerScreenHeader from "@/components/_screens/_general/InnerScreenHeader";
 import TextComponent from "@/components/_general/TextComponent";
@@ -10,7 +10,10 @@ import Checkbox from "@/components/_general/form/Checkbox";
 import Button from "@/components/_general/Button";
 import { blackColor, redColor, whiteColor } from "@/assets/colors";
 import { showToast, validateValues } from "@/utils/functions";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import {
+  GooglePlacesAutocomplete,
+  GooglePlacesAutocompleteRef
+} from "react-native-google-places-autocomplete";
 import { processRequest2 } from "@/api/function2";
 import useUser from "@/hooks/useUser";
 import { donateWasteApi } from "@/api/url";
@@ -50,6 +53,18 @@ const DonateWaste = () => {
   const [formDataErr, setFormDataErr] = useState(initialValue);
   const [loading, setLoading] = useState(false);
   const { getDonationList } = useUser();
+
+  const ref = useRef<GooglePlacesAutocompleteRef>(null);
+
+  const setPickUpLocation = useCallback((location: string) => {
+    if (location) {
+      const placesSearchElement = ref?.current;
+
+      if (placesSearchElement) {
+        placesSearchElement.setAddressText(location);
+      }
+    }
+  }, []);
 
   const processForm = useCallback(() => {
     const errors = validateValues(formData, {
@@ -153,17 +168,30 @@ const DonateWaste = () => {
 
         <View
           style={{
-            gap: 3
+            gap: 3,
+            zIndex: 99
           }}
         >
           <TextComponent>Pickup location</TextComponent>
           <GooglePlacesAutocomplete
             placeholder="Pickup location"
+            fetchDetails
+            ref={ref}
+            listViewDisplayed={false}
             onPress={(data, details = null) => {
+              console.log("clicked");
               // 'details' is provided when fetchDetails = true
               console.log(data, details);
+              setFormData((prevState) => ({
+                ...prevState,
+                pickup_location: data?.description ?? ""
+              }));
+              setPickUpLocation(data?.description);
             }}
             styles={{
+              textInputContainer: {
+                position: "relative"
+              },
               textInput: {
                 backgroundColor: "transparent",
                 borderColor: formDataErr?.pickup_location
@@ -175,11 +203,12 @@ const DonateWaste = () => {
                 paddingVertical: 15,
                 height: "auto",
                 borderRadius: 10,
-                paddingHorizontal: 15
+                paddingHorizontal: 15,
+                zIndex: 99
               }
             }}
             query={{
-              key: "YOUR API KEY",
+              key: "AIzaSyDk6tM6q5dXWQ5i7HtQ5k5OXT6CMMfq3nQ",
               language: "en"
             }}
           />

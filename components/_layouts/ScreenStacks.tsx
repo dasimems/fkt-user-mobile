@@ -82,7 +82,6 @@ const ScreenStacks: React.FC<ScreenStackType> = ({ fontLoaded }) => {
     // console.log(colorScheme);
     setColorScheme(colorScheme);
     const token = await getUserToken();
-    console.log("Token from storage", token);
     if (token) {
       setToken(token);
       setHeaderAuthorization(token);

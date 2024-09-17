@@ -137,7 +137,6 @@ const Register = () => {
           }
         })
         .catch((err) => {
-          console.log(err?.statusText);
           showToast(err?.statusText || generalError);
         })
         .finally(() => {

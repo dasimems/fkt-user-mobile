@@ -13,7 +13,6 @@ import VerifyAccount from "@/components/_screens/_general/VerifyAccount";
 
 const Dashboard = () => {
   const { balance, userDetails } = useUserContext();
-  console.log("user details", userDetails);
   return (
     <LoggedInContainer
       headerText="Welcome user"
